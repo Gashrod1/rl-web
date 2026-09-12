@@ -953,6 +953,8 @@ kill %1 2>/dev/null || true
 
 ### Task 11: Verify the desync safety net
 
+**Completion notes:** Verified successfully (no permanent code changes, as expected). Armed the flag on the host only, then drove both clients through the tick where the corrupted fingerprint landed. Both sides independently detected the mismatch and showed "Desync detected. Match stopped." with `netMatch` torn down and the match paused — exactly as designed. One test-harness-only wrinkle, not a product bug: continuing to manually pump frames (the `document.hidden`/`hasFocus` workaround from Task 10) after the match had already ended raced against the real (throttled but not fully stopped) background render loop and threw once on `netMatch.localTick`, since `tickOnline` isn't meant to be re-entered by two independent drivers. This can't happen in normal play (only the real render loop ever calls `tickOnline`) and required no fix.
+
 **Files:**
 - No permanent file changes (a deliberate temporary break, reverted at the end)
 
