@@ -39272,7 +39272,7 @@ async function e7() {
     };
     const ONLINE_SERVER_URL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/mp";
     const endOnlineMatch = errorText => {
-        u = !0, a.state.paused = !0, netMatch = null, onlinePanel.showError(errorText), onlinePanel.show()
+        u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, onlinePanel.showError(errorText), onlinePanel.show()
     };
     const qeOnline = () => {
         n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_INDICES)), _(), p();
