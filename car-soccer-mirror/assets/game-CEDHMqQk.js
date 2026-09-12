@@ -38995,6 +38995,99 @@ Jt.innerHTML = `
 const vd = document.querySelector("#loading"),
     Hl = document.querySelector("#loading .load__note"),
     bl = document.querySelector("#loading .load__label");
+class OnlinePanel {
+    constructor(root, options) {
+        this.options = options;
+        this.openState = !1;
+        this.view = "menu";
+        this.code = "";
+        this.errorMessage = "";
+        root.insertAdjacentHTML("beforeend", `
+      <button id="online-button" class="car-tab" type="button"
+              aria-label="Play online" title="Play online" aria-haspopup="dialog">
+        <span class="car-tab__copy">
+          <span class="car-tab__label">Play Online</span>
+        </span>
+      </button>
+
+      <div id="online-overlay" class="car-overlay" hidden aria-hidden="true">
+        <section class="car-dialog" role="dialog" aria-modal="true" aria-labelledby="online-dialog-title">
+          <header class="car-dialog__head">
+            <div>
+              <h2 id="online-dialog-title">Play Online</h2>
+            </div>
+            <button class="sheet-head__close" type="button" data-online-close aria-label="Close">&times;</button>
+          </header>
+
+          <div class="car-dialog__body">
+            <div data-online-view="menu">
+              <button type="button" class="act act--primary" data-online-create>Create a room</button>
+              <button type="button" class="act" data-online-join-open>Join with a code</button>
+            </div>
+
+            <div data-online-view="join" hidden>
+              <label for="online-code-input">Room code</label>
+              <input id="online-code-input" type="text" maxlength="6" autocomplete="off"
+                     data-online-code-input placeholder="ABC123">
+              <button type="button" class="act act--primary" data-online-join-submit>Join</button>
+              <button type="button" class="act" data-online-back>Back</button>
+            </div>
+
+            <div data-online-view="waiting" hidden>
+              <p>Room code:</p>
+              <p class="online-code" data-online-code-display></p>
+              <p>Waiting for an opponent&hellip;</p>
+              <button type="button" class="act" data-online-cancel>Cancel</button>
+            </div>
+
+            <p class="match-panel__error" data-online-error hidden></p>
+          </div>
+        </section>
+      </div>
+    `);
+        this.tab = root.querySelector("#online-button");
+        this.overlay = root.querySelector("#online-overlay");
+        this.body = this.overlay.querySelector(".car-dialog__body");
+        this.codeInput = this.overlay.querySelector("[data-online-code-input]");
+        this.codeDisplay = this.overlay.querySelector("[data-online-code-display]");
+        this.errorEl = this.overlay.querySelector("[data-online-error]");
+        this.tab.addEventListener("click", () => this.openState ? this.hide() : this.show());
+        this.overlay.querySelector("[data-online-close]").addEventListener("click", () => this.hide());
+        this.overlay.addEventListener("mousedown", e => {
+            if (e.target === this.overlay) this.hide()
+        });
+        this.overlay.querySelector("[data-online-create]").addEventListener("click", () => this.options.onCreate());
+        this.overlay.querySelector("[data-online-join-open]").addEventListener("click", () => this.setView("join"));
+        this.overlay.querySelector("[data-online-back]").addEventListener("click", () => this.setView("menu"));
+        this.overlay.querySelector("[data-online-join-submit]").addEventListener("click", () => {
+            this.options.onJoin(this.codeInput.value.trim())
+        });
+        this.overlay.querySelector("[data-online-cancel]").addEventListener("click", () => this.options.onCancel());
+        this.render()
+    }
+    setView(e) {
+        this.view = e, this.errorMessage = "", this.render()
+    }
+    showWaiting(e) {
+        this.code = e, this.setView("waiting")
+    }
+    showError(e) {
+        this.errorMessage = e, this.render()
+    }
+    render() {
+        for (const e of this.body.querySelectorAll("[data-online-view]")) e.hidden = e.dataset.onlineView !== this.view;
+        this.codeDisplay.textContent = this.code, this.errorEl.hidden = !this.errorMessage, this.errorEl.textContent = this.errorMessage
+    }
+    get isOpen() {
+        return this.openState
+    }
+    show() {
+        this.openState = !0, this.overlay.hidden = !1, this.overlay.setAttribute("aria-hidden", "false"), this.options.onOpenChange(!0)
+    }
+    hide() {
+        this.openState = !1, this.overlay.hidden = !0, this.overlay.setAttribute("aria-hidden", "true"), this.options.onOpenChange(!1)
+    }
+}
 async function e7() {
     await KB(({
         completed: Y,
