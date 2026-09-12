@@ -1,0 +1,10922 @@
+function pn(i, e, t, s, r, n, o) {
+    try {
+        var a = i[n](o),
+            l = a.value
+    } catch (c) {
+        return void t(c)
+    }
+    a.done ? e(l) : Promise.resolve(l).then(s, r)
+}
+
+function X(i) {
+    return function() {
+        var e = this,
+            t = arguments;
+        return new Promise(function(s, r) {
+            var n = i.apply(e, t);
+
+            function o(l) {
+                pn(n, s, r, o, a, "next", l)
+            }
+
+            function a(l) {
+                pn(n, s, r, o, a, "throw", l)
+            }
+            o(void 0)
+        })
+    }
+}
+
+function S() {
+    return S = Object.assign ? Object.assign.bind() : function(i) {
+        for (var e = 1; arguments.length > e; e++) {
+            var t = arguments[e];
+            for (var s in t)({}).hasOwnProperty.call(t, s) && (i[s] = t[s])
+        }
+        return i
+    }, S.apply(null, arguments)
+}
+
+function Mo(i, e) {
+    if (i == null) return {};
+    var t = {};
+    for (var s in i)
+        if ({}.hasOwnProperty.call(i, s)) {
+            if (e.indexOf(s) !== -1) continue;
+            t[s] = i[s]
+        } return t
+}
+var Y = {
+    DEBUG: !1,
+    LIB_VERSION: "0.7.2",
+    LIB_NAME: "browser-common"
+};
+Y.DEBUG = !1, Y.LIB_VERSION = "1.427.2", Y.LIB_NAME = "web";
+var Oo = "$people_distinct_id",
+    Se = "distinct_id",
+    Ei = "$device_id",
+    Cs = "$device_model",
+    Bt = "__alias",
+    it = "$fbc",
+    Ae = "$fbc_persistence",
+    hi = "__timers",
+    tr = "$autocapture_disabled_server_side",
+    ir = "$heatmaps_enabled_server_side",
+    sr = "$exception_capture_enabled_server_side",
+    rr = "$error_tracking_suppression_rules",
+    nr = "$error_tracking_capture_extension_exceptions",
+    or = "$web_vitals_enabled_server_side",
+    Vr = "$dead_clicks_enabled_server_side",
+    Ur = "$product_tours_enabled_server_side",
+    ar = "$logs_capture_enabled_server_side",
+    lr = "$web_vitals_allowed_metrics",
+    xt = "$session_recording_remote_config",
+    $o = "$replay_sample_rate",
+    Do = "$replay_override_sampling",
+    Bo = "$replay_override_linked_flag",
+    Ho = "$replay_override_url_trigger",
+    No = "$replay_override_event_trigger",
+    Ht = "$sesid",
+    Wr = "$session_is_sampled",
+    ke = "$enabled_feature_flags",
+    je = "$active_feature_flags",
+    Vi = "$early_access_features",
+    gt = "$feature_flag_details",
+    Ge = "$feature_flag_payloads",
+    vt = "$feature_flag_request_id",
+    jt = "$minimal_flag_called_events",
+    Ze = "$override_feature_flags",
+    kt = "$override_feature_flag_payloads",
+    Oe = "$stored_person_properties",
+    et = "$stored_group_properties",
+    qo = "$groups",
+    ur = "$surveys",
+    Qi = "$surveys_loaded_at",
+    cr = "$surveys_activated",
+    Ui = "$surveys_activated_session",
+    Wi = "$surveys_activated_timestamps",
+    _i = "ph_product_tours",
+    at = "$flag_call_reported",
+    pi = "$flag_call_reported_session_id",
+    Vt = "$feature_flag_errors",
+    ct = "$feature_flag_evaluated_at",
+    H = "$user_state",
+    dr = "$client_session_props",
+    hr = "$capture_rate_limit",
+    _r = "$initial_campaign_params",
+    pr = "$initial_referrer_info",
+    Nt = "$initial_person_info",
+    Yi = "$epp",
+    It = "$posthog_cookieless",
+    zo = "$cookieless_mode",
+    jo = "$sdk_debug_extensions_init_method",
+    Vo = "$sdk_debug_extensions_init_time_ms",
+    gr = "$sdk_debug_recording_script_not_loaded",
+    Gr = "PostHog loadExternalDependency extension not found.",
+    pt = "on_reject",
+    lt = "always",
+    he = "anonymous",
+    Ce = "identified",
+    vr = "identified_only",
+    Kt = "visibilitychange",
+    Zi = "beforeunload",
+    qt = "$pageview",
+    xs = "$pageleave",
+    fr = "$identify",
+    gn = "$groupidentify",
+    f = "u" > typeof window ? window : void 0,
+    Fe = "u" > typeof globalThis ? globalThis : f,
+    be = Fe == null ? void 0 : Fe.navigator,
+    k = Fe == null ? void 0 : Fe.document,
+    ne = Fe == null ? void 0 : Fe.location,
+    Kr = Fe == null ? void 0 : Fe.fetch,
+    mr = Fe != null && Fe.XMLHttpRequest && "withCredentials" in new Fe.XMLHttpRequest ? Fe.XMLHttpRequest : void 0,
+    vn = Fe == null ? void 0 : Fe.AbortController,
+    Pl = Fe == null ? void 0 : Fe.CompressionStream,
+    Re = be == null ? void 0 : be.userAgent;
+
+function Uo() {
+    return !(!f || f.navigator.onLine === !1)
+}
+var ii = typeof globalThis < "u" ? globalThis : f;
+ii && typeof self > "u" && (ii.self = ii), ii && typeof File > "u" && (ii.File = function() {});
+var I = f ?? {},
+    Fl = ["amazonbot", "amazonproductbot", "app.hypefactors.com", "applebot", "archive.org_bot", "awariobot", "backlinksextendedbot", "baiduspider", "bingbot", "bingpreview", "chrome-lighthouse", "dataforseobot", "deepscan", "duckduckbot", "facebookexternal", "facebookcatalog", "http://yandex.com/bots", "hubspot", "ia_archiver", "leikibot", "linkedinbot", "meta-externalagent", "mj12bot", "msnbot", "nessus", "petalbot", "pinterestbot", "prerender", "rogerbot", "screaming frog", "sebot-wa", "sitebulb", "slackbot", "slurp", "trendictionbot", "turnitin", "twitterbot", "vercel-screenshot", "vercelbot", "yahoo! slurp", "yandexbot", "zoombot", "bot.htm", "bot.php", "(bot;", "bot/", "crawler", "ahrefsbot", "ahrefssiteaudit", "semrushbot", "siteauditbot", "splitsignalbot", "gptbot", "oai-searchbot", "chatgpt-user", "perplexitybot", "better uptime bot", "sentryuptimebot", "uptimerobot", "headlesschrome", "cypress", "google-hoteladsverifier", "adsbot-google", "apis-google", "duplexweb-google", "feedfetcher-google", "google favicon", "google web preview", "google-read-aloud", "googlebot", "googleother", "google-cloudvertexbot", "googleweblight", "mediapartners-google", "storebot-google", "google-inspectiontool", "bytespider"],
+    fn = function(i, e) {
+        if (e === void 0 && (e = []), !i) return !1;
+        var t = i.toLowerCase();
+        return Fl.concat(e).some(s => {
+            var r = s.toLowerCase();
+            return t.indexOf(r) !== -1
+        })
+    };
+
+function O(i, e) {
+    return i.indexOf(e) !== -1
+}
+var ys = function(i) {
+        return i.trim()
+    },
+    yr = function(i) {
+        return i.replace(/^\$/, "")
+    };
+
+function Wo(i) {
+    var e, t = [];
+    return (e = JSON.stringify(i, function(s, r) {
+        if (typeof r == "bigint") return r.toString();
+        if (typeof r != "function" && typeof r != "symbol") {
+            if (r instanceof Error) return {
+                name: r.name,
+                message: r.message,
+                stack: r.stack
+            };
+            if (r && typeof r == "object") {
+                for (; t.length > 0 && t[t.length - 1] !== this;) t.pop();
+                if (t.includes(r)) return "[Circular]";
+                t.push(r)
+            }
+            return r
+        }
+    })) !== null && e !== void 0 ? e : "null"
+}
+var Xe = function(i) {
+        return i.AnonymousId = "anonymous_id", i.DistinctId = "distinct_id", i.Props = "props", i.EnablePersonProcessing = "enable_person_processing", i.PersonMode = "person_mode", i.FeatureFlagDetails = "feature_flag_details", i.FeatureFlags = "feature_flags", i.FeatureFlagPayloads = "feature_flag_payloads", i.BootstrapFeatureFlagDetails = "bootstrap_feature_flag_details", i.BootstrapFeatureFlags = "bootstrap_feature_flags", i.BootstrapFeatureFlagPayloads = "bootstrap_feature_flag_payloads", i.OverrideFeatureFlags = "override_feature_flags", i.Queue = "queue", i.AiQueue = "ai_queue", i.AiCaptureQueue = "ai_capture_queue", i.LogsQueue = "logs_queue", i.OptedOut = "opted_out", i.SessionId = "session_id", i.SessionStartTimestamp = "session_start_timestamp", i.SessionLastTimestamp = "session_timestamp", i.PersonProperties = "person_properties", i.GroupProperties = "group_properties", i.InstalledAppBuild = "installed_app_build", i.InstalledAppVersion = "installed_app_version", i.SessionReplay = "session_replay", i.PushRegistered = "push_registered", i.SessionReplayEventTriggerActivatedSession = "session_replay_event_trigger_activated_session", i.SurveyLastSeenDate = "survey_last_seen_date", i.SurveysSeen = "surveys_seen", i.Surveys = "surveys", i.RemoteConfig = "remote_config", i.FlagsEndpointWasHit = "flags_endpoint_was_hit", i.DeviceId = "device_id", i
+    }({}),
+    br = function(i) {
+        return i.GZipJS = "gzip-js", i.Base64 = "base64", i
+    }({}),
+    Il = ["$snapshot", "$pageview", "$pageleave", "$set", "survey dismissed", "survey sent", "survey shown", "$identify", "$groupidentify", "$create_alias", "$$client_ingestion_warning", "$web_experiment_applied", "$feature_enrollment_update", "$feature_flag_called"],
+    Tl = ["token"],
+    Go = Object.prototype,
+    Ko = Go.hasOwnProperty,
+    bs = Go.toString,
+    R = Array.isArray || function(i) {
+        return bs.call(i) === "[object Array]"
+    },
+    Pe = i => typeof i == "function",
+    N = i => i === Object(i) && !R(i),
+    Be = i => {
+        if (N(i)) {
+            for (var e in i)
+                if (Ko.call(i, e)) return !1;
+            return !0
+        }
+        return !1
+    },
+    b = i => i === void 0,
+    q = i => bs.call(i) == "[object String]",
+    vi = i => q(i) && i.trim().length === 0,
+    ce = i => i === null,
+    D = i => b(i) || ce(i),
+    de = i => bs.call(i) == "[object Number]" && i == i,
+    nt = i => de(i) && i > 0,
+    Ie = i => bs.call(i) === "[object Boolean]",
+    Rl = i => i instanceof FormData,
+    Al = i => O(Il, i),
+    Ll = i => O(Tl, i);
+
+function Jo(i) {
+    return i === null || typeof i != "object"
+}
+
+function Xi(i, e) {
+    return {}.toString.call(i) === "[object " + e + "]"
+}
+
+function Jr(i) {
+    switch ({}.toString.call(i)) {
+        case "[object Error]":
+        case "[object Exception]":
+        case "[object DOMException]":
+        case "[object DOMError]":
+        case "[object WebAssembly.Exception]":
+            return !0;
+        default:
+            return Qo(i, Error)
+    }
+}
+
+function Qr(i) {
+    return "u" > typeof Event && Qo(i, Event)
+}
+
+function Qo(i, e) {
+    try {
+        return i instanceof e
+    } catch {
+        return !1
+    }
+}
+var Ml = [!0, "true", 1, "1", "yes"],
+    Ps = i => O(Ml, i),
+    Ol = [!1, "false", 0, "0", "no"];
+
+function tt(i, e, t, s, r) {
+    return e > t && (s.warn("min cannot be greater than max."), e = t), de(i) ? i > t ? (s.warn(" cannot be  greater than max: " + t + ". Using max value instead."), t) : e > i ? (s.warn(" cannot be less than min: " + e + ". Using min value instead."), e) : i : (s.warn(" must be a number. using max or fallback. max: " + t + ", fallback: " + r), tt(r ?? t, e, t, s))
+}
+class $l {
+    constructor(e) {
+        this._buckets = {}, this._onBucketRateLimited = e._onBucketRateLimited, this._bucketSize = tt(e.bucketSize, 0, 100, e._logger), this._refillRate = tt(e.refillRate, 0, this._bucketSize, e._logger), this._refillInterval = tt(e.refillInterval, 0, 864e5, e._logger)
+    }
+    _applyRefill(e, t) {
+        var s = Math.floor((t - e.lastAccess) / this._refillInterval);
+        s > 0 && (e.tokens = Math.min(e.tokens + s * this._refillRate, this._bucketSize), e.lastAccess = e.lastAccess + s * this._refillInterval)
+    }
+    consumeRateLimit(e) {
+        var t, s = Date.now(),
+            r = String(e),
+            n = this._buckets[r];
+        return n ? this._applyRefill(n, s) : this._buckets[r] = n = {
+            tokens: this._bucketSize,
+            lastAccess: s
+        }, n.tokens === 0 || (n.tokens--, n.tokens === 0 && ((t = this._onBucketRateLimited) == null || t.call(this, e)), n.tokens === 0)
+    }
+    stop() {
+        this._buckets = {}
+    }
+}
+var Ne = "Mobile",
+    es = "iOS",
+    dt = "Android",
+    Jt = "Tablet",
+    Yo = dt + " " + Jt,
+    Zo = "iPad",
+    Xo = "Apple",
+    ea = Xo + " Watch",
+    fi = "Safari",
+    Qt = "BlackBerry",
+    ta = "Samsung",
+    ia = ta + "Browser",
+    sa = ta + " Internet",
+    Pt = "Chrome",
+    Dl = Pt + " OS",
+    ra = Pt + " " + es,
+    Yr = "Internet Explorer",
+    na = Yr + " " + Ne,
+    Zr = "Opera",
+    Bl = Zr + " Mini",
+    Xr = "Edge",
+    oa = "Microsoft " + Xr,
+    Ut = "Firefox",
+    aa = Ut + " " + es,
+    ki = "Nintendo",
+    Ci = "PlayStation",
+    Wt = "Xbox",
+    la = dt + " " + Ne,
+    ua = Ne + " " + fi,
+    gi = "Windows",
+    Sr = gi + " Phone",
+    mn = "Nokia",
+    wr = "Ouya",
+    ca = "Generic",
+    Hl = ca + " " + Ne.toLowerCase(),
+    da = ca + " " + Jt.toLowerCase(),
+    Er = "Konqueror",
+    ha = "Oculus Browser",
+    ts = "Vivaldi",
+    _a = "Yandex",
+    is = "Whale",
+    kr = "DuckDuckGo",
+    pa = "Pale Moon",
+    ss = "Waterfox",
+    mi = "Brave",
+    rs = "Claude",
+    ns = "Codex",
+    os = "ChatGPT",
+    ga = "Google Search App",
+    se = "(\\d+(\\.\\d+)?)",
+    Fs = new RegExp("Version/" + se),
+    Is = new RegExp("(" + rs + "|" + ns + "|" + os + ")\\/" + se),
+    Nl = new RegExp(Wt, "i"),
+    ql = new RegExp(Ci + " \\w+", "i"),
+    zl = new RegExp(ki + " \\w+", "i"),
+    en = new RegExp(Qt + "|PlayBook|BB10", "i"),
+    jl = {
+        "NT3.51": "NT 3.11",
+        "NT4.0": "NT 4.0",
+        "5.0": "2000",
+        5.1: "XP",
+        5.2: "XP",
+        "6.0": "Vista",
+        6.1: "7",
+        6.2: "8",
+        6.3: "8.1",
+        6.4: "10",
+        "10.0": "10"
+    },
+    va = function(i, e, t, s) {
+        e = e || "";
+        var r = function(n) {
+            return n != null && n.brave ? mi : null
+        }(t);
+        return r || (s != null && s.detectGoogleSearchApp && O(i, "GSA/") ? ga : O(i, " OPR/") && O(i, "Mini") ? Bl : O(i, " OPR/") ? Zr : en.test(i) ? Qt : O(i, "IE" + Ne) || O(i, "WPDesktop") ? na : O(i, "OculusBrowser") ? ha : O(i, ia) ? sa : O(i, Xr) || O(i, "Edg/") ? oa : O(i, ts + "/") ? ts : O(i, "YaBrowser/") ? _a : O(i, is + "/") ? is : O(i, kr + "/") || O(i, "Ddg/") ? kr : O(i, rs + "/") ? rs : O(i, ns + "/") ? ns : O(i, os + "/") ? os : O(i, "FBIOS") ? "Facebook " + Ne : O(i, "UCWEB") || O(i, "UCBrowser") ? "UC Browser" : O(i, "CriOS") ? ra : O(i, "CrMo") || O(i, Pt) ? Pt : O(i, dt) && O(i, fi) ? la : O(i, "FxiOS") ? aa : O(i.toLowerCase(), Er.toLowerCase()) ? Er : O(i, mi + "/") ? mi : ((n, o) => o && O(o, Xo) || function(a) {
+            return O(a, fi) && !O(a, Pt) && !O(a, dt)
+        }(n))(i, e) ? O(i, Ne) ? ua : fi : O(i, "PaleMoon/") ? pa : O(i, ss + "/") ? ss : O(i, Ut) ? Ut : O(i, "MSIE") || O(i, "Trident/") ? Yr : O(i, "Gecko") ? Ut : "")
+    },
+    Vl = {
+        [na]: [new RegExp("rv:" + se)],
+        [oa]: [new RegExp(Xr + "?\\/" + se)],
+        [Pt]: [new RegExp("(" + Pt + "|CrMo)\\/" + se)],
+        [ra]: [new RegExp("CriOS\\/" + se)],
+        "UC Browser": [new RegExp("(UCBrowser|UCWEB)\\/" + se)],
+        [fi]: [Fs],
+        [ua]: [Fs],
+        [Zr]: [new RegExp("(Opera|OPR)\\/" + se)],
+        [Ut]: [new RegExp(Ut + "\\/" + se)],
+        [aa]: [new RegExp("FxiOS\\/" + se)],
+        [Er]: [new RegExp("Konqueror[:/]?" + se, "i")],
+        [Qt]: [new RegExp(Qt + " " + se), Fs],
+        [la]: [new RegExp("android\\s" + se, "i")],
+        [sa]: [new RegExp(ia + "\\/" + se)],
+        [ha]: [new RegExp("OculusBrowser\\/" + se)],
+        [ts]: [new RegExp(ts + "\\/" + se)],
+        [_a]: [new RegExp("YaBrowser\\/" + se)],
+        [is]: [new RegExp(is + "\\/" + se)],
+        [mi]: [new RegExp(mi + "\\/" + se)],
+        [rs]: [Is],
+        [ns]: [Is],
+        [os]: [Is],
+        [kr]: [new RegExp("(DuckDuckGo|Ddg)\\/" + se)],
+        [pa]: [new RegExp("PaleMoon\\/" + se)],
+        [ss]: [new RegExp(ss + "\\/" + se)],
+        [ga]: [new RegExp("GSA\\/" + se)],
+        [Yr]: [new RegExp("(rv:|MSIE )" + se)],
+        Mozilla: [new RegExp("rv:" + se)]
+    },
+    Ul = function(i, e, t, s) {
+        var r = va(i, e, t, s),
+            n = Vl[r];
+        if (b(n)) return null;
+        for (var o = 0; n.length > o; o++) {
+            var a = i.match(n[o]);
+            if (a) return parseFloat(a[a.length - 2])
+        }
+        return null
+    },
+    yn = [
+        [new RegExp(Wt + "; " + Wt + " (.*?)[);]", "i"), i => [Wt, i && i[1] || ""]],
+        [new RegExp(ki, "i"), [ki, ""]],
+        [new RegExp(Ci, "i"), [Ci, ""]],
+        [en, [Qt, ""]],
+        [new RegExp(gi, "i"), (i, e) => {
+            if (/Phone/.test(e) || /WPDesktop/.test(e)) return [Sr, ""];
+            if (new RegExp(Ne).test(e) && !/IEMobile\b/.test(e)) return [gi + " " + Ne, ""];
+            var t = /Windows NT ([0-9.]+)/i.exec(e);
+            if (t && t[1]) {
+                var s = jl[t[1]] || "";
+                return /arm/i.test(e) && (s = "RT"), [gi, s]
+            }
+            return [gi, ""]
+        }],
+        [/((iPhone|iPad|iPod).*?OS (\d+)_(\d+)_?(\d+)?|iPhone)/, i => i && i[3] ? [es, [i[3], i[4], i[5] || "0"].join(".")] : [es, ""]],
+        [/(watch.*\/(\d+\.\d+\.\d+)|watch os,(\d+\.\d+),)/i, i => {
+            var e = "";
+            return i && i.length >= 3 && (e = b(i[2]) ? i[3] : i[2]), ["watchOS", e]
+        }],
+        [new RegExp("(" + dt + " (\\d+)\\.(\\d+)\\.?(\\d+)?|" + dt + ")", "i"), i => i && i[2] ? [dt, [i[2], i[3], i[4] || "0"].join(".")] : [dt, ""]],
+        [/Mac OS X (\d+)[_.](\d+)[_.]?(\d+)?/i, i => {
+            var e = ["Mac OS X", ""];
+            return i && i[1] && (e[1] = [i[1], i[2], i[3] || "0"].join(".")), e
+        }],
+        [/Mac/i, ["Mac OS X", ""]],
+        [/CrOS/, [Dl, ""]],
+        [/Linux|debian/i, ["Linux", ""]]
+    ],
+    fa = function(i) {
+        for (var e = 0; yn.length > e; e++) {
+            var t = yn[e],
+                s = t[1],
+                r = t[0].exec(i),
+                n = r && (Pe(s) ? s(r, i) : s);
+            if (n) return n
+        }
+        return ["", ""]
+    },
+    bn = function(i) {
+        return zl.test(i) ? ki : ql.test(i) ? Ci : Nl.test(i) ? Wt : new RegExp(wr, "i").test(i) ? wr : new RegExp("(" + Sr + "|WPDesktop)", "i").test(i) ? Sr : /iPad/.test(i) ? Zo : /iPod/.test(i) ? "iPod Touch" : /iPhone/.test(i) ? "iPhone" : /(watch)(?: ?os[,/]|\d,\d\/)[\d.]+/i.test(i) ? ea : en.test(i) ? Qt : /(kobo)\s(ereader|touch)/i.test(i) ? "Kobo" : new RegExp(mn, "i").test(i) ? mn : /(kf[a-z]{2}wi|aeo[c-r]{2})( bui|\))/i.test(i) || /(kf[a-z]+)( bui|\)).+silk\//i.test(i) ? "Kindle Fire" : /(Android|ZTE)/i.test(i) ? new RegExp(Ne).test(i) && !/(9138B|TB782B|Nexus [97]|pixel c|HUAWEISHT|BTV|noble nook|smart ultra 6)/i.test(i) || /pixel[\daxl ]{1,6}/i.test(i) && !/pixel c/i.test(i) || /(huaweimed-al00|tah-|APA|SM-G92|i980|zte|U304AA)/i.test(i) || /lmy47v/i.test(i) && !/QTAQZ3/i.test(i) ? dt : Yo : new RegExp("(pda|" + Ne + ")", "i").test(i) ? Hl : new RegExp(Jt, "i").test(i) && !new RegExp(Jt + " pc", "i").test(i) ? da : ""
+    },
+    Wl = 20,
+    ma = 1e3,
+    Gl = 1e4,
+    Kl = "[Circular]",
+    Cr = "[Truncated]",
+    Ss = "[Unserializable]",
+    Jl = "[Function]";
+
+function Gt(i) {
+    for (var e = "", t = 0; i.length > t; t++) {
+        var s = i.charCodeAt(t);
+        if (55296 > s || s > 56319) e += 56320 > s || s > 57343 ? i[t] : "�";
+        else {
+            var r = i.charCodeAt(t + 1);
+            56320 > r || r > 57343 ? e += "�" : (e += i[t] + i[t + 1], t++)
+        }
+    }
+    return e
+}
+var Ti, Sn, Ts, Ql = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function wn(i, e) {
+    return typeof(t = i) == "string" && Ql.test(t) ? i : e();
+    var t
+}
+
+function ya(i, e) {
+    var t = new Error(e);
+    try {
+        Object.defineProperty(t, "name", {
+            value: i,
+            writable: !0,
+            enumerable: !0,
+            configurable: !0
+        })
+    } catch {}
+    return t
+}
+
+function ft(i) {
+    return i && i.split("#")[0]
+}
+
+function tn(i, e) {
+    var t = setTimeout(i, e);
+    return t != null && t.unref && (t == null || t.unref()), t
+}
+
+function En(i, e, t) {
+    return ba.apply(this, arguments)
+}
+
+function ba() {
+    return (ba = X(function*(i, e, t) {
+        var s;
+        try {
+            return yield Promise.race([i, new Promise((r, n) => {
+                s = tn(() => {
+                    try {
+                        t == null || t(), r()
+                    } catch (o) {
+                        n(o)
+                    }
+                }, e)
+            })])
+        } finally {
+            clearTimeout(s)
+        }
+    })).apply(this, arguments)
+}
+
+function Yl(i) {
+    var e = globalThis._posthogChunkIds;
+    if (e) {
+        var t = Object.keys(e);
+        return Ts && t.length === Sn || (Sn = t.length, Ts = t.reduce((s, r) => {
+            Ti || (Ti = {});
+            var n = Ti[r];
+            if (n) s[n[0]] = n[1];
+            else
+                for (var o = i(r), a = o.length - 1; a >= 0; a--) {
+                    var l = o[a],
+                        c = l == null ? void 0 : l.filename,
+                        u = e[r];
+                    if (c && u) {
+                        s[c] = u, Ti[r] = [c, u];
+                        break
+                    }
+                }
+            return s
+        }, {})), Ts
+    }
+}
+class Zl {
+    constructor(e, t, s) {
+        s === void 0 && (s = []), this.coercers = e, this.stackParser = t, this.modifiers = s
+    }
+    buildFromUnknown(e, t) {
+        t === void 0 && (t = {});
+        var s = t && t.mechanism || {
+                handled: !0,
+                type: "generic"
+            },
+            r = this.buildCoercingContext(s, t, 0).apply(e),
+            n = this.buildParsingContext(t),
+            o = this.parseStacktrace(r, n);
+        return {
+            $exception_list: this.convertToExceptionList(o, s),
+            $exception_level: "error"
+        }
+    }
+    modifyFrames(e) {
+        var t = this;
+        return X(function*() {
+            for (var s of e) s.stacktrace && s.stacktrace.frames && R(s.stacktrace.frames) && (s.stacktrace.frames = yield t.applyModifiers(s.stacktrace.frames));
+            return e
+        })()
+    }
+    coerceFallback(e) {
+        var t;
+        return {
+            type: "Error",
+            value: "Unknown error",
+            stack: (t = e.syntheticException) == null ? void 0 : t.stack,
+            synthetic: !0
+        }
+    }
+    parseStacktrace(e, t) {
+        var s, r;
+        return e.cause != null && (s = this.parseStacktrace(e.cause, t)), e.stack != "" && e.stack != null && (r = this.applyChunkIds(this.stackParser(e.stack, e.synthetic ? t.skipFirstLines : 0), t.chunkIdMap)), S({}, e, {
+            cause: s,
+            stack: r
+        })
+    }
+    applyChunkIds(e, t) {
+        return e.map(s => (s.filename && t && (s.chunk_id = t[s.filename]), s))
+    }
+    applyCoercers(e, t) {
+        for (var s of this.coercers)
+            if (s.match(e)) return s.coerce(e, t);
+        return this.coerceFallback(t)
+    }
+    applyModifiers(e) {
+        var t = this;
+        return X(function*() {
+            var s = e;
+            for (var r of t.modifiers) s = yield r(s);
+            return s
+        })()
+    }
+    convertToExceptionList(e, t) {
+        var s, r, n, o = {
+            type: e.type,
+            value: e.value,
+            mechanism: {
+                type: (s = t.type) !== null && s !== void 0 ? s : "generic",
+                handled: (r = t.handled) === null || r === void 0 || r,
+                synthetic: (n = e.synthetic) !== null && n !== void 0 && n
+            }
+        };
+        e.stack && (o.stacktrace = {
+            type: "raw",
+            frames: e.stack
+        });
+        var a = [o];
+        return e.cause != null && a.push(...this.convertToExceptionList(e.cause, S({}, t, {
+            handled: !0
+        }))), a
+    }
+    buildParsingContext(e) {
+        var t;
+        return {
+            chunkIdMap: Yl(this.stackParser),
+            skipFirstLines: (t = e.skipFirstLines) !== null && t !== void 0 ? t : 1
+        }
+    }
+    buildCoercingContext(e, t, s) {
+        s === void 0 && (s = 0);
+        var r = (n, o) => {
+            if (4 >= o) {
+                var a = this.buildCoercingContext(e, t, o);
+                return this.applyCoercers(n, a)
+            }
+        };
+        return S({}, t, {
+            syntheticException: s == 0 ? t.syntheticException : void 0,
+            mechanism: e,
+            apply: n => r(n, s),
+            next: n => r(n, s + 1)
+        })
+    }
+}
+var Yt = "?";
+
+function xr(i, e, t, s, r) {
+    var n = {
+        platform: i,
+        filename: e,
+        function: t === "<anonymous>" ? Yt : t,
+        in_app: !!e && !e.startsWith("webkit-masked-url://") && e !== "<anonymous>"
+    };
+    return b(s) || (n.lineno = s), b(r) || (n.colno = r), n
+}
+var Sa = (i, e) => {
+        var t = i.indexOf("safari-extension") !== -1,
+            s = i.indexOf("safari-web-extension") !== -1;
+        return t || s ? [i.indexOf("@") !== -1 ? i.split("@")[0] : Yt, t ? "safari-extension:" + e : "safari-web-extension:" + e] : [i, e]
+    },
+    Xl = /^\s*at (\S+?)(?::(\d+))(?::(\d+))\s*$/i,
+    eu = /^\s*at (?:(.+?\)(?: \[.+\])?|.*?) ?\((?:address at )?)?(?:async )?((?:<anonymous>|[-a-z]+:|.*bundle|\/)?.*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i,
+    tu = /\((\S*)(?::(\d+))(?::(\d+))\)/,
+    iu = (i, e) => {
+        var t = Xl.exec(i);
+        if (t) return xr(e, t[1], Yt, +t[2], +t[3]);
+        var s = eu.exec(i);
+        if (s) {
+            if (s[2] && s[2].indexOf("eval") === 0) {
+                var r = tu.exec(s[2]);
+                r && (s[2] = r[1], s[3] = r[2], s[4] = r[3])
+            }
+            var n = Sa(s[1] || Yt, s[2]);
+            return xr(e, n[1], n[0], s[3] ? +s[3] : void 0, s[4] ? +s[4] : void 0)
+        }
+    },
+    su = /^\s*(.*?)(?:\((.*?)\))?(?:^|@)?((?:[-a-z]+)?:\/.*?|\[native code\]|[^@]*(?:bundle|\d+\.js)|\/[\w\-. /=]+)(?::(\d+))?(?::(\d+))?\s*$/i,
+    ru = /(\S+) line (\d+)(?: > eval line \d+)* > eval/i,
+    nu = (i, e) => {
+        var t = su.exec(i);
+        if (t) {
+            if (t[3] && t[3].indexOf(" > eval") > -1) {
+                var s = ru.exec(t[3]);
+                s && (t[1] = t[1] || "eval", t[3] = s[1], t[4] = s[2], t[5] = "")
+            }
+            var r = t[3],
+                n = t[1] || Yt,
+                o = Sa(n, r);
+            return xr(e, r = o[1], n = o[0], t[4] ? +t[4] : void 0, t[5] ? +t[5] : void 0)
+        }
+    },
+    kn = /\(error: (.*)\)/;
+class ou {
+    match(e) {
+        return this.isDOMException(e) || this.isDOMError(e)
+    }
+    coerce(e, t) {
+        var s = q(e.stack);
+        return {
+            type: this.getType(e),
+            value: this.getValue(e),
+            stack: s ? e.stack : void 0,
+            cause: e.cause ? t.next(e.cause) : void 0,
+            synthetic: !1
+        }
+    }
+    getType(e) {
+        return this.isDOMError(e) ? "DOMError" : "DOMException"
+    }
+    getValue(e) {
+        var t = e.name || (this.isDOMError(e) ? "DOMError" : "DOMException");
+        return e.message ? t + ": " + e.message : t
+    }
+    isDOMException(e) {
+        return Xi(e, "DOMException")
+    }
+    isDOMError(e) {
+        return Xi(e, "DOMError")
+    }
+}
+class au {
+    match(e) {
+        return Jr(e)
+    }
+    coerce(e, t) {
+        var s, r = this.getStack(e),
+            n = r === void 0;
+        return {
+            type: this.getType(e),
+            value: this.getMessage(e, t),
+            stack: r ?? ((s = t.syntheticException) == null ? void 0 : s.stack),
+            cause: e.cause ? t.next(e.cause) : void 0,
+            synthetic: n
+        }
+    }
+    getType(e) {
+        return e.name || e.constructor.name
+    }
+    getMessage(e, t) {
+        var s = e.message;
+        return String(s.error && typeof s.error.message == "string" ? s.error.message : s)
+    }
+    getStack(e) {
+        return e.stacktrace || e.stack || void 0
+    }
+}
+class lu {
+    match(e) {
+        return !!Xi(e, "ErrorEvent") && (e.error != null || this._hasUsableMessage(e))
+    }
+    coerce(e, t) {
+        var s;
+        if (e.error != null) return t.apply(e.error);
+        var r = t.apply(e.message);
+        return S({}, r, {
+            stack: (s = this._buildLocationStack(e)) !== null && s !== void 0 ? s : r.stack,
+            synthetic: !0
+        })
+    }
+    _hasUsableMessage(e) {
+        return q(e.message) && e.message.length > 0
+    }
+    _buildLocationStack(e) {
+        var t, s, r = e,
+            n = (t = r.lineno) !== null && t !== void 0 ? t : 0,
+            o = (s = r.colno) !== null && s !== void 0 ? s : 0;
+        if (q(r.filename) && r.filename.length !== 0 && n !== 0) return `Error
+    at ` + r.filename + ":" + n + ":" + o
+    }
+}
+var uu = /^(?:[Uu]ncaught (?:exception: )?)?(?:((?:Eval|Internal|Range|Reference|Syntax|Type|URI|)Error): )?(.*)$/i;
+class cu {
+    match(e) {
+        return typeof e == "string"
+    }
+    coerce(e, t) {
+        var s, r = this.getInfos(e),
+            n = r[0],
+            o = r[1];
+        return {
+            type: n ?? "Error",
+            value: o ?? e,
+            stack: (s = t.syntheticException) == null ? void 0 : s.stack,
+            synthetic: !0
+        }
+    }
+    getInfos(e) {
+        var t = "Error",
+            s = e,
+            r = e.match(uu);
+        return r && (t = r[1], s = r[2]), [t, s]
+    }
+}
+var du = ["fatal", "error", "warning", "log", "info", "debug"];
+
+function wa(i, e) {
+    e === void 0 && (e = 40);
+    var t = Object.keys(i);
+    if (t.sort(), !t.length) return "[object has no keys]";
+    for (var s = t.length; s > 0; s--) {
+        var r = t.slice(0, s).join(", ");
+        if (e >= r.length) return s === t.length ? r : r.length > e ? r.slice(0, e) + "..." : r
+    }
+    return ""
+}
+class hu {
+    match(e) {
+        return typeof e == "object" && e !== null
+    }
+    coerce(e, t) {
+        var s, r, n = this.getErrorPropertyFromObject(e);
+        return n ? t.apply(n) : {
+            type: this.getType(e),
+            value: this.getValue(e),
+            stack: (s = this.getStack(e)) !== null && s !== void 0 ? s : (r = t.syntheticException) == null ? void 0 : r.stack,
+            level: this.isSeverityLevel(e.level) ? e.level : "error",
+            synthetic: !0
+        }
+    }
+    getType(e) {
+        if (Qr(e)) return e.constructor.name;
+        var t = "name" in e ? e.name : void 0;
+        return q(t) && !vi(t) ? t : "Error"
+    }
+    getValue(e) {
+        if ("name" in e && typeof e.name == "string") {
+            var t = "'" + e.name + "' captured as exception";
+            return "message" in e && typeof e.message == "string" && (t += " with message: '" + e.message + "'"), t
+        }
+        if ("message" in e && typeof e.message == "string") return e.message;
+        var s = this.getObjectClassName(e);
+        return (s && s !== "Object" ? "'" + s + "'" : "Object") + " captured as exception with keys: " + wa(e)
+    }
+    isSeverityLevel(e) {
+        return q(e) && !vi(e) && du.indexOf(e) >= 0
+    }
+    getStack(e) {
+        try {
+            return q(e.stacktrace) && e.stacktrace.length > 0 ? e.stacktrace : q(e.stack) && e.stack.length > 0 ? e.stack : void 0
+        } catch {
+            return
+        }
+    }
+    getErrorPropertyFromObject(e) {
+        for (var t in e)
+            if ({}.hasOwnProperty.call(e, t)) {
+                var s = e[t];
+                if (Jr(s)) return s
+            }
+    }
+    getObjectClassName(e) {
+        try {
+            var t = Object.getPrototypeOf(e);
+            return t ? t.constructor.name : void 0
+        } catch {
+            return
+        }
+    }
+}
+class _u {
+    match(e) {
+        return Qr(e)
+    }
+    coerce(e, t) {
+        var s, r = e.constructor.name;
+        return {
+            type: r,
+            value: r + " captured as exception with keys: " + wa(e),
+            stack: (s = t.syntheticException) == null ? void 0 : s.stack,
+            synthetic: !0
+        }
+    }
+}
+class pu {
+    match(e) {
+        return Jo(e)
+    }
+    coerce(e, t) {
+        var s;
+        return {
+            type: "Error",
+            value: "Primitive value captured as exception: " + String(e),
+            stack: (s = t.syntheticException) == null ? void 0 : s.stack,
+            synthetic: !0
+        }
+    }
+}
+class gu {
+    match(e) {
+        return Xi(e, "PromiseRejectionEvent") || this.isCustomEventWrappingRejection(e)
+    }
+    isCustomEventWrappingRejection(e) {
+        if (!Qr(e)) return !1;
+        try {
+            var t = e.detail;
+            return t != null && typeof t == "object" && "reason" in t
+        } catch {
+            return !1
+        }
+    }
+    coerce(e, t) {
+        var s, r = this.getUnhandledRejectionReason(e);
+        return Jo(r) ? {
+            type: "UnhandledRejection",
+            value: "Non-Error promise rejection captured with value: " + String(r),
+            stack: (s = t.syntheticException) == null ? void 0 : s.stack,
+            synthetic: !0
+        } : t.apply(r)
+    }
+    getUnhandledRejectionReason(e) {
+        try {
+            if ("reason" in e) return e.reason;
+            if ("detail" in e && e.detail != null && typeof e.detail == "object" && "reason" in e.detail) return e.detail.reason
+        } catch {}
+        return e
+    }
+}
+var as = "$message",
+    ls = "$timestamp",
+    vu = new Set([as, ls]),
+    Rs = {
+        enabled: !0,
+        max_bytes: 32768
+    };
+
+function us(i) {
+    var e;
+    return i ? {
+        enabled: (e = i.enabled) !== null && e !== void 0 ? e : Rs.enabled,
+        max_bytes: mu(i.max_bytes, Rs.max_bytes)
+    } : S({}, Rs)
+}
+class fu {
+    constructor(e) {
+        this._entries = [], this._totalBytes = 0, this._config = us(e)
+    }
+    setConfig(e) {
+        this._config = us(e), this._trimToMaxBytes()
+    }
+    add(e) {
+        var t = function(r) {
+            var n;
+            try {
+                n = Wo(r)
+            } catch {
+                return
+            }
+            try {
+                var o = JSON.parse(n);
+                if (!N(o)) return;
+                var a = o,
+                    l = a[as],
+                    c = a[ls];
+                return !q(l) || l.trim().length === 0 || !q(c) && !de(c) ? void 0 : {
+                    step: a,
+                    json: n
+                }
+            } catch {
+                return
+            }
+        }(e);
+        if (t) {
+            var s = function(r) {
+                if ("u" > typeof TextEncoder) return new TextEncoder().encode(r).length;
+                for (var n = encodeURIComponent(r), o = 0, a = 0; n.length > a; a++) n[a] === "%" ? (o += 1, a += 2) : o += 1;
+                return o
+            }(t.json);
+            s > this._config.max_bytes || (this._entries.push({
+                step: t.step,
+                bytes: s
+            }), this._totalBytes += s, this._trimToMaxBytes())
+        }
+    }
+    getAttachable() {
+        return this._entries.map(e => e.step)
+    }
+    clear() {
+        this._entries = [], this._totalBytes = 0
+    }
+    size() {
+        return this._entries.length
+    }
+    _trimToMaxBytes() {
+        for (; this._totalBytes > this._config.max_bytes && this._entries.length > 0;) {
+            var e = this._entries.shift();
+            e && (this._totalBytes -= e.bytes)
+        }
+    }
+}
+
+function mu(i, e) {
+    if (!de(i) || i === 1 / 0 || i === -1 / 0) return e;
+    var t = Math.floor(i);
+    return 0 > t ? e : t
+}
+var Cn = i => {
+    if (typeof i != "string") return i;
+    try {
+        return JSON.parse(i)
+    } catch {
+        return i
+    }
+};
+
+function xn(i) {
+    return typeof i == "string" || i
+}
+
+function Pn(i) {
+    return typeof i == "string" ? i : void 0
+}
+var si, yu = ["$feature_flag", "$feature_flag_response", "$feature_flag_has_experiment", "$feature_flag_id", "$feature_flag_version", "$feature_flag_reason", "$feature_flag_request_id", "$feature_flag_evaluated_at", "$feature_flag_error", "locally_evaluated", "$groups", "$process_person_profile", "$geoip_disable", "$current_url", "$pathname", "$referring_domain", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gad_source", "mc_cid", "gclid", "gclsrc", "dclid", "gbraid", "wbraid", "fbclid", "msclkid", "twclid", "li_fat_id", "igshid", "ttclid", "rdt_cid", "epik", "qclid", "sccid", "irclid", "_kx", "$session_id", "$window_id", "$lib", "$lib_version", "$device_id", "$is_server"],
+    Ea = "NativeGzipValidationError",
+    Pr = i => i.length >= 2 && i[0] === 31 && i[1] === 139,
+    Fn = (i, e) => i === br.GZipJS || e === br.GZipJS || e === "gzip",
+    In = i => !(!i || typeof i != "object") && ("name" in i ? String(i.name) : "") === "NotReadableError",
+    Ri = i => {
+        throw ya(Ea, "Native gzip produced invalid output: " + i)
+    },
+    bu = function() {
+        var i = X(function*(e, t) {
+            18 > e.size && Ri("too-short");
+            var s = new Uint8Array(yield e.slice(0, 10).arrayBuffer());
+            Pr(s) && s[2] === 8 || Ri("invalid-header");
+            var r = new DataView(yield e.slice(e.size - 8).arrayBuffer());
+            r.getUint32(0, !0) !== (o => {
+                for (var a = (() => {
+                        if (si) return si;
+                        si = [];
+                        for (var u = 0; 256 > u; u++) {
+                            for (var d = u, h = 0; 8 > h; h++) d = 1 & d ? 3988292384 ^ d >>> 1 : d >>> 1;
+                            si[u] = d >>> 0
+                        }
+                        return si
+                    })(), l = 4294967295, c = 0; o.length > c; c++) l = a[255 & (l ^ o[c])] ^ l >>> 8;
+                return (4294967295 ^ l) >>> 0
+            })(t) && Ri("invalid-crc");
+            var n = t.length >>> 0;
+            r.getUint32(4, !0) !== n && Ri("invalid-size")
+        });
+        return function(e, t) {
+            return i.apply(this, arguments)
+        }
+    }();
+
+function Fr() {
+    return Fr = X(function*(i, e, t) {
+        e === void 0 && (e = !0);
+        try {
+            var s = new TextEncoder().encode(i),
+                r = new globalThis.CompressionStream("gzip"),
+                n = r.writable.getWriter(),
+                o = n.write(s).then(() => n.close()).catch(function() {
+                    var c = X(function*(u) {
+                        try {
+                            yield n.abort(u)
+                        } catch {}
+                        throw u
+                    });
+                    return function(u) {
+                        return c.apply(this, arguments)
+                    }
+                }()),
+                a = new Response(r.readable).blob(),
+                l = (yield Promise.all([a, o]))[0];
+            return yield bu(l, s), l
+        } catch (c) {
+            if (t != null && t.rethrow) throw c;
+            return e && console.error("Failed to gzip compress data", c), null
+        }
+    }), Fr.apply(this, arguments)
+}
+var Tn = 9223372036854776e3,
+    Su = "9223372036854775808",
+    wu = {}.propertyIsEnumerable;
+
+function cs(i, e) {
+    try {
+        return ka(i, e, {
+            ancestors: new WeakSet,
+            remainingNodes: Gl
+        }, 0)
+    } catch {
+        return []
+    }
+}
+
+function sn(i, e, t, s) {
+    if (0 >= t.remainingNodes) return {
+        stringValue: Cr
+    };
+    if (t.remainingNodes--, Ie(i)) return {
+        boolValue: i
+    };
+    if (typeof i == "bigint") return function(l, c) {
+        var u = l.toString(),
+            d = BigInt(Su);
+        return l >= d || -d > l ? (c == null || c.debug("Attribute " + u + " is outside the int64 range; encoding it as a string"), {
+            stringValue: u
+        }) : {
+            intValue: u
+        }
+    }(i, e);
+    if (typeof i == "number") {
+        if (!Number.isFinite(i)) return {
+            stringValue: String(i)
+        };
+        if (Number.isInteger(i)) {
+            if (Number.isSafeInteger(i)) return {
+                intValue: String(i)
+            };
+            if (typeof BigInt > "u") return {
+                stringValue: String(i)
+            };
+            var r = BigInt(i).toString();
+            return i >= Tn || -Tn > i ? (e == null || e.debug("Attribute " + r + " is outside the int64 range; encoding it as a string"), {
+                stringValue: r
+            }) : {
+                intValue: r
+            }
+        }
+        return {
+            doubleValue: i
+        }
+    }
+    if (typeof i == "string") return {
+        stringValue: Gt(i)
+    };
+    if (typeof i == "function") return {
+        stringValue: Jl
+    };
+    if (typeof i == "symbol") return {
+        stringValue: String(i)
+    };
+    if (typeof i == "object" && i !== null) {
+        if (t.ancestors.has(i)) return {
+            stringValue: Kl
+        };
+        if (s >= Wl) return {
+            stringValue: Cr
+        };
+        if (i instanceof Date) {
+            var n = i.getTime(),
+                o = Number.isFinite(n) ? i.toISOString() : String(i);
+            return {
+                stringValue: typeof o == "string" ? Gt(o) : String(o)
+            }
+        }
+        t.ancestors.add(i);
+        try {
+            try {
+                var a = i.toJSON;
+                if (typeof a == "function") return sn(a.call(i), e, t, s + 1)
+            } catch {}
+            return R(i) ? {
+                arrayValue: {
+                    values: Eu(i, e, t, s + 1)
+                }
+            } : {
+                kvlistValue: {
+                    values: ka(i, e, t, s + 1)
+                }
+            }
+        } finally {
+            t.ancestors.delete(i)
+        }
+    }
+    return {
+        stringValue: Gt(String(i))
+    }
+}
+
+function Eu(i, e, t, s) {
+    for (var r = [], n = Math.min(i.length, ma), o = 0; n > o && t.remainingNodes > 0; o++) try {
+        var a = o in i ? i[o] : void 0;
+        if (D(a)) continue;
+        r.push(sn(a, e, t, s))
+    } catch {
+        r.push({
+            stringValue: Ss
+        })
+    }
+    return i.length > o && r.push({
+        stringValue: Cr
+    }), r
+}
+
+function ka(i, e, t, s) {
+    var r = [];
+    for (var n in i)
+        if (wu.call(i, n)) {
+            if (!n) {
+                e == null || e.debug("Dropping an attribute with an empty key");
+                continue
+            }
+            if (r.length >= ma || 0 >= t.remainingNodes) {
+                e == null || e.debug("Attributes truncated: the value exceeds the OTLP encoder budget");
+                break
+            }
+            try {
+                var o = i[n];
+                if (ce(o) || b(o)) continue;
+                r.push({
+                    key: Gt(n),
+                    value: sn(o, e, t, s)
+                })
+            } catch {
+                r.push({
+                    key: Gt(n),
+                    value: {
+                        stringValue: Ss
+                    }
+                })
+            }
+        } return r
+}
+
+function Ca(i, e, t) {
+    return S({}, i.resourceAttributes, {
+        "service.name": i.serviceName || "unknown_service"
+    }, i.environment && {
+        "deployment.environment": i.environment
+    }, i.serviceVersion && {
+        "service.version": i.serviceVersion
+    }, {
+        "telemetry.sdk.name": e,
+        "telemetry.sdk.version": t
+    })
+}
+var Rn = {
+        darwin: "macOS",
+        win32: "Windows",
+        linux: "Linux",
+        android: "Android",
+        freebsd: "FreeBSD",
+        openbsd: "OpenBSD",
+        sunos: "SunOS",
+        aix: "AIX",
+        "Mac OS X": "macOS"
+    },
+    xa = {
+        trace: {
+            text: "TRACE",
+            number: 1
+        },
+        debug: {
+            text: "DEBUG",
+            number: 5
+        },
+        info: {
+            text: "INFO",
+            number: 9
+        },
+        warn: {
+            text: "WARN",
+            number: 13
+        },
+        error: {
+            text: "ERROR",
+            number: 17
+        },
+        fatal: {
+            text: "FATAL",
+            number: 21
+        }
+    },
+    ku = xa.info;
+
+function Cu(i) {
+    try {
+        return Gt(String(i))
+    } catch {
+        return Ss
+    }
+}
+
+function xu(i, e, t, s) {
+    var r, n = xa[i.level || "info"] || ku,
+        o = n.text,
+        a = n.number,
+        l = ((r = de(s) ? s : void 0) === void 0 && (r = Date.now()), String(r) + "000000"),
+        c = {};
+    e.distinctId && (c.posthogDistinctId = e.distinctId), e.sessionId && (c.sessionId = e.sessionId), e.windowId && (c["window.id"] = e.windowId), D(e.sessionStartTimestamp) || (c.sessionStartTimestamp = String(e.sessionStartTimestamp)), D(e.lastActivityTimestamp) || (c.lastActivityTimestamp = String(e.lastActivityTimestamp)), e.currentUrl && (c["url.full"] = e.currentUrl), e.screenName && (c["screen.name"] = e.screenName), e.appState && (c["app.state"] = e.appState), e.activeFeatureFlags && e.activeFeatureFlags.length > 0 && (c.feature_flags = e.activeFeatureFlags);
+    var u = S({}, c),
+        d = i.attributes;
+    if (d) {
+        var h = [];
+        try {
+            h = Object.keys(d)
+        } catch {
+            h = []
+        }
+        for (var _ of h) {
+            var p = void 0;
+            try {
+                p = d[_]
+            } catch {
+                p = Ss
+            }
+            Object.defineProperty(u, _, {
+                value: p,
+                enumerable: !0,
+                writable: !0,
+                configurable: !0
+            })
+        }
+    }
+    var g = {
+        timeUnixNano: l,
+        observedTimeUnixNano: l,
+        severityNumber: a,
+        severityText: o,
+        body: {
+            stringValue: Cu(i.body)
+        },
+        attributes: cs(u, t)
+    };
+    return i.trace_id && (g.traceId = i.trace_id), i.span_id && (g.spanId = i.span_id), b(i.trace_flags) || (g.flags = i.trace_flags), g
+}
+
+function Pa(i, e, t) {
+    return Ca(i, e, t)
+}
+
+function Fa(i, e, t, s) {
+    return {
+        resourceLogs: [{
+            resource: {
+                attributes: cs(e)
+            },
+            scopeLogs: [{
+                scope: {
+                    name: t,
+                    version: s
+                },
+                logRecords: i
+            }]
+        }]
+    }
+}
+let Pu = class {
+    constructor(i, e, t, s, r, n, o) {
+        var a;
+        n === void 0 && (n = () => Promise.resolve()), this._instance = i, this._config = e, this._logger = t, this._getContext = s, this._onReady = r, this._waitForStoragePersist = n, this._scopeName = o, this._flushPromise = null, this._evictedSinceAdvance = 0, this._queueGeneration = 0, this._consecutiveFlushFailures = 0, this._intervalWindowStart = 0, this._intervalLogCount = 0, this._droppedWarned = !1, this._maxBufferSize = e.maxBufferSize, this._maxQueueSize = Math.max((a = e.maxQueueSize) !== null && a !== void 0 ? a : e.maxBufferSize, e.maxBufferSize), this._flushIntervalMs = e.flushIntervalMs, this._maxBatchRecordsPerPost = e.maxBatchRecordsPerPost, this._rateCapWindowMs = e.rateCapWindowMs, this._maxLogsPerInterval = e.maxLogsPerInterval
+    }
+    clearQueue() {
+        this._queueGeneration++, this._instance.setPersistedProperty(Xe.LogsQueue, [])
+    }
+    reset() {
+        this._clearFlushTimer(), this._intervalWindowStart = 0, this._intervalLogCount = 0, this._droppedWarned = !1, this._consecutiveFlushFailures = 0, this._maxBatchRecordsPerPost = this._config.maxBatchRecordsPerPost
+    }
+    onReconnect() {
+        this._consecutiveFlushFailures = 0, this._flushInBackground()
+    }
+    captureLog(i, e) {
+        var t;
+        if (!this._instance.isDisabled && !this._instance.optedOut && i != null && i.body) {
+            var s = this._runBeforeSend(i);
+            if (s !== null)
+                if (s.body) {
+                    if (this._checkRateLimit()) {
+                        var r = {
+                            record: xu(s, (t = e == null ? void 0 : e.context) !== null && t !== void 0 ? t : this._getContext(), this._logger, e == null ? void 0 : e.occurredAtMs)
+                        };
+                        this._onReady(() => this._enqueue(r))
+                    }
+                } else this._logger.info("Log was rejected in beforeSend function")
+        }
+    }
+    _runBeforeSend(i) {
+        var e = this._config.beforeSend;
+        if (!e) return i;
+        var t = R(e) ? e : [e],
+            s = i;
+        for (var r of t) try {
+            var n = r(s);
+            if (!n) return this._logger.info("Log was rejected in beforeSend function"), null;
+            s = n
+        } catch (o) {
+            return this._logger.error("Error in beforeSend function for log:", o), null
+        }
+        return s
+    }
+    _checkRateLimit() {
+        if (this._maxLogsPerInterval === void 0) return !0;
+        var i = Date.now(),
+            e = i - this._intervalWindowStart;
+        return this._rateCapWindowMs > e && e >= 0 || (this._intervalWindowStart = i, this._intervalLogCount = 0, this._droppedWarned = !1), this._maxLogsPerInterval > this._intervalLogCount ? (this._intervalLogCount++, !0) : (this._droppedWarned || (this._logger.warn("captureLog dropping logs: exceeded " + this._maxLogsPerInterval + " logs per " + this._rateCapWindowMs + "ms"), this._droppedWarned = !0), !1)
+    }
+    flush() {
+        var i = this;
+        return X(function*() {
+            if (!i._instance.isDisabled) return i._flushPromise || (i._flushPromise = i._flushInner().finally(() => {
+                i._flushPromise = null
+            })), i._flushPromise
+        })()
+    }
+    _flushInner() {
+        var i = this;
+        return X(function*() {
+            var e;
+            i._clearFlushTimer();
+            var t = (e = i._instance.getPersistedProperty(Xe.LogsQueue)) !== null && e !== void 0 ? e : [];
+            if (t.length !== 0)
+                for (var s = t.length, r = 0; t.length > 0 && s > r;) {
+                    var n, o, a = i._queueGeneration;
+                    i._evictedSinceAdvance = 0;
+                    var l = Math.min(t.length, i._maxBatchRecordsPerPost),
+                        c = t.slice(0, l),
+                        u = Fa(c.map(h => h.record), i._buildResourceAttributes(), (n = i._scopeName) !== null && n !== void 0 ? n : i._instance.getLibraryId(), i._instance.getLibraryVersion()),
+                        d = yield i._instance._sendLogsBatch(u);
+                    if (i._queueGeneration !== a) return;
+                    if (d.kind === "too-large" && c.length > 1) i._maxBatchRecordsPerPost = Math.max(1, Math.floor(c.length / 2)), i._logger.warn("Received 413 when sending logs batch of size " + c.length + ", reducing batch size to " + i._maxBatchRecordsPerPost);
+                    else if (d.kind === "retry-later" || (d.kind === "too-large" ? i._logger.warn("Dropping a single log record after 413 with batch size 1 — the record is larger than the server cap and cannot be split further.") : d.kind === "ok" && i._config.maxBatchRecordsPerPost > i._maxBatchRecordsPerPost && (i._maxBatchRecordsPerPost = Math.min(i._config.maxBatchRecordsPerPost, i._maxBatchRecordsPerPost + 1)), yield i._persistQueueAdvance(c.length), t = (o = i._instance.getPersistedProperty(Xe.LogsQueue)) !== null && o !== void 0 ? o : [], r += c.length, d.kind === "fatal")) throw d.error
+                }
+        })()
+    }
+    _persistQueueAdvance(i) {
+        var e = this;
+        return X(function*() {
+            var t, s = Math.max(0, i - e._evictedSinceAdvance),
+                r = (t = e._instance.getPersistedProperty(Xe.LogsQueue)) !== null && t !== void 0 ? t : [];
+            e._instance.setPersistedProperty(Xe.LogsQueue, r.slice(s)), yield e._waitForStoragePersist()
+        })()
+    }
+    _buildResourceAttributes() {
+        return Pa(this._config, this._instance.getLibraryId(), this._instance.getLibraryVersion())
+    }
+    _enqueue(i) {
+        var e;
+        if (!this._instance.optedOut) {
+            var t = (e = this._instance.getPersistedProperty(Xe.LogsQueue)) !== null && e !== void 0 ? e : [];
+            this._maxQueueSize > t.length || (t.shift(), this._evictedSinceAdvance++, this._logger.info("Logs queue is full, dropping oldest record.")), t.push(i), this._instance.setPersistedProperty(Xe.LogsQueue, t), this._maxBufferSize > t.length ? this._armFlushTimer() : this._flushInBackground()
+        }
+    }
+    _armFlushTimer(i) {
+        i === void 0 && (i = this._flushIntervalMs), this._flushTimer || (this._flushTimer = tn(() => {
+            this._flushTimer = void 0, this._flushInBackground()
+        }, i))
+    }
+    _nextFlushDelay() {
+        var i = Math.min(Math.max(0, this._consecutiveFlushFailures - 1), 6);
+        return this._flushIntervalMs * Math.pow(2, i)
+    }
+    _hasQueuedRecords() {
+        var i = this._instance.getPersistedProperty(Xe.LogsQueue);
+        return !!i && i.length > 0
+    }
+    shutdown(i) {
+        var e = this;
+        return X(function*() {
+            e._clearFlushTimer();
+            var t = e.flush().catch(() => {});
+            i !== void 0 ? yield En(t, i): yield t
+        })()
+    }
+    flushWithTimeout(i) {
+        var e = this;
+        return X(function*() {
+            var t = e.flush();
+            yield En(t, i, () => {
+                t.catch(() => {})
+            })
+        })()
+    }
+    _flushInBackground() {
+        this.flush().then(() => {
+            this._consecutiveFlushFailures = 0
+        }, i => {
+            this._consecutiveFlushFailures++, this._logger.error("PostHog logs flush failed:", i)
+        }).finally(() => {
+            !this._instance.isDisabled && this._hasQueuedRecords() && this._armFlushTimer(this._nextFlushDelay())
+        })
+    }
+    _clearFlushTimer() {
+        this._flushTimer && (clearTimeout(this._flushTimer), this._flushTimer = void 0)
+    }
+};
+var As = [0, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1e3, 2500, 5e3, 7500, 1e4];
+
+function An(i) {
+    return String(i) + "000000"
+}
+
+function Ln(i, e, t, s) {
+    var r = "";
+    return s && (r = Object.keys(s).sort().map(n => JSON.stringify(n) + ":" + JSON.stringify(s[n])).join(",")), i + "\0" + e + "\0" + (t ?? "") + "\0" + r
+}
+let Fu = class {
+    constructor(i, e, t) {
+        this._instance = i, this._config = e, this._logger = t, this._series = new Map, this._flushPromise = null, this._seriesCapWarned = !1, this._typeByName = new Map, this._typeCollisionWarned = new Set, this._generation = 0
+    }
+    count(i, e, t) {
+        e === void 0 && (e = 1), this._capture({
+            name: i,
+            type: "count",
+            value: e,
+            unit: t == null ? void 0 : t.unit,
+            attributes: t == null ? void 0 : t.attributes
+        })
+    }
+    gauge(i, e, t) {
+        this._capture({
+            name: i,
+            type: "gauge",
+            value: e,
+            unit: t == null ? void 0 : t.unit,
+            attributes: t == null ? void 0 : t.attributes
+        })
+    }
+    histogram(i, e, t) {
+        this._capture({
+            name: i,
+            type: "histogram",
+            value: e,
+            unit: t == null ? void 0 : t.unit,
+            attributes: t == null ? void 0 : t.attributes
+        })
+    }
+    flush() {
+        var i = this,
+            e = this._flushPromise,
+            t = function() {
+                var r = X(function*() {
+                    e && (yield e.catch(() => {})), yield i._doFlush()
+                });
+                return function() {
+                    return r.apply(this, arguments)
+                }
+            }(),
+            s = t().finally(() => {
+                this._flushPromise === s && (this._flushPromise = null)
+            });
+        return this._flushPromise = s, s
+    }
+    drainWindow() {
+        if (this._series.size === 0) return null;
+        var i = this._series;
+        return this._series = new Map, this._seriesCapWarned = !1, this._typeByName = new Map, this._typeCollisionWarned = new Set, this._buildPayload(i)
+    }
+    reset() {
+        this._generation++, this._clearFlushTimer(), this._series = new Map, this._flushPromise = null, this._seriesCapWarned = !1, this._typeByName = new Map, this._typeCollisionWarned = new Set
+    }
+    _capture(i) {
+        if (!this._instance.isDisabled && !this._instance.optedOut) {
+            var e = this._runBeforeSend(i);
+            if (e !== null)
+                if (e.name && typeof e.name == "string")
+                    if (typeof e.value == "number" && Number.isFinite(e.value))
+                        if (e.type === "count" && 0 > e.value) this._logger.warn("Dropping count '" + e.name + "': counters are monotonic, value must be >= 0");
+                        else {
+                            var t, s;
+                            try {
+                                t = e.attributes ? S({}, e.attributes) : void 0, s = Ln(e.type, e.name, e.unit, t)
+                            } catch (o) {
+                                return void this._logger.warn("Dropping metric '" + e.name + "': attributes could not be serialized", o)
+                            }
+                            var r = this._series.get(s);
+                            if (!r) {
+                                if (!this._admitNewSeries()) return;
+                                r = {
+                                    name: e.name,
+                                    type: e.type,
+                                    unit: e.unit,
+                                    attributes: t,
+                                    windowStartMs: Date.now()
+                                }, this._series.set(s, r)
+                            }
+                            var n = this._typeByName.get(e.name);
+                            n === void 0 ? this._typeByName.set(e.name, e.type) : n === e.type || this._typeCollisionWarned.has(e.name) || (this._typeCollisionWarned.add(e.name), this._logger.warn("Metric name '" + e.name + "' is already used as a " + n + "; recording it as a " + e.type + " too will blend both series in charts. Use a distinct name.")), this._fold(r, e.value), this._armFlushTimer()
+                        }
+            else this._logger.warn("Dropping metric '" + e.name + "': value must be a finite number");
+            else this._logger.warn("Dropping metric with empty name")
+        }
+    }
+    _admitNewSeries() {
+        return this._config.maxSeriesPerFlush > this._series.size || (this._seriesCapWarned || (this._seriesCapWarned = !0, this._logger.warn("Metric series cap reached (" + this._config.maxSeriesPerFlush + " per flush window); dropping new series until the next flush. Reduce attribute cardinality.")), !1)
+    }
+    _fold(i, e) {
+        var t;
+        switch (i.type) {
+            case "count":
+                i.total = ((t = i.total) !== null && t !== void 0 ? t : 0) + e;
+                break;
+            case "gauge":
+                i.last = e;
+                break;
+            case "histogram":
+                i.hist || (i.hist = {
+                    count: 0,
+                    sum: 0,
+                    min: e,
+                    max: e,
+                    bucketCounts: new Array(As.length + 1).fill(0)
+                });
+                var s = i.hist;
+                s.count += 1, s.sum += e, s.min = Math.min(s.min, e), s.max = Math.max(s.max, e), s.bucketCounts[function(r, n) {
+                    for (var o = 0; n.length > o; o++)
+                        if (n[o] >= r) return o;
+                    return n.length
+                }(e, As)] += 1
+        }
+    }
+    _runBeforeSend(i) {
+        var e = this._config.beforeSend;
+        if (!e) return i;
+        var t = R(e) ? e : [e],
+            s = i;
+        for (var r of t) try {
+            var n = r(s);
+            if (!n) return this._logger.info("Metric was rejected in beforeSend function"), null;
+            s = n
+        } catch (o) {
+            return this._logger.error("Error in beforeSend function for metric:", o), null
+        }
+        return s
+    }
+    _armFlushTimer() {
+        this._flushTimer || (this._flushTimer = tn(() => {
+            this._flushTimer = void 0, this.flush().catch(i => {
+                this._logger.error("Metrics flush failed:", i)
+            })
+        }, this._config.flushIntervalMs))
+    }
+    _clearFlushTimer() {
+        this._flushTimer && (clearTimeout(this._flushTimer), this._flushTimer = void 0)
+    }
+    _doFlush() {
+        var i = this;
+        return X(function*() {
+            if (i._series.size !== 0) {
+                var e = i._series;
+                i._series = new Map, i._seriesCapWarned = !1, i._typeByName = new Map, i._typeCollisionWarned = new Set;
+                var t = i._generation,
+                    s = yield i._instance._sendMetricsBatch(i._buildPayload(e));
+                if (t === i._generation) switch (s.kind) {
+                    case "ok":
+                        return;
+                    case "retry-later":
+                        return i._mergeWindowBack(e), void i._armFlushTimer();
+                    case "too-large":
+                        return void i._logger.warn("Metrics batch exceeded the server size limit and was dropped");
+                    case "fatal":
+                        return void i._logger.error("Failed to send metrics batch:", s.error)
+                }
+            }
+        })()
+    }
+    _buildPayload(i) {
+        return e = this._buildMetrics(i), t = function(n, o, a) {
+            return Ca(n, o, a)
+        }(this._config, this._instance.getLibraryId(), this._instance.getLibraryVersion()), s = this._instance.getLibraryId(), r = this._instance.getLibraryVersion(), {
+            resourceMetrics: [{
+                resource: {
+                    attributes: cs(t)
+                },
+                scopeMetrics: [{
+                    scope: {
+                        name: s,
+                        version: r
+                    },
+                    metrics: e
+                }]
+            }]
+        };
+        var e, t, s, r
+    }
+    _buildMetrics(i) {
+        var e = An(Date.now()),
+            t = new Map;
+        for (var s of i.values()) {
+            var r, n = Ln(s.type, s.name, s.unit, void 0),
+                o = t.get(n);
+            o || (o = S({
+                name: s.name
+            }, s.unit && {
+                unit: s.unit
+            }), s.type === "count" ? o.sum = {
+                aggregationTemporality: 1,
+                isMonotonic: !0,
+                dataPoints: []
+            } : s.type === "gauge" ? o.gauge = {
+                dataPoints: []
+            } : o.histogram = {
+                aggregationTemporality: 1,
+                dataPoints: []
+            }, t.set(n, o));
+            var a = cs((r = s.attributes) !== null && r !== void 0 ? r : {}, this._logger),
+                l = An(s.windowStartMs);
+            if (s.type === "count") {
+                var c, u = {
+                    attributes: a,
+                    startTimeUnixNano: l,
+                    timeUnixNano: e,
+                    asDouble: (c = s.total) !== null && c !== void 0 ? c : 0
+                };
+                o.sum.dataPoints.push(u)
+            } else if (s.type === "gauge") {
+                var d, h = {
+                    attributes: a,
+                    timeUnixNano: e,
+                    asDouble: (d = s.last) !== null && d !== void 0 ? d : 0
+                };
+                o.gauge.dataPoints.push(h)
+            } else s.hist && o.histogram.dataPoints.push({
+                attributes: a,
+                startTimeUnixNano: l,
+                timeUnixNano: e,
+                count: s.hist.count,
+                sum: s.hist.sum,
+                min: s.hist.min,
+                max: s.hist.max,
+                bucketCounts: s.hist.bucketCounts,
+                explicitBounds: As
+            })
+        }
+        return Array.from(t.values())
+    }
+    _mergeWindowBack(i) {
+        var e, t;
+        for (var s of i) {
+            var r = s[0],
+                n = s[1],
+                o = this._series.get(r);
+            if (o) switch (o.windowStartMs = Math.min(o.windowStartMs, n.windowStartMs), o.type) {
+                case "count":
+                    o.total = ((e = o.total) !== null && e !== void 0 ? e : 0) + ((t = n.total) !== null && t !== void 0 ? t : 0);
+                    break;
+                case "gauge":
+                    break;
+                case "histogram":
+                    if (n.hist)
+                        if (o.hist) {
+                            o.hist.count += n.hist.count, o.hist.sum += n.hist.sum, o.hist.min = Math.min(o.hist.min, n.hist.min), o.hist.max = Math.max(o.hist.max, n.hist.max);
+                            for (var a = 0; o.hist.bucketCounts.length > a; a++) o.hist.bucketCounts[a] += n.hist.bucketCounts[a]
+                        } else o.hist = n.hist
+            } else this._admitNewSeries() && this._series.set(r, n)
+        }
+    }
+};
+var Ia = function(i, e) {
+        var t = (e === void 0 ? {} : e).debugEnabled,
+            s = {
+                _log(r) {
+                    if (f && (Y.DEBUG || f.POSTHOG_DEBUG || t) && !b(f.console) && f.console) {
+                        for (var n = ("__rrweb_original__" in f.console[r]) ? f.console[r].__rrweb_original__ : f.console[r], o = arguments.length, a = new Array(o > 1 ? o - 1 : 0), l = 1; o > l; l++) a[l - 1] = arguments[l];
+                        n(i, ...a)
+                    }
+                },
+                debug() {
+                    for (var r = arguments.length, n = new Array(r), o = 0; r > o; o++) n[o] = arguments[o];
+                    s._log("debug", ...n)
+                },
+                info() {
+                    for (var r = arguments.length, n = new Array(r), o = 0; r > o; o++) n[o] = arguments[o];
+                    s._log("log", ...n)
+                },
+                warn() {
+                    for (var r = arguments.length, n = new Array(r), o = 0; r > o; o++) n[o] = arguments[o];
+                    s._log("warn", ...n)
+                },
+                error() {
+                    for (var r = arguments.length, n = new Array(r), o = 0; r > o; o++) n[o] = arguments[o];
+                    s._log("error", ...n)
+                },
+                critical() {
+                    for (var r = arguments.length, n = new Array(r), o = 0; r > o; o++) n[o] = arguments[o];
+                    console.error(i, ...n)
+                },
+                uninitializedWarning(r) {
+                    s.error("You must initialize PostHog before calling " + r)
+                },
+                createLogger: (r, n) => Ia(i + " " + r, n)
+            };
+        return s
+    },
+    C = Ia("[PostHog.js]"),
+    ae = C.createLogger;
+
+function Ai(i, e) {
+    R(i) && i.forEach(e)
+}
+
+function W(i, e) {
+    if (!D(i))
+        if (R(i)) i.forEach(e);
+        else if (Rl(i)) i.forEach((s, r) => e(s, r));
+    else
+        for (var t in i) Ko.call(i, t) && e(i[t], t)
+}
+var Z = function(i) {
+    for (var e = arguments.length, t = new Array(e > 1 ? e - 1 : 0), s = 1; e > s; s++) t[s - 1] = arguments[s];
+    for (var r of t)
+        for (var n in r) r[n] !== void 0 && (i[n] = r[n]);
+    return i
+};
+
+function Gi(i) {
+    for (var e = Object.keys(i), t = e.length, s = new Array(t); t--;) s[t] = [e[t], i[e[t]]];
+    return s
+}
+var Mn = function(i) {
+        try {
+            return i()
+        } catch {
+            return
+        }
+    },
+    Iu = function(i) {
+        return function() {
+            try {
+                for (var e = arguments.length, t = new Array(e), s = 0; e > s; s++) t[s] = arguments[s];
+                return i.apply(this, t)
+            } catch (r) {
+                C.critical("Implementation error. Please turn on debug mode and open a ticket on https://app.posthog.com/home#panel=support%3Asupport%3A."), C.critical(r)
+            }
+        }
+    },
+    rn = function(i) {
+        var e = {};
+        return W(i, function(t, s) {
+            (q(t) && t.length > 0 || de(t)) && (e[s] = t)
+        }), e
+    },
+    Tu = ["herokuapp.com", "vercel.app", "netlify.app"];
+
+function Ru(i) {
+    var e = i == null ? void 0 : i.hostname;
+    if (!q(e)) return !1;
+    var t = e.split(".").slice(-2).join(".");
+    for (var s of Tu)
+        if (t === s) return !1;
+    return !0
+}
+
+function K(i, e, t, s) {
+    var r = s ?? {},
+        n = r.capture,
+        o = r.passive;
+    i == null || i.addEventListener(e, t, {
+        capture: n !== void 0 && n,
+        passive: o === void 0 || o
+    })
+}
+
+function Ir(i) {
+    return i.name === "ph_toolbar_internal"
+}
+var Tr = i => {
+    if (k) {
+        try {
+            for (var e = i + "=", t = k.cookie.split(";").filter(n => n.length), s = 0; t.length > s; s++) {
+                for (var r = t[s]; r.charAt(0) == " ";) r = r.substring(1, r.length);
+                if (r.indexOf(e) === 0) return decodeURIComponent(r.substring(e.length, r.length))
+            }
+        } catch {}
+        return null
+    }
+};
+Math.trunc || (Math.trunc = function(i) {
+    return 0 > i ? Math.ceil(i) : Math.floor(i)
+}), Number.isInteger || (Number.isInteger = function(i) {
+    return de(i) && isFinite(i) && Math.floor(i) === i
+});
+class ds {
+    constructor(e) {
+        if (this.bytes = e, e.length !== 16) throw new TypeError("not 128-bit length")
+    }
+    static fromFieldsV7(e, t, s, r) {
+        if (!Number.isInteger(e) || !Number.isInteger(t) || !Number.isInteger(s) || !Number.isInteger(r) || 0 > e || 0 > t || 0 > s || 0 > r || e > 0xffffffffffff || t > 4095 || s > 1073741823 || r > 4294967295) throw new RangeError("invalid field value");
+        var n = new Uint8Array(16);
+        return n[0] = e / Math.pow(2, 40), n[1] = e / Math.pow(2, 32), n[2] = e / Math.pow(2, 24), n[3] = e / Math.pow(2, 16), n[4] = e / 256, n[5] = e, n[6] = 112 | t >>> 8, n[7] = t, n[8] = 128 | s >>> 24, n[9] = s >>> 16, n[10] = s >>> 8, n[11] = s, n[12] = r >>> 24, n[13] = r >>> 16, n[14] = r >>> 8, n[15] = r, new ds(n)
+    }
+    toString() {
+        for (var e = "", t = 0; this.bytes.length > t; t++) e = e + (this.bytes[t] >>> 4).toString(16) + (15 & this.bytes[t]).toString(16), t !== 3 && t !== 5 && t !== 7 && t !== 9 || (e += "-");
+        if (e.length !== 36) throw new Error("Invalid UUIDv7 was generated");
+        return e
+    }
+    clone() {
+        return new ds(this.bytes.slice(0))
+    }
+    equals(e) {
+        return this.compareTo(e) === 0
+    }
+    compareTo(e) {
+        for (var t = 0; 16 > t; t++) {
+            var s = this.bytes[t] - e.bytes[t];
+            if (s !== 0) return Math.sign(s)
+        }
+        return 0
+    }
+}
+class Au {
+    generate() {
+        var e = this.generateOrAbort();
+        if (!b(e)) return e;
+        this._timestamp = 0;
+        var t = this.generateOrAbort();
+        if (b(t)) throw new Error("Could not generate UUID after timestamp reset");
+        return t
+    }
+    generateOrAbort() {
+        var e = Date.now();
+        if (e > this._timestamp) this._timestamp = e, this._resetCounter();
+        else {
+            if (this._timestamp >= e + 1e4) return;
+            this._counter++, this._counter > 4398046511103 && (this._timestamp++, this._resetCounter())
+        }
+        return ds.fromFieldsV7(this._timestamp, Math.trunc(this._counter / Math.pow(2, 30)), this._counter & Math.pow(2, 30) - 1, this._random.nextUint32())
+    }
+    _resetCounter() {
+        this._counter = 1024 * this._random.nextUint32() + (1023 & this._random.nextUint32())
+    }
+    constructor() {
+        this._timestamp = 0, this._counter = 0, this._random = new Lu
+    }
+}
+var On, Ta = i => {
+    if ("u" > typeof UUIDV7_DENY_WEAK_RNG && UUIDV7_DENY_WEAK_RNG) throw new Error("no cryptographically strong RNG available");
+    for (var e = 0; i.length > e; e++) i[e] = 65536 * Math.trunc(65536 * Math.random()) + Math.trunc(65536 * Math.random());
+    return i
+};
+f && !b(f.crypto) && crypto.getRandomValues && (Ta = i => crypto.getRandomValues(i));
+class Lu {
+    nextUint32() {
+        return this._buffer.length > this._cursor || (Ta(this._buffer), this._cursor = 0), this._buffer[this._cursor++]
+    }
+    constructor() {
+        this._buffer = new Uint32Array(8), this._cursor = 1 / 0
+    }
+}
+var Ke = () => Mu().toString(),
+    Mu = () => (On || (On = new Au)).generate(),
+    ri = "",
+    Ou = /[a-z0-9][a-z0-9-]+\.[a-z]{2,}$/i,
+    Tt = null,
+    re = {
+        _is_supported() {
+            if (!ce(Tt)) return Tt;
+            if (Tt = !1, k) try {
+                var i = "__ph_cookie_support_" + Ke();
+                re._set(i, "xyz"), Tt = Tr(i) === '"xyz"', re._remove(i)
+            } catch {
+                Tt = !1
+            }
+            return Tt
+        },
+        _error(i) {
+            C.error("cookieStore error: " + i)
+        },
+        _get: Tr,
+        _parse(i) {
+            var e;
+            try {
+                e = JSON.parse(re._get(i)) || {}
+            } catch {}
+            return e
+        },
+        _set(i, e, t, s, r) {
+            if (!k) return !1;
+            try {
+                var n = "",
+                    o = "",
+                    a = function(u, d) {
+                        if (d) {
+                            var h = function(p, g) {
+                                if (g === void 0 && (g = k), ri) return ri;
+                                if (!g || ["localhost", "127.0.0.1"].includes(p)) return "";
+                                for (var m = p.split("."), v = Math.min(m.length, 8), y = "dmn_chk_" + Ke(); !ri && v--;) {
+                                    var w = m.slice(v).join("."),
+                                        E = y + "=1;domain=." + w + ";path=/";
+                                    g.cookie = E + ";max-age=3", g.cookie.includes(y) && (g.cookie = E + ";max-age=0", ri = w)
+                                }
+                                return ri
+                            }(u);
+                            if (!h) {
+                                var _ = (p => {
+                                    var g = p.match(Ou);
+                                    return g ? g[0] : ""
+                                })(u);
+                                _ !== h && C.info("Warning: cookie subdomain discovery mismatch", _, h), h = _
+                            }
+                            return h ? "; domain=." + h : ""
+                        }
+                        return ""
+                    }(k.location.hostname, s);
+                if (t) {
+                    var l = new Date;
+                    l.setTime(l.getTime() + 864e5 * t), n = "; expires=" + l.toUTCString()
+                }
+                r && (o = "; secure");
+                var c = i + "=" + encodeURIComponent(JSON.stringify(e)) + n + "; SameSite=Lax; path=/" + a + o;
+                return c.length > 3686.4 && C.warn("cookieStore warning: large cookie, len=" + c.length), k.cookie = c, !0
+            } catch {
+                return !1
+            }
+        },
+        _remove(i, e) {
+            if (k != null && k.cookie) try {
+                re._set(i, "", -1, e)
+            } catch {
+                return
+            }
+        }
+    },
+    Ls = null,
+    j = {
+        _is_supported() {
+            if (!ce(Ls)) return Ls;
+            var i = !0;
+            if (b(f)) i = !1;
+            else try {
+                var e = "__mplssupport__";
+                j._set(e, "xyz"), j._get(e) !== '"xyz"' && (i = !1), j._remove(e)
+            } catch {
+                i = !1
+            }
+            return i || C.error("localStorage unsupported; falling back to cookie store"), Ls = i, i
+        },
+        _error(i) {
+            C.error("localStorage error: " + i)
+        },
+        _get(i) {
+            try {
+                return f == null ? void 0 : f.localStorage.getItem(i)
+            } catch (e) {
+                j._error(e)
+            }
+            return null
+        },
+        _parse(i) {
+            try {
+                return JSON.parse(j._get(i)) || {}
+            } catch {}
+            return null
+        },
+        _set(i, e) {
+            try {
+                return f == null || f.localStorage.setItem(i, JSON.stringify(e)), !0
+            } catch (t) {
+                j._error(t)
+            }
+            return !1
+        },
+        _remove(i) {
+            try {
+                f == null || f.localStorage.removeItem(i)
+            } catch (e) {
+                j._error(e)
+            }
+        }
+    },
+    Ms = [Oe, je, ke, gt, Ge, vt, ct, Vt, at],
+    Ct = [Ei, Se, Ht, Wr, Yi, Nt, Ae, H],
+    hs = i => i + "_cpm",
+    $u = ["__proto__", "constructor", "prototype"],
+    Os = i => {
+        if (!N(i)) return {};
+        var e = {};
+        return Object.keys(i).forEach(t => {
+            $u.indexOf(t) === -1 && (e[t] = i[t])
+        }), e
+    },
+    $s = function(i, e) {
+        e === void 0 && (e = []);
+        var t = {};
+        return [...Ct, ...e].forEach(s => {
+            var r = i[s];
+            b(r) || ce(r) || r === "" || (t[s] = r)
+        }), t
+    },
+    Ra = i => {
+        for (var e = 5381, t = 2166136261, s = 0; i.length > s; s++) {
+            var r = i.charCodeAt(s);
+            e = 33 * e ^ r, t = Math.imul(t ^ r, 16777619)
+        }
+        return i.length.toString(36) + "." + (e >>> 0).toString(36) + "." + (t >>> 0).toString(36)
+    },
+    $n = (i, e) => ({
+        p: e,
+        f: Ra(JSON.stringify(i))
+    }),
+    Dn = (i, e) => {
+        if (!e) return {
+            properties: [],
+            isValid: !1
+        };
+        try {
+            var t = re._parse(hs(i)),
+                s = (t == null ? void 0 : t.f) === Ra(e) && R(t.p);
+            return {
+                properties: s ? t.p : [],
+                isValid: s
+            }
+        } catch {
+            return {
+                properties: [],
+                isValid: !1
+            }
+        }
+    },
+    Ds = (i, e) => e + "|" + (re._get(hs(i)) || ""),
+    Rt = {},
+    Rr = {
+        _is_supported: () => !0,
+        _error(i) {
+            C.error("memoryStorage error: " + i)
+        },
+        _get: i => i in Rt ? Rt[i] : null,
+        _parse: i => i in Rt ? Rt[i] : null,
+        _set: (i, e) => (Rt[i] = e, !0),
+        _remove(i) {
+            delete Rt[i]
+        }
+    },
+    bt = null,
+    G = {
+        _is_supported() {
+            if (!ce(bt)) return bt;
+            if (bt = !0, b(f)) bt = !1;
+            else try {
+                var i = "__support__";
+                G._set(i, "xyz"), G._get(i) !== '"xyz"' && (bt = !1), G._remove(i)
+            } catch {
+                bt = !1
+            }
+            return bt
+        },
+        _error(i) {
+            C.error("sessionStorage error: ", i)
+        },
+        _get(i) {
+            try {
+                return f == null ? void 0 : f.sessionStorage.getItem(i)
+            } catch (e) {
+                G._error(e)
+            }
+            return null
+        },
+        _parse(i) {
+            try {
+                return JSON.parse(G._get(i)) || null
+            } catch {}
+            return null
+        },
+        _set(i, e) {
+            try {
+                return f == null || f.sessionStorage.setItem(i, JSON.stringify(e)), !0
+            } catch (t) {
+                G._error(t)
+            }
+            return !1
+        },
+        _remove(i) {
+            try {
+                f == null || f.sessionStorage.removeItem(i)
+            } catch (e) {
+                G._error(e)
+            }
+        }
+    };
+class Du {
+    constructor(e) {
+        this._instance = e
+    }
+    get _config() {
+        return this._instance.config
+    }
+    get consent() {
+        return this._getDnt() ? 0 : this._storedConsent
+    }
+    isOptedOut() {
+        return this._config.cookieless_mode === lt || this.isRejected() || this.consent === -1 && this._config.cookieless_mode === pt
+    }
+    isOptedIn() {
+        return !this.isOptedOut()
+    }
+    isExplicitlyOptedOut() {
+        return this.consent === 0
+    }
+    isRejected() {
+        return this.consent === 0 || this.consent === -1 && this._config.opt_out_capturing_by_default
+    }
+    optInOut(e) {
+        this._storage._set(this._storageKey, e ? 1 : 0, this._config.cookie_expiration, this._config.cross_subdomain_cookie, this._config.secure_cookie)
+    }
+    reset() {
+        this._storage._remove(this._storageKey, this._config.cross_subdomain_cookie)
+    }
+    get _storageKey() {
+        var e = this._instance.config,
+            t = e.token,
+            s = e.opt_out_capturing_cookie_prefix;
+        return e.consent_persistence_name || (s ? s + t : "__ph_opt_in_out_" + t)
+    }
+    get _storedConsent() {
+        var e = this._storage._get(this._storageKey);
+        return Ps(e) ? 1 : O(Ol, e) ? 0 : -1
+    }
+    get _storage() {
+        var e = this._config.opt_out_capturing_persistence_type,
+            t = e === "localStorage" ? j : re,
+            s = t._is_supported() ? t : Rr;
+        if (!this._persistentStore || this._persistentStore !== s) {
+            this._persistentStore = s;
+            var r = e === "localStorage" ? re : j;
+            r._get(this._storageKey) && (this._persistentStore._get(this._storageKey) || this.optInOut(Ps(r._get(this._storageKey))), r._remove(this._storageKey, this._config.cross_subdomain_cookie))
+        }
+        return this._persistentStore
+    }
+    _getDnt() {
+        return !!this._config.respect_dnt && [be == null ? void 0 : be.doNotTrack, be == null ? void 0 : be.msDoNotTrack, I.doNotTrack, be == null ? void 0 : be.globalPrivacyControl].some(e => Ps(e))
+    }
+}
+
+function Aa(i, e) {
+    var t, s = i == null || (t = i.config) == null ? void 0 : t.get_current_url;
+    if (!Pe(s)) return e;
+    try {
+        var r = s(e);
+        return q(r) && r ? r : e
+    } catch (n) {
+        return C.error("Error in get_current_url, falling back to window.location.href", n), e
+    }
+}
+var La = "__POSTHOG_TOOLBAR__",
+    Bu = 1,
+    Hu = 3,
+    Nu = 11;
+
+function Bn(i) {
+    return i instanceof Element && (i.id === La || !(i.closest == null || !i.closest(".toolbar-global-fade-container")))
+}
+
+function mt(i) {
+    return !!i && i.nodeType === Bu
+}
+
+function He(i, e) {
+    return !!i && !!i.tagName && i.tagName.toLowerCase() === e.toLowerCase()
+}
+
+function Ma(i) {
+    return !!i && i.nodeType === Hu
+}
+
+function Oa(i) {
+    return !!i && i.nodeType === Nu && mt(i.host)
+}
+var $a = 1e3;
+
+function nn(i) {
+    return i ? ys(i).split(/\s+/) : []
+}
+
+function Hn(i, e) {
+    var t = function(s) {
+        var r, n = f == null || (r = f.location) == null ? void 0 : r.href;
+        return b(n) ? void 0 : Aa(s, n)
+    }(e);
+    return !!(t && i && i.some(s => t.match(s)))
+}
+
+function _s(i) {
+    var e = "";
+    switch (typeof i.className) {
+        case "string":
+            e = i.className;
+            break;
+        case "object":
+            e = (i.className && "baseVal" in i.className ? i.className.baseVal : null) || i.getAttribute("class") || "";
+            break;
+        default:
+            e = ""
+    }
+    return nn(e)
+}
+
+function Da(i) {
+    return D(i) ? null : ys(i).split(/(\s+)/).filter(e => yi(e)).join("").replace(/[\r\n]/g, " ").replace(/[ ]+/g, " ").substring(0, 255)
+}
+
+function xi(i) {
+    var e = "";
+    return Mr(i) && !za(i) && i.childNodes && i.childNodes.length && W(i.childNodes, function(t) {
+        var s;
+        Ma(t) && t.textContent && (e += (s = Da(t.textContent)) !== null && s !== void 0 ? s : "")
+    }), ys(e)
+}
+
+function Ar(i) {
+    var e;
+    return b(i.target) ? i.srcElement || null : (e = i.target) != null && e.shadowRoot ? i.composedPath()[0] || null : i.target || null
+}
+var on = ["a", "button", "form", "input", "select", "textarea", "label"];
+
+function Lr(i, e) {
+    if (b(e)) return !0;
+    var t, s = function(n) {
+        if (e.some(o => function(a, l) {
+                var c = a.matches || a.matchesSelector || a.msMatchesSelector || a.mozMatchesSelector || a.webkitMatchesSelector || a.oMatchesSelector;
+                try {
+                    return !!c && c.call(a, l)
+                } catch {
+                    return !1
+                }
+            }(n, o))) return {
+            v: !0
+        }
+    };
+    for (var r of i)
+        if (t = s(r)) return t.v;
+    return !1
+}
+
+function Ba(i) {
+    var e = i.parentNode;
+    return !(!e || !mt(e)) && e
+}
+var qu = [".ph-no-autocapture", "[data-ph-no-autocapture]"],
+    Ha = ["next", "previous", "prev", ">", "<"],
+    zu = [...Ha, "+", "-", "−", "–"],
+    Nn = (i, e) => /[a-z0-9]/i.test(e) ? i.includes(e) : i === e,
+    qn = [".ph-no-rageclick", ".ph-no-capture"],
+    ju = ["", "text", "search", "email", "password", "url", "tel", "number"];
+
+function Na(i, e) {
+    if (!f || an(i)) return !1;
+    var t, s, r, n, o;
+    if (Ie(e) ? (t = !!e && qn, s = void 0, r = !1) : (t = (n = e == null ? void 0 : e.css_selector_ignorelist) !== null && n !== void 0 ? n : qn, s = e == null ? void 0 : e.content_ignorelist, r = (o = e == null ? void 0 : e.ignore_text_selection) !== null && o !== void 0 && o), t === !1 || r && function(l) {
+            return !(!l || !mt(l)) && (!!He(l, "textarea") || (He(l, "input") ? O(ju, (l.getAttribute("type") || "").toLowerCase()) : function(c) {
+                if (c.isContentEditable) return !0;
+                var u = c.getAttribute == null ? void 0 : c.getAttribute("contenteditable");
+                return u === "true" || u === ""
+            }(l)))
+        }(i)) return !1;
+    var a = qa(i, !1).targetElementList;
+    return ! function(l, c) {
+        if (l === !1 || b(l)) return !1;
+        var u;
+        if (l === !0) u = Ha;
+        else {
+            if (!R(l)) return !1;
+            if (l.length > 10) return C.error("[PostHog] content_ignorelist array cannot exceed 10 items. Use css_selector_ignorelist for more complex matching."), !1;
+            u = l.map(d => d.toLowerCase())
+        }
+        return c.some(d => {
+            var h = d.safeText,
+                _ = d.ariaLabel;
+            return u.some(p => Nn(h, p) || Nn(_, p))
+        })
+    }(s, a.map(l => {
+        var c;
+        return {
+            safeText: xi(l).toLowerCase(),
+            ariaLabel: ((c = l.getAttribute("aria-label")) == null ? void 0 : c.toLowerCase().trim()) || ""
+        }
+    })) && !Lr(a, t)
+}
+var an = i => !i || He(i, "html") || !mt(i),
+    qa = (i, e) => {
+        if (!f || an(i)) return {
+            parentIsUsefulElement: !1,
+            targetElementList: []
+        };
+        for (var t = !1, s = [i], r = i; r.parentNode && !He(r, "body");)
+            if (Oa(r.parentNode)) s.push(r.parentNode.host), r = r.parentNode.host;
+            else {
+                var n = Ba(r);
+                if (!n) break;
+                if (e || on.indexOf(n.tagName.toLowerCase()) > -1) t = !0;
+                else try {
+                    var o = f.getComputedStyle(n);
+                    o && o.getPropertyValue("cursor") === "pointer" && (t = !0)
+                } catch {}
+                s.push(n), r = n
+            } return {
+            parentIsUsefulElement: t,
+            targetElementList: s
+        }
+    };
+
+function Mr(i) {
+    for (var e = new Set, t = 0, s = i; s.parentNode && !He(s, "body"); s = s.parentNode) {
+        if (t++ >= $a || e.has(s)) return !1;
+        e.add(s);
+        var r = _s(s);
+        if (O(r, "ph-sensitive") || O(r, "ph-no-capture")) return !1
+    }
+    if (O(_s(i), "ph-include")) return !0;
+    var n = i.type || "";
+    if (q(n)) switch (n.toLowerCase()) {
+        case "hidden":
+        case "password":
+            return !1
+    }
+    var o = i.name || i.id || "";
+    return !q(o) || !/^cc|cardnum|ccnum|creditcard|csc|cvc|cvv|exp|pass|pwd|routing|seccode|securitycode|securitynum|socialsec|socsec|ssn/i.test(o.replace(/[^a-zA-Z0-9]/g, ""))
+}
+
+function za(i) {
+    return !!(He(i, "input") && !["button", "checkbox", "submit", "reset"].includes(i.type) || He(i, "select") || He(i, "textarea") || i.getAttribute("contenteditable") === "true")
+}
+var zn = new RegExp("^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$"),
+    jn = /(^|[^0-9A-Za-z_])([0-9][0-9 -]*[0-9])(?=$|[^0-9A-Za-z_])/g,
+    Vu = [16, 15, 14, 13],
+    Uu = new RegExp("^(\\d{3}-?\\d{2}-?\\d{4})$"),
+    Vn = new RegExp("(^|[^0-9])((?!000|666)[0-9]{3}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4})(?=$|([^0-9]))", "g"),
+    Un = /[0-9A-Za-z_]/;
+
+function Wu(i) {
+    for (var e = 0, t = !1, s = i.length - 1; s >= 0; s--) {
+        var r = i.charCodeAt(s) - 48;
+        t && (r *= 2) > 9 && (r -= 9), e += r, t = !t
+    }
+    return e % 10 == 0
+}
+
+function yi(i, e) {
+    if (e === void 0 && (e = !0), D(i)) return !1;
+    if (q(i)) {
+        i = ys(i);
+        var t = e ? zn.test((i || "").replace(/[- ]/g, "")) : function(r) {
+            var n;
+            for (jn.lastIndex = 0; n = jn.exec(r);) {
+                var o = n[2];
+                if (o)
+                    for (var a = o.replace(/[- ]/g, ""), l = 0; a.length > l; l++)
+                        for (var c of Vu) {
+                            var u = l + c;
+                            if (a.length >= u) {
+                                var d = a.slice(l, u);
+                                if (zn.test(d) && Wu(d)) return !0
+                            }
+                        }
+            }
+            return !1
+        }(i);
+        if (t) return !1;
+        var s = e ? Uu.test(i) : function(r) {
+            var n;
+            for (Vn.lastIndex = 0; n = Vn.exec(r);) {
+                var o = n[1],
+                    a = n[3];
+                if (!(o && a && Un.test(o) && Un.test(a))) return !0
+            }
+            return !1
+        }(i);
+        if (s) return !1
+    }
+    return !0
+}
+
+function Wn(i) {
+    var e = xi(i);
+    return yi(e = (e + " " + ja(i)).trim()) ? e : ""
+}
+
+function ja(i) {
+    var e = "";
+    return i && i.childNodes && i.childNodes.length && W(i.childNodes, function(t) {
+        var s;
+        if (t && ((s = t.tagName) == null ? void 0 : s.toLowerCase()) === "span") try {
+            var r = xi(t);
+            e = (e + " " + r).trim(), t.childNodes && t.childNodes.length && (e = (e + " " + ja(t)).trim())
+        } catch (n) {
+            C.error("[AutoCapture]", n)
+        }
+    }), e
+}
+
+function Gn(i) {
+    return i.replace(/"|\\"/g, '\\"')
+}
+
+function Gu(i) {
+    var e = i.attr__class;
+    if (e) return R(e) ? e : nn(e)
+}
+var Li = ae("[Dead Clicks]"),
+    Ku = () => !0,
+    Ju = i => {
+        var e, t = !((e = i.instance.persistence) == null || !e.get_property(Vr)),
+            s = i.instance.config.capture_dead_clicks;
+        return Ie(s) ? s : !!N(s) || t
+    };
+class Kn {
+    get lazyLoadedDeadClicksAutocapture() {
+        return this._lazyLoadedDeadClicksAutocapture
+    }
+    constructor(e, t, s) {
+        this.instance = e, this.isEnabled = t, this.onCapture = s, this.startIfEnabledOrStop()
+    }
+    onRemoteConfig(e) {
+        if (e.ok) {
+            var t = e.config;
+            "captureDeadClicks" in t && (this.instance.persistence && this.instance.persistence.register({
+                [Vr]: t.captureDeadClicks
+            }), this.startIfEnabledOrStop())
+        }
+    }
+    startIfEnabledOrStop() {
+        this.isEnabled(this) ? this._loadScript(() => {
+            this._start()
+        }) : this.stop()
+    }
+    _loadScript(e) {
+        var t, s;
+        (t = I.__PosthogExtensions__) != null && t.initDeadClicksAutocapture ? e() : (s = I.__PosthogExtensions__) == null || s.loadExternalDependency == null || s.loadExternalDependency(this.instance, "dead-clicks-autocapture", r => {
+            r ? Li.error("failed to load script", r) : e()
+        })
+    }
+    _start() {
+        var e;
+        if (k) {
+            if (!this._lazyLoadedDeadClicksAutocapture && (e = I.__PosthogExtensions__) != null && e.initDeadClicksAutocapture) {
+                var t = N(this.instance.config.capture_dead_clicks) ? S({}, this.instance.config.capture_dead_clicks) : {};
+                t.__onCapture = this.onCapture, this.onCapture && (t.capture_dead_swipes = !1), this._lazyLoadedDeadClicksAutocapture = I.__PosthogExtensions__.initDeadClicksAutocapture(this.instance, t), this._lazyLoadedDeadClicksAutocapture.start(k), Li.info("starting...")
+            }
+        } else Li.error("`document` not found. Cannot start.")
+    }
+    stop() {
+        this._lazyLoadedDeadClicksAutocapture && (this._lazyLoadedDeadClicksAutocapture.stop(), this._lazyLoadedDeadClicksAutocapture = void 0, Li.info("stopping..."))
+    }
+}
+var Mi = ae("[SegmentIntegration]");
+
+function Jn(i, e, t) {
+    t === void 0 && (t = !0);
+    var s = i.config.segment;
+    if (!s) return e();
+    (function(r, n, o) {
+        var a = r.config.segment;
+        if (!a) return n();
+        var l = u => {
+                var d = () => u.anonymousId() || Ke();
+                r.config.get_device_id = d, o && u.id() && (r.register({
+                    distinct_id: u.id(),
+                    $device_id: d()
+                }), r.persistence.set_property(H, Ce)), n(o ? void 0 : u.anonymousId() || void 0)
+            },
+            c = a.user();
+        "then" in c && Pe(c.then) ? c.then(l) : l(c)
+    })(i, r => {
+        s.register(((n, o) => {
+            typeof Promise < "u" && Promise.resolve || Mi.warn("This browser does not have Promise support, and can not use the segment integration");
+            var a = (l, c) => {
+                if (!c) return l;
+                var u = !!o && l.event.anonymousId === o && !l.event.userId;
+                u || l.event.userId || l.event.anonymousId === n.get_distinct_id() || (Mi.info("No userId set, resetting PostHog"), n.reset()), u || (o = void 0), l.event.userId && l.event.userId !== n.get_distinct_id() && (Mi.info("UserId set, identifying with PostHog"), n.identify(l.event.userId));
+                var d = n.calculateEventProperties(c, l.event.properties);
+                return l.event.properties = Object.assign({}, d, l.event.properties), l
+            };
+            return {
+                name: "PostHog JS",
+                type: "enrichment",
+                version: "1.0.0",
+                isLoaded() {
+                    return !0
+                },
+                load() {
+                    return Promise.resolve()
+                },
+                track(l) {
+                    return a(l, l.event.event)
+                },
+                page(l) {
+                    return a(l, qt)
+                },
+                identify(l) {
+                    return a(l, fr)
+                },
+                screen(l) {
+                    return a(l, "$screen")
+                }
+            }
+        })(i, r)).then(() => {
+            e()
+        }, n => {
+            Mi.error("Failed to register the Segment integration", n), e()
+        })
+    }, t)
+}
+var Va = "posthog-js";
+
+function Ua(i, e) {
+    var t = e === void 0 ? {} : e,
+        s = t.organization,
+        r = t.projectId,
+        n = t.prefix,
+        o = t.severityAllowList,
+        a = o === void 0 ? ["error"] : o,
+        l = t.sendExceptionsToPostHog,
+        c = l === void 0 || l;
+    return u => {
+        var d, h, _, p, g;
+        if (a !== "*" && !a.includes(u.level) || !i.__loaded) return u;
+        u.tags || (u.tags = {});
+        var m = i.requestRouter.endpointFor("ui", "/project/" + i.config.token + "/person/" + i.get_distinct_id());
+        u.tags["PostHog Person URL"] = m, i.sessionRecordingStarted() && (u.tags["PostHog Recording URL"] = i.get_session_replay_url({
+            withTimestamp: !0
+        }));
+        var v, y = ((d = u.exception) == null ? void 0 : d.values) || [],
+            w = y.map(x => S({}, x, {
+                stacktrace: x.stacktrace ? S({}, x.stacktrace, {
+                    type: "raw",
+                    frames: (x.stacktrace.frames || []).map(M => S({}, M, {
+                        platform: "web:javascript"
+                    }))
+                }) : void 0
+            })),
+            E = {
+                $exception_message: ((h = y[0]) == null ? void 0 : h.value) || u.message,
+                $exception_type: (_ = y[0]) == null ? void 0 : _.type,
+                $exception_level: u.level,
+                $exception_list: w,
+                $sentry_event_id: u.event_id,
+                $sentry_exception: u.exception,
+                $sentry_exception_message: ((p = y[0]) == null ? void 0 : p.value) || u.message,
+                $sentry_exception_type: (g = y[0]) == null ? void 0 : g.type,
+                $sentry_tags: u.tags
+            };
+        return s && r && (E.$sentry_url = (n || "https://sentry.io/organizations/") + s + "/issues/?project=" + r + "&query=" + u.event_id), c && ((v = i.exceptions) == null || v.sendExceptionEvent(E)), u
+    }
+}
+class Qu {
+    constructor(e, t, s, r, n, o) {
+        this.name = Va, this.setupOnce = function(a) {
+            a(Ua(e, {
+                organization: t,
+                projectId: s,
+                prefix: r,
+                severityAllowList: n,
+                sendExceptionsToPostHog: o == null || o
+            }))
+        }
+    }
+}
+class Qn {
+    constructor(e) {
+        this._onSessionIdChange = (t, s, r) => {
+            r && (r.noSessionId || r.activityTimeout || r.sessionPastMaximumLength || r.crossTabAdoption) && (C.info("[PageViewManager] Session rotated, clearing pageview state", {
+                sessionId: t,
+                changeReason: r
+            }), this._currentPageview = void 0, this._instance.scrollManager.resetContext())
+        }, this._instance = e, this._setupSessionRotationHandler()
+    }
+    _setupSessionRotationHandler() {
+        var e;
+        this._unsubscribeSessionId = (e = this._instance.sessionManager) == null ? void 0 : e.onSessionId(this._onSessionIdChange)
+    }
+    destroy() {
+        var e;
+        (e = this._unsubscribeSessionId) == null || e.call(this), this._unsubscribeSessionId = void 0
+    }
+    doPageView(e, t) {
+        var s, r = this._previousPageViewProperties(e, t);
+        return this._currentPageview = {
+            pathname: (s = f == null ? void 0 : f.location.pathname) !== null && s !== void 0 ? s : "",
+            pageViewId: t,
+            timestamp: e
+        }, this._instance.scrollManager.resetContext(), r
+    }
+    doPageLeave(e) {
+        var t;
+        return this._previousPageViewProperties(e, (t = this._currentPageview) == null ? void 0 : t.pageViewId)
+    }
+    doEvent() {
+        var e;
+        return {
+            $pageview_id: (e = this._currentPageview) == null ? void 0 : e.pageViewId
+        }
+    }
+    _previousPageViewProperties(e, t) {
+        var s = this._currentPageview;
+        if (!s) return {
+            $pageview_id: t
+        };
+        var r = {
+                $pageview_id: t,
+                $prev_pageview_id: s.pageViewId
+            },
+            n = this._instance.scrollManager.getContext();
+        if (n && !this._instance.config.disable_scroll_properties) {
+            var o = n.maxScrollHeight,
+                a = n.lastScrollY,
+                l = n.maxScrollY,
+                c = n.maxContentHeight,
+                u = n.lastContentY,
+                d = n.maxContentY;
+            if (!(b(o) || b(a) || b(l) || b(c) || b(u) || b(d))) {
+                o = Math.ceil(o), a = Math.ceil(a), l = Math.ceil(l), c = Math.ceil(c), u = Math.ceil(u), d = Math.ceil(d);
+                var h = o > 1 ? tt(a / o, 0, 1, C) : 1,
+                    _ = o > 1 ? tt(l / o, 0, 1, C) : 1,
+                    p = c > 1 ? tt(u / c, 0, 1, C) : 1,
+                    g = c > 1 ? tt(d / c, 0, 1, C) : 1;
+                r = Z(r, {
+                    $prev_pageview_last_scroll: a,
+                    $prev_pageview_last_scroll_percentage: h,
+                    $prev_pageview_max_scroll: l,
+                    $prev_pageview_max_scroll_percentage: _,
+                    $prev_pageview_last_content: u,
+                    $prev_pageview_last_content_percentage: p,
+                    $prev_pageview_max_content: d,
+                    $prev_pageview_max_content_percentage: g
+                })
+            }
+        }
+        return s.pathname && (r.$prev_pageview_pathname = s.pathname), s.timestamp && (r.$prev_pageview_duration = (e.getTime() - s.timestamp.getTime()) / 1e3), r
+    }
+}
+var ni = ["flags", "surveys"],
+    Yu = {
+        [Oo]: {
+            exposure: "hidden"
+        },
+        [Bt]: {
+            exposure: "hidden"
+        },
+        __cmpns: {
+            exposure: "hidden"
+        },
+        [hi]: {
+            exposure: "hidden"
+        },
+        [Ae]: {
+            exposure: "hidden"
+        },
+        [tr]: {
+            exposure: "event"
+        },
+        [ir]: {
+            exposure: "hidden"
+        },
+        [ar]: {
+            exposure: "hidden"
+        },
+        [sr]: {
+            exposure: "event"
+        },
+        [rr]: {
+            exposure: "hidden"
+        },
+        [nr]: {
+            exposure: "event"
+        },
+        [or]: {
+            exposure: "event"
+        },
+        [Vr]: {
+            exposure: "event"
+        },
+        [Ur]: {
+            exposure: "hidden"
+        },
+        [lr]: {
+            exposure: "event"
+        },
+        [xt]: {
+            exposure: "hidden"
+        },
+        $session_recording_enabled_server_side: {
+            exposure: "hidden"
+        },
+        [Ht]: {
+            exposure: "hidden"
+        },
+        [Wr]: {
+            exposure: "event"
+        },
+        [$o]: {
+            exposure: "event",
+            shouldSkipFromEventProperties: i => ce(i)
+        },
+        $session_past_minimum_duration: {
+            exposure: "event"
+        },
+        $session_recording_url_trigger_activated_session: {
+            exposure: "event"
+        },
+        $session_recording_event_trigger_activated_session: {
+            exposure: "event"
+        },
+        $debug_first_full_snapshot_timestamp: {
+            exposure: "event"
+        },
+        $sess_rec_flush_size: {
+            exposure: "hidden"
+        },
+        [ke]: {
+            exposure: "hidden",
+            storageGroup: "flags"
+        },
+        [je]: {
+            exposure: "hidden",
+            storageGroup: "flags"
+        },
+        [Vi]: {
+            exposure: "hidden"
+        },
+        [gt]: {
+            exposure: "hidden",
+            storageGroup: "flags"
+        },
+        [Ge]: {
+            exposure: "hidden",
+            storageGroup: "flags"
+        },
+        [vt]: {
+            exposure: "hidden",
+            storageGroup: "flags",
+            volatile: !0
+        },
+        [jt]: {
+            exposure: "hidden",
+            storageGroup: "flags"
+        },
+        [Ze]: {
+            exposure: "hidden"
+        },
+        [kt]: {
+            exposure: "hidden"
+        },
+        [Oe]: {
+            exposure: "hidden"
+        },
+        [et]: {
+            exposure: "hidden"
+        },
+        [ur]: {
+            exposure: "hidden",
+            storageGroup: "surveys"
+        },
+        [Qi]: {
+            exposure: "hidden",
+            storageGroup: "surveys",
+            volatile: !0
+        },
+        [cr]: {
+            exposure: "event"
+        },
+        [Ui]: {
+            exposure: "hidden"
+        },
+        [Wi]: {
+            exposure: "hidden"
+        },
+        [_i]: {
+            exposure: "hidden"
+        },
+        $product_tours_activated: {
+            exposure: "hidden"
+        },
+        $product_tours_activated_session: {
+            exposure: "hidden"
+        },
+        $conversations_widget_session_id: {
+            exposure: "event"
+        },
+        $conversations_ticket_id: {
+            exposure: "event"
+        },
+        $conversations_widget_state: {
+            exposure: "event"
+        },
+        $conversations_user_traits: {
+            exposure: "event"
+        },
+        [at]: {
+            exposure: "hidden"
+        },
+        [pi]: {
+            exposure: "hidden"
+        },
+        [qo]: {
+            exposure: "event"
+        },
+        [Vt]: {
+            exposure: "hidden"
+        },
+        [ct]: {
+            exposure: "hidden",
+            storageGroup: "flags",
+            volatile: !0
+        },
+        [H]: {
+            exposure: "hidden"
+        },
+        [dr]: {
+            exposure: "hidden"
+        },
+        [hr]: {
+            exposure: "hidden"
+        },
+        [_r]: {
+            exposure: "hidden"
+        },
+        [pr]: {
+            exposure: "hidden"
+        },
+        [Nt]: {
+            exposure: "hidden"
+        },
+        [Yi]: {
+            exposure: "hidden"
+        },
+        [Do]: {
+            exposure: "event"
+        },
+        [Bo]: {
+            exposure: "event"
+        },
+        [Ho]: {
+            exposure: "event"
+        },
+        [No]: {
+            exposure: "event"
+        },
+        [jo]: {
+            exposure: "event"
+        },
+        [Vo]: {
+            exposure: "event"
+        },
+        [gr]: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_event_trigger_status: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_linked_flag_trigger_status: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_matched_recording_trigger_groups: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_pending_trigger_conditions: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_remote_trigger_matching_config: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_trigger_groups_count: {
+            exposure: "event"
+        },
+        $sdk_debug_replay_url_trigger_status: {
+            exposure: "event"
+        },
+        $session_recording_start_reason: {
+            exposure: "event"
+        }
+    },
+    Zu = [
+        ["$posthog_sr_group_event_trigger_", {
+            exposure: "hidden"
+        }],
+        ["$posthog_sr_group_url_trigger_", {
+            exposure: "hidden"
+        }],
+        ["$posthog_sr_group_sampling_", {
+            exposure: "hidden"
+        }]
+    ],
+    we = i => {
+        var e = Yu[i];
+        if (e) return e;
+        for (var t of Zu) {
+            var s = t[1];
+            if (i.indexOf(t[0]) === 0) return s
+        }
+    },
+    zt = (i, e) => {
+        try {
+            return JSON.stringify(i, (t, s) => typeof s == "bigint" ? s.toString() : s, e)
+        } catch {
+            return Wo(i)
+        }
+    },
+    Zt = i => {
+        var e = k == null ? void 0 : k.createElement("a");
+        return b(e) ? null : (e.href = i, e)
+    },
+    Xt = function(i, e) {
+        for (var t, s = ((i.split("#")[0] || "").split(/\?(.*)/)[1] || "").replace(/^\?+/g, "").split("&"), r = 0; s.length > r; r++) {
+            var n = s[r].split("=");
+            if (n[0] === e) {
+                t = n;
+                break
+            }
+        }
+        if (!R(t) || 2 > t.length) return "";
+        var o = t[1];
+        try {
+            o = decodeURIComponent(o)
+        } catch {
+            C.error("Skipping decoding for malformed query param: " + o)
+        }
+        return o.replace(/\+/g, " ")
+    },
+    Pi = function(i, e, t) {
+        if (!i || !e || !e.length) return i;
+        for (var s = i.split("#"), r = s[1], n = (s[0] || "").split("?"), o = n[1], a = n[0], l = (o || "").split("&"), c = [], u = 0; l.length > u; u++) {
+            var d = l[u].split("=");
+            R(d) && (e.includes(d[0]) ? c.push(d[0] + "=" + t) : c.push(l[u]))
+        }
+        var h = a;
+        return o != null && (h += "?" + c.join("&")), r != null && (h += "#" + r), h
+    },
+    ps = function(i, e) {
+        var t = i.match(new RegExp(e + "=([^&]*)"));
+        return t ? t[1] : null
+    },
+    Wa = (i, e) => i >= e && Uo(),
+    Ga = (i, e, t, s) => {
+        if (i === 0) {
+            if (Uo()) {
+                var r = e + 1;
+                return r === t && s(), r
+            }
+            return e
+        }
+        return 0
+    },
+    Oi = "https?://(.*)",
+    ei = ["gclid", "gclsrc", "dclid", "gbraid", "wbraid", "fbclid", "msclkid", "twclid", "li_fat_id", "igshid", "ttclid", "rdt_cid", "epik", "qclid", "sccid", "irclid", "_kx"],
+    Xu = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gad_source", "mc_cid", ...ei],
+    Fi = "<masked>",
+    ec = ["li_fat_id"];
+
+function Ka(i, e, t) {
+    if (!k) return {};
+    var s, r = e ? [...ei, ...t || []] : [],
+        n = Ja(Pi(k.URL, r, Fi), i),
+        o = (s = {}, W(ec, function(a) {
+            var l = Tr(a);
+            s[a] = l || null
+        }), s);
+    return Z(o, n)
+}
+
+function Ja(i, e) {
+    var t = Xu.concat(e || []),
+        s = {};
+    return W(t, function(r) {
+        var n = Xt(i, r);
+        s[r] = n || null
+    }), s
+}
+
+function Qa(i) {
+    var e = function(n) {
+            return n ? n.search(Oi + "google.([^/?]*)") === 0 ? "google" : n.search(Oi + "bing.com") === 0 ? "bing" : n.search(Oi + "yahoo.com") === 0 ? "yahoo" : n.search(Oi + "duckduckgo.com") === 0 ? "duckduckgo" : null : null
+        }(i),
+        t = e != "yahoo" ? "q" : "p",
+        s = {};
+    if (!ce(e)) {
+        s.$search_engine = e;
+        var r = k ? Xt(k.referrer, t) : "";
+        r.length && (s.ph_keyword = r)
+    }
+    return s
+}
+
+function Yn() {
+    return navigator.language || navigator.userLanguage
+}
+var gs = "$direct";
+
+function Ya() {
+    return (k == null ? void 0 : k.referrer) || gs
+}
+
+function Za(i, e, t) {
+    t === void 0 && (t = !1);
+    var s = i ? [...ei, ...e || []] : [],
+        r = t ? ft(ne == null ? void 0 : ne.href) : ne == null ? void 0 : ne.href,
+        n = r == null ? void 0 : r.substring(0, 1e3);
+    return {
+        r: Ya().substring(0, 1e3),
+        u: n ? Pi(n, s, Fi) : void 0
+    }
+}
+
+function Xa(i, e) {
+    var t;
+    e === void 0 && (e = !1);
+    var s = i.r,
+        r = i.u,
+        n = e ? ft(r) : r,
+        o = {
+            $referrer: s,
+            $referring_domain: s == null ? void 0 : s == gs ? gs : (t = Zt(s)) == null ? void 0 : t.host
+        };
+    if (n) {
+        o.$current_url = n;
+        var a = Zt(n);
+        o.$host = a == null ? void 0 : a.host, o.$pathname = a == null ? void 0 : a.pathname;
+        var l = Ja(n);
+        Z(o, l)
+    }
+    if (s) {
+        var c = Qa(s);
+        Z(o, c)
+    }
+    return o
+}
+
+function el() {
+    try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone
+    } catch {
+        return
+    }
+}
+
+function tc() {
+    try {
+        return new Date().getTimezoneOffset()
+    } catch {
+        return
+    }
+}
+var ic = {
+        flags: ct,
+        surveys: Qi
+    },
+    sc = ["cookie", "localstorage", "localstorage+cookie", "sessionstorage", "memory"],
+    $i = i => i + "_cookie_identity_change_pending",
+    Di = i => {
+        var e = "",
+            t = 0;
+        for (var s of i) {
+            var r = encodeURIComponent(JSON.stringify(s).slice(1, -1)).length;
+            if (t + r > 1e3) break;
+            e += s, t += r
+        }
+        return e
+    },
+    me = "main",
+    ot = [ke, je, gt, Ge, vt, ct, jt, Oe],
+    Bs = i => ot.indexOf(i) !== -1,
+    ht = (i, e) => {
+        try {
+            return JSON.stringify(i) === JSON.stringify(e)
+        } catch {
+            return i === e
+        }
+    },
+    At = i => {
+        if (!i) return {};
+        var e = JSON.parse(i);
+        return N(e) ? e : {}
+    },
+    Zn = (i, e) => {
+        W(i, (t, s) => {
+            var r = we(s);
+            r && r.exposure !== "event" || {}.hasOwnProperty.call(e, s) || delete i[s]
+        })
+    };
+class Hs {
+    constructor(e, t, s) {
+        if (s === void 0 && (s = !0), this._slotState = {}, this._splitStorageEligible = !1, this._storesIdentityInCookie = !1, this._splitStorage = !1, this._cookieIdentityChangePending = !1, this._cookieSyncSuppressed = !1, this._pendingCrossTabFeatureFlagChanges = new Map, this._storageMigrationInProgress = !1, this._localIdentityChangePending = !1, this._crossTabFeatureFlagIdentityMismatch = !1, this._facebookClickIdChangePending = !1, this._crossTabFeatureFlagHandlers = new Set, this._config = e, this._ownsSplitStorage = s, this.props = {}, this._campaign_params_url = void 0, this._name = (n => {
+                var o = "";
+                return n.token && (o = n.token.replace(/\+/g, "PL").replace(/\//g, "SL").replace(/=/g, "EQ")), n.persistence_name ? "ph_" + n.persistence_name : "ph_" + o + "_posthog"
+            })(e), this._storage = this._buildStorage(e), this._splitStorage = this._resolveSplitStorage(e), this.load(), this._markLoadedCrossTabFeatureFlagChangesPending(), e.debug && C.info("Persistence loaded", e.persistence, S({}, this.props)), this.update_config(e, e, t), this.save(), f) {
+            var r = () => this.flush();
+            K(f, "beforeunload", r, {
+                capture: !1
+            }), K(f, "pagehide", r, {
+                capture: !1
+            }), this._onStorage = n => {
+                if (this._splitStorageEligible && (!n.storageArea || n.storageArea === (f == null ? void 0 : f.localStorage)) && n.key)
+                    if (n.key !== this._name) {
+                        if (this._splitStorage) {
+                            var o = ni.find(a => n.key === this._groupEntryName(a));
+                            o && this._syncCrossTabFeatureFlagProperties(n.key, o)
+                        }
+                    } else this._syncCrossTabFeatureFlagProperties(n.key, me)
+            }, K(f, "storage", this._onStorage)
+        }
+    }
+    markCrossTabFeatureFlagChanges(e) {
+        Object.entries(e).forEach(t => {
+            var s = t[0],
+                r = t[1],
+                n = this._pendingCrossTabFeatureFlagChanges.get(s);
+            if (Bs(s) && n !== !0)
+                if (r !== !0) {
+                    var o = new Set(n || []);
+                    r.forEach(a => o.add(a)), o.size && this._setCrossTabFeatureFlagChangesPending(s, o)
+                } else this._setCrossTabFeatureFlagChangesPending(s, !0)
+        })
+    }
+    onCrossTabFeatureFlagChange(e) {
+        return this._crossTabFeatureFlagHandlers.add(e), () => this._crossTabFeatureFlagHandlers.delete(e)
+    }
+    destroy() {
+        this._onStorage && f && (f.removeEventListener("storage", this._onStorage), this._onStorage = void 0), this._crossTabFeatureFlagHandlers.clear()
+    }
+    _syncCrossTabFeatureFlagProperties(e, t, s) {
+        if (s === void 0 && (s = !0), this._disabled) return !1;
+        var r, n;
+        try {
+            if (n = j._get(e), ce(n)) {
+                var o = this._slotWriteState(t);
+                return o.storageValue = null, t !== me && (o.persisted = !1), !1
+            }
+            r = At(n)
+        } catch {
+            return !1
+        }
+        var a = t === me ? r : j._parse(this._name);
+        if (a && this._hasCrossTabFeatureFlagIdentityMismatch(a)) return !1;
+        var l = this._mergeCrossTabFeatureFlagProperties(r, t, s);
+        return t === me && this._splitStorage && !ht(this._partitionProps().main, r) || this._rememberCrossTabStorageFingerprint(r, t, !0, n), l
+    }
+    _hasCrossTabFeatureFlagIdentityMismatch(e) {
+        var t = this.props[Se],
+            s = e[Se];
+        return !b(t) && !b(s) && t !== s
+    }
+    _rememberCrossTabStorageFingerprint(e, t, s, r) {
+        var n = this._slotWriteState(t);
+        n.storageValue = r, t !== me && (n.persisted = s);
+        try {
+            n.fingerprint = this._entryFingerprint(e, t)
+        } catch {
+            n.fingerprint = void 0
+        }
+    }
+    _mergeCrossTabFeatureFlagProperties(e, t, s) {
+        var r = !1;
+        return ot.forEach(n => {
+            var o, a = (o = we(n)) == null ? void 0 : o.storageGroup;
+            if (!(t === me && this._splitStorage && a || t !== me && a !== t)) {
+                var l = n in e,
+                    c = this._mergePendingCrossTabFeatureFlagChanges(n, l ? e[n] : void 0),
+                    u = this._pendingCrossTabFeatureFlagChanges.has(n) ? n in this.props : l;
+                u === n in this.props && ht(c, this.props[n]) || (u ? this._setProp(n, c, !1) : this._deleteProp(n, !1), r = !0)
+            }
+        }), r && s && this._crossTabFeatureFlagHandlers.forEach(n => n()), r
+    }
+    _reconcileCrossTabFeatureFlagPropertiesBeforeWrite() {
+        if (!this._splitStorageEligible) return !1;
+        try {
+            this._crossTabFeatureFlagIdentityMismatch = !1;
+            var e, t = j._get(this._name),
+                s = this._slotWriteState(me),
+                r = !1,
+                n = !1;
+            if (t !== s.storageValue)
+                if (ce(t)) s.storageValue = null;
+                else {
+                    if (e = At(t), this._crossTabFeatureFlagIdentityMismatch = !this._localIdentityChangePending && this._hasCrossTabFeatureFlagIdentityMismatch(e), this._crossTabFeatureFlagIdentityMismatch) return !1;
+                    n = this._mergeCrossTabFeatureFlagProperties(e, me, !1), !this._splitStorage || ht(this._partitionProps().main, e) ? this._rememberCrossTabStorageFingerprint(e, me, !0, t) : s.storageValue = t, r = !0
+                } return this._splitStorage && ni.forEach(o => {
+                var a = j._get(this._groupEntryName(o)),
+                    l = this._slotWriteState(o),
+                    c = e || {},
+                    u = r && ot.some(h => {
+                        var _;
+                        return ((_ = we(h)) == null ? void 0 : _.storageGroup) === o && h in c
+                    });
+                if (a !== l.storageValue || u) {
+                    if (ce(a)) return l.storageValue = null, l.persisted = !1, void(u && (n = this._mergeCrossTabFeatureFlagProperties(c, o, !1) || n));
+                    var d = At(a);
+                    n = this._mergeCrossTabFeatureFlagProperties(d, o, !1) || n, this._rememberCrossTabStorageFingerprint(d, o, !0, a)
+                }
+            }), n
+        } catch {
+            return !1
+        }
+    }
+    _setCrossTabFeatureFlagChangesPending(e, t) {
+        this._pendingCrossTabFeatureFlagChanges.set(e, t);
+        var s = we(e);
+        s != null && s.volatile || (this._slotWriteState((this._splitStorage ? s == null ? void 0 : s.storageGroup : void 0) || me).fingerprint = void 0, this._markGroupDirty(e))
+    }
+    _markAllCrossTabFeatureFlagChangesPending() {
+        ot.forEach(e => this._pendingCrossTabFeatureFlagChanges.set(e, !0))
+    }
+    _markLoadedCrossTabFeatureFlagChangesPending() {
+        if (this._splitStorageEligible) try {
+            var e = j._get(this._name),
+                t = At(e);
+            this._slotWriteState(me).storageValue = e, ot.forEach(s => {
+                var r, n = this._splitStorage ? (r = we(s)) == null ? void 0 : r.storageGroup : void 0,
+                    o = n ? j._get(this._groupEntryName(n)) : null;
+                if (n) {
+                    var a = this._slotWriteState(n);
+                    a.storageValue = o, a.persisted = !ce(o)
+                }
+                var l = n && !ce(o) ? At(o) : t;
+                s in this.props ? this._markPendingCrossTabFeatureFlagChanges(s, l[s], this.props[s]) : s in l && this._setCrossTabFeatureFlagChangesPending(s, !0)
+            })
+        } catch {}
+    }
+    _mergePendingCrossTabFeatureFlagChanges(e, t) {
+        var s = this._pendingCrossTabFeatureFlagChanges.get(e);
+        if (!s) return t;
+        if (s === !0) return this.props[e];
+        if (e === je) {
+            var r = new Set(R(t) ? t : []),
+                n = new Set(R(this.props[e]) ? this.props[e] : []);
+            return s.forEach(l => n.has(l) ? r.add(l) : r.delete(l)), Array.from(r)
+        }
+        var o = N(t) ? S({}, t) : {},
+            a = N(this.props[e]) ? this.props[e] : {};
+        return s.forEach(l => {
+            l in a ? o[l] = a[l] : delete o[l]
+        }), o
+    }
+    _markPendingCrossTabFeatureFlagChanges(e, t, s) {
+        if (Bs(e)) {
+            var r = this._pendingCrossTabFeatureFlagChanges.get(e);
+            if (r !== !0) {
+                var n = t;
+                if (this._splitStorageEligible) try {
+                    var o, a = this._splitStorage ? (o = we(e)) == null ? void 0 : o.storageGroup : void 0,
+                        l = a ? this._groupEntryName(a) : this._name;
+                    n = At(j._get(l))[e]
+                } catch {}
+                var c = new Set(r || []);
+                if (e === je) {
+                    if (!b(t) && !R(t) || !b(n) && !R(n) || !R(s)) return void this._setCrossTabFeatureFlagChangesPending(e, !0);
+                    var u = new Set(t || []),
+                        d = new Set(n || []),
+                        h = new Set(s);
+                    new Set([...u, ...h]).forEach(g => {
+                        u.has(g) !== h.has(g) && c.add(g)
+                    }), c.forEach(g => {
+                        d.has(g) === h.has(g) && c.delete(g)
+                    })
+                } else {
+                    if (!N(s)) return void(ht(n, s) ? this._pendingCrossTabFeatureFlagChanges.delete(e) : this._setCrossTabFeatureFlagChangesPending(e, !0));
+                    if (!b(t) && !N(t) || b(t) && Be(s) && b(n)) return void this._setCrossTabFeatureFlagChangesPending(e, !0);
+                    var _ = N(t) ? t : {},
+                        p = N(n) ? n : {};
+                    new Set([...Object.keys(_), ...Object.keys(s)]).forEach(g => {
+                        g in _ == g in s && ht(_[g], s[g]) || c.add(g)
+                    }), c.forEach(g => {
+                        g in p == g in s && ht(p[g], s[g]) && c.delete(g)
+                    })
+                }
+                c.size ? this._setCrossTabFeatureFlagChangesPending(e, c) : this._pendingCrossTabFeatureFlagChanges.delete(e)
+            }
+        }
+    }
+    _saveDebounceMs() {
+        var e, t = (e = this._config) == null ? void 0 : e.persistence_save_debounce_ms;
+        return de(t) && t > 0 ? t : 0
+    }
+    _rememberCurrentCookieProperties(e) {
+        if (this._config.cookieWinsOnConflict && this._config.persistence.toLowerCase() === "localstorage+cookie")
+            if (e) try {
+                var t = $s(e, this._config.cookie_persisted_properties || []),
+                    s = $n(t, this._config.cookie_persisted_properties || []),
+                    r = JSON.stringify(t) + "|" + JSON.stringify(s),
+                    n = re._get(this._name) || void 0;
+                n && Ds(this._name, n) === r && (this._lastSeenCookiePropertiesFingerprint = r, this._lastSeenMainCookieValue = n)
+            } catch {} else try {
+                var o = re._get(this._name) || void 0;
+                this._lastSeenCookiePropertiesFingerprint = o ? Ds(this._name, o) : void 0, this._lastSeenMainCookieValue = o
+            } catch {}
+    }
+    syncCookieProperties() {
+        return this._syncCookieProperties(this._config)
+    }
+    _syncCookieProperties(e, t) {
+        if (t === void 0 && (t = !1), this._disabled && !t || this._cookieSyncSuppressed || !e.cookieWinsOnConflict || e.persistence.toLowerCase() !== "localstorage+cookie") return !1;
+        var s;
+        try {
+            s = re._get(this._name) || void 0
+        } catch {}
+        if (!s || s === this._lastSeenMainCookieValue) return !1;
+        var r, n = Ds(this._name, s);
+        try {
+            r = Os(JSON.parse(s))
+        } catch {
+            return !1
+        }
+        if ((re._get(this._name) || void 0) !== s) return !1;
+        this._lastSeenCookiePropertiesFingerprint = n, this._lastSeenMainCookieValue = s;
+        var o = Dn(this._name, s),
+            a = [...Ct, ...o.properties],
+            l = {};
+        if (Object.keys(r).forEach(m => {
+                var v = r[m];
+                (b(v) || ce(v) || v === "" || m === H && v !== he && v !== Ce) && (l[m] = !0, delete r[m])
+            }), Be(r)) return !1;
+        var c = Se in r || r[H] === he || r[H] === Ce,
+            u = this.props,
+            d = u[Se],
+            h = u[H],
+            _ = Z({}, u);
+        [...Ct, ...e.cookie_persisted_properties || []].forEach(m => {
+            if (a.indexOf(m) !== -1 && !(m in r) && !l[m] && (c || m !== Se && m !== H)) {
+                var v = _[m];
+                !o.isValid && Ct.indexOf(m) !== -1 && (v === !1 || v === 0) || delete _[m]
+            }
+        }), this.props = Z(_, r), ot.forEach(m => {
+            var v = m in this.props;
+            m in u === v && ht(u[m], this.props[m]) || (v ? this._markPendingCrossTabFeatureFlagChanges(m, u[m], this.props[m]) : this._setCrossTabFeatureFlagChangesPending(m, !0))
+        }), !c || H in r || H in this.props || this._setProp(H, he);
+        var p = this.props[Se],
+            g = this.props[H];
+        return !c || p === d && g === h || (this._localIdentityChangePending = !0, this._cookieIdentityChangePending = !0, G._set($i(this._name), !0), this._deleteProp(Oe), this._deleteProp(je), this._deleteProp(ke), this._deleteProp(gt), this._deleteProp(Ge), this._deleteProp(vt), this._deleteProp(ct), this._deleteProp(Vt), this._deleteProp(at), g === he && (h === Ce || r[H] === he || !b(d) && p !== d) && (Zn(this.props, r), this._deleteProp(et)), g === Ce ? this.props.$user_id = p : delete this.props.$user_id, this._deleteProp(Bt)), !0
+    }
+    consumeCookieIdentityChange() {
+        var e = $i(this._name),
+            t = this._cookieIdentityChangePending || !!G._get(e);
+        return this._cookieIdentityChangePending = !1, t && G._remove(e), t
+    }
+    _beginCookieSyncSuppression(e) {
+        return e === void 0 && (e = !1), !(this._cookieSyncSuppressed || this._disabled && !e || !this._config.cookieWinsOnConflict || this._config.persistence.toLowerCase() !== "localstorage+cookie" || (this._cookieSyncSuppressed = !0, 0))
+    }
+    _publishSuppressedCookieSnapshot() {
+        this._cookieSyncSuppressed && (b(this._pendingSaveTimer) || (clearTimeout(this._pendingSaveTimer), this._pendingSaveTimer = void 0), delete this._slotState[me], this._writeNow(!0))
+    }
+    _endCookieSyncSuppression(e) {
+        if (e === void 0 && (e = !0), this._cookieSyncSuppressed) try {
+            e ? this._publishSuppressedCookieSnapshot() : b(this._pendingSaveTimer) || (clearTimeout(this._pendingSaveTimer), this._pendingSaveTimer = void 0)
+        } finally {
+            this._cookieSyncSuppressed = !1
+        }
+    }
+    isDisabled() {
+        return !!this._disabled
+    }
+    _buildStorage(e) {
+        sc.indexOf(e.persistence.toLowerCase()) === -1 && (C.critical("Unknown persistence type " + e.persistence + "; falling back to localStorage+cookie"), e.persistence = "localStorage+cookie");
+        var t, s = function(a, l) {
+                a === void 0 && (a = []), l === void 0 && (l = !1);
+                var c = [...Ct, ...a];
+                return S({}, j, {
+                    _parse(u) {
+                        try {
+                            var d, h = {};
+                            try {
+                                d = re._get(u) || void 0, h = d ? Os(JSON.parse(d)) : {}
+                            } catch {}
+                            var _, p = JSON.parse(j._get(u) || "{}");
+                            if (l) {
+                                var g = Dn(u, d),
+                                    m = [...Ct, ...g.properties],
+                                    v = {};
+                                Object.keys(h).forEach(M => {
+                                    var A = h[M];
+                                    ce(A) || A === "" || M === H && A !== he && A !== Ce || (v[M] = A)
+                                });
+                                var y = Se in v || v[H] === he || v[H] === Ce;
+                                if (Object.keys(v).length > 0) {
+                                    var w, E = p[Se],
+                                        x = (w = p[H]) !== null && w !== void 0 ? w : he;
+                                    c.forEach(M => {
+                                        if (m.indexOf(M) !== -1 && !(M in h) && (y || M !== Se && M !== H)) {
+                                            var A = p[M];
+                                            !g.isValid && Ct.indexOf(M) !== -1 && (A === !1 || A === 0) || delete p[M]
+                                        }
+                                    }), !y || H in h || H in p || (p[H] = he), !y || (Se in v ? v[Se] : p[Se]) === E && (H in v ? v[H] : p[H]) === x || (Ms.forEach(M => delete p[M]), v[H] === Ce && Se in v ? p.$user_id = v[Se] : delete p.$user_id, v[H] !== Ce && (delete p[qo], delete p[et]), delete p.__alias)
+                                }
+                                _ = Z(p, v)
+                            } else _ = Z(h, p);
+                            return j._set(u, _), _
+                        } catch {}
+                        return null
+                    },
+                    _set(u, d, h, _, p, g) {
+                        var m = j._set(u, d, void 0, void 0, g);
+                        try {
+                            var v = $s(d, a);
+                            if (Object.keys(v).length) {
+                                if (l) {
+                                    var y = hs(u),
+                                        w = $n(v, a);
+                                    if (re._set(y, w, h, _, p, g), re._get(y) !== JSON.stringify(w)) {
+                                        re._remove(y, _);
+                                        var E = $s(d);
+                                        return re._set(u, E, h, _, p, g), m
+                                    }
+                                }
+                                re._set(u, v, h, _, p, g)
+                            }
+                        } catch (x) {
+                            j._error(x)
+                        }
+                        return m
+                    },
+                    _remove(u, d) {
+                        try {
+                            f == null || f.localStorage.removeItem(u), re._remove(u, d), re._remove(hs(u), d)
+                        } catch (h) {
+                            j._error(h)
+                        }
+                    }
+                })
+            }(e.cookie_persisted_properties || [], e.cookieWinsOnConflict),
+            r = !1,
+            n = !1,
+            o = e.persistence.toLowerCase();
+        return o === "localstorage" && j._is_supported() ? (t = j, n = !0) : o === "localstorage+cookie" && s._is_supported() ? (t = s, n = !0, r = !0) : o === "sessionstorage" && G._is_supported() ? t = G : o === "memory" ? t = Rr : o === "cookie" && re._is_supported() ? (t = re, r = !0) : s._is_supported() ? (t = s, n = !0, r = !0) : re._is_supported() ? (t = re, r = !0) : t = Rr, this._splitStorageEligible = n, this._storesIdentityInCookie = r, t
+    }
+    _groupEntryName(e) {
+        return this._name + "__" + e
+    }
+    _resolveSplitStorage(e) {
+        return this._splitStorageEligible && !!e.split_storage
+    }
+    properties() {
+        var e = {};
+        return W(this.props, (t, s) => {
+            var r = we(s);
+            if (!r || r.exposure === "event") {
+                if (r != null && r.shouldSkipFromEventProperties != null && r.shouldSkipFromEventProperties(t)) return;
+                e[s] = t
+            }
+        }), e
+    }
+    load(e) {
+        if (e === void 0 && (e = !1), !this._disabled || e) {
+            var t = this._config.cookieWinsOnConflict && this._config.persistence.toLowerCase() === "localstorage+cookie",
+                s = t ? j._parse(this._name) : null,
+                r = {};
+            if (t) try {
+                W(r = Os(re._parse(this._name)), (p, g) => {
+                    (b(p) || ce(p) || p === "") && delete r[g]
+                })
+            } catch {}
+            var n = this._storage._parse(this._name);
+            if (n && (this.props = Z({}, n)), this._splitStorage && this._loadGroupEntries(), t && n) {
+                var o, a, l = s == null ? void 0 : s[Se],
+                    c = (o = s == null ? void 0 : s[H]) !== null && o !== void 0 ? o : he,
+                    u = n[Se],
+                    d = (a = n[H]) !== null && a !== void 0 ? a : he;
+                if (u !== l || d !== c) {
+                    this._cookieIdentityChangePending = !0, G._set($i(this._name), !0);
+                    var h = Z({}, this.props);
+                    Ms.forEach(p => delete h[p]), d === he && (c === Ce || r[H] === he || !b(l) && u !== l) && (Zn(h, r), delete h[et]), this.props = h;
+                    var _ = new Set;
+                    Ms.forEach(p => {
+                        var g, m = (g = we(p)) == null ? void 0 : g.storageGroup;
+                        m && _.add(m)
+                    }), _.forEach(p => {
+                        var g = {};
+                        W(this.props, (m, v) => {
+                            var y;
+                            ((y = we(v)) == null ? void 0 : y.storageGroup) === p && (g[v] = m)
+                        }), Be(g) ? (j._remove(this._groupEntryName(p)), this._slotState[p] = {}) : j._set(this._groupEntryName(p), g) && (this._slotState[p] = {
+                            persisted: !0,
+                            fingerprint: this._entryFingerprint(g, p)
+                        })
+                    })
+                }
+            }
+            G._get($i(this._name)) && (this._cookieIdentityChangePending = !0)
+        }
+    }
+    _loadGroupEntries() {
+        for (var e of ni) {
+            var t = j._parse(this._groupEntryName(e));
+            if (t && !Be(t)) {
+                var s = this._slotWriteState(e);
+                s.persisted = !0, this._mainCarriesGroupKey(e) || (s.fingerprint = this._entryFingerprint(t, e)), this._groupEntryIsStale(e, t) || Z(this.props, t)
+            }
+        }
+    }
+    _mainCarriesGroupKey(e) {
+        return Object.keys(this.props).some(t => {
+            var s;
+            return ((s = we(t)) == null ? void 0 : s.storageGroup) === e
+        })
+    }
+    _groupEntryIsStale(e, t) {
+        var s = ic[e];
+        if (!s) return !1;
+        var r = t[s],
+            n = this.props[s];
+        return de(r) && de(n) && n > r
+    }
+    refreshKey(e) {
+        var t;
+        if (!(this._disabled || e === Ae && this._facebookClickIdChangePending)) {
+            var s = this._splitStorage ? (t = we(e)) == null ? void 0 : t.storageGroup : void 0,
+                r = s ? j._parse(this._groupEntryName(s)) : this._storage._parse(this._name);
+            if (r && e in r) this._setProp(e, r[e], !1);
+            else {
+                if (s) {
+                    var n = this._storage._parse(this._name);
+                    if (n && e in n) return void this._setProp(e, n[e], !1)
+                }
+                this._deleteProp(e, !1)
+            }
+        }
+    }
+    save() {
+        if (!this._disabled) {
+            var e = this._saveDebounceMs();
+            e > 0 ? b(this._pendingSaveTimer) && (this._pendingSaveTimer = setTimeout(() => {
+                this._pendingSaveTimer = void 0, this._writeNow()
+            }, e)) : this._writeNow()
+        }
+    }
+    flush() {
+        b(this._pendingSaveTimer) || (clearTimeout(this._pendingSaveTimer), this._pendingSaveTimer = void 0, this._writeNow())
+    }
+    _writeNow(e) {
+        if (e === void 0 && (e = !1), !(this._disabled || this._cookieSyncSuppressed && !e)) {
+            e || (this.syncCookieProperties(), this._facebookClickIdChangePending || this._config.cookieWinsOnConflict && this._config.persistence.toLowerCase() === "localstorage+cookie" || this.refreshKey(Ae));
+            var t = !e && !this._storageMigrationInProgress;
+            t || (this._crossTabFeatureFlagIdentityMismatch = !1);
+            var s = !!t && this._reconcileCrossTabFeatureFlagPropertiesBeforeWrite();
+            if (this._crossTabFeatureFlagIdentityMismatch) this._config.debug && C.warn("skipping persistence write because storage belongs to a different distinct ID");
+            else {
+                if (this._splitStorage) return this._writeNowSplit(), void(s && this._crossTabFeatureFlagHandlers.forEach(n => n()));
+                var r = this._writeEntry(this._storage, this._name, this.props, me);
+                r === "written" && this._rememberCurrentCookieProperties(this.props), r !== "failed" && (this._pendingCrossTabFeatureFlagChanges.clear(), this._localIdentityChangePending = !1, this._facebookClickIdChangePending = !1), s && this._crossTabFeatureFlagHandlers.forEach(n => n())
+            }
+        }
+    }
+    _writeNowSplit() {
+        var e = this,
+            t = this._partitionProps(),
+            s = t.main,
+            r = t.groups,
+            n = this._writeEntry(this._storage, this._name, s, me);
+        n === "written" && this._rememberCurrentCookieProperties(s), n !== "failed" && (this._localIdentityChangePending = !1, this._facebookClickIdChangePending = !1, ot.forEach(l => {
+            var c;
+            (c = we(l)) != null && c.storageGroup || this._pendingCrossTabFeatureFlagChanges.delete(l)
+        }));
+        var o = function(l) {
+            var c, u = r[l];
+            if (Be(u) && ((c = e._slotState[l]) == null || !c.persisted)) return ot.forEach(h => {
+                var _;
+                ((_ = we(h)) == null ? void 0 : _.storageGroup) === l && e._pendingCrossTabFeatureFlagChanges.delete(h)
+            }), 1;
+            var d = e._writeEntry(j, e._groupEntryName(l), u, l);
+            d !== "failed" && ot.forEach(h => {
+                var _ = we(h);
+                (_ == null ? void 0 : _.storageGroup) !== l || d !== "written" && _.volatile || e._pendingCrossTabFeatureFlagChanges.delete(h)
+            })
+        };
+        for (var a of ni) o(a)
+    }
+    _partitionProps() {
+        var e = {},
+            t = {
+                flags: {},
+                surveys: {}
+            };
+        return W(this.props, (s, r) => {
+            var n, o = (n = we(r)) == null ? void 0 : n.storageGroup;
+            o ? t[o][r] = s : e[r] = s
+        }), {
+            main: e,
+            groups: t
+        }
+    }
+    _entryFingerprint(e, t) {
+        if (t === me) return JSON.stringify(e) + "|" + this._expire_days + "|" + this._cross_subdomain + "|" + this._secure;
+        var s = {};
+        return W(e, (r, n) => {
+            var o;
+            s[n] = (o = we(n)) != null && o.volatile ? "__volatile__" : r
+        }), JSON.stringify(s)
+    }
+    _writeEntry(e, t, s, r) {
+        var n, o = this._slotWriteState(r);
+        if (r !== me && !o.dirty && !b(o.fingerprint)) return "skipped";
+        try {
+            if ((n = this._entryFingerprint(s, r)) === o.fingerprint) return o.dirty = !1, "skipped"
+        } catch {
+            n = void 0
+        }
+        return e._set(t, s, this._expire_days, this._cross_subdomain, this._secure, this._config.debug) ? (o.dirty = !1, r !== me && (o.persisted = !0), b(n) || (o.fingerprint = n), this._splitStorageEligible && (o.storageValue = j._get(t)), "written") : (this._config.debug && C.warn('failed to persist storage entry "' + t + '"; will retry on next save'), "failed")
+    }
+    remove(e) {
+        var t = (e === void 0 ? {} : e).keepGroupEntries,
+            s = t !== void 0 && t;
+        if (this._markAllCrossTabFeatureFlagChangesPending(), b(this._pendingSaveTimer) || (clearTimeout(this._pendingSaveTimer), this._pendingSaveTimer = void 0), this._storage._remove(this._name, !1), this._storage._remove(this._name, !0), !s && this._ownsSplitStorage)
+            for (var r of ni) j._remove(this._groupEntryName(r));
+        s ? delete this._slotState[me] : this._slotState = {}, this._lastSeenCookiePropertiesFingerprint = void 0, this._lastSeenMainCookieValue = void 0
+    }
+    clear() {
+        this.remove(), this.props = {}
+    }
+    register_once(e, t, s) {
+        if (N(e)) {
+            this.syncCookieProperties(), b(t) && (t = "None"), this._expire_days = b(s) ? this._default_expiry : s;
+            var r = !1;
+            if (W(e, (n, o) => {
+                    this.props.hasOwnProperty(o) && this.props[o] !== t || (this._setProp(o, n), r = !0)
+                }), r) return this.save(), !0
+        }
+        return !1
+    }
+    register(e, t) {
+        if (N(e)) {
+            this.syncCookieProperties(), this._expire_days = b(t) ? this._default_expiry : t;
+            var s = !1;
+            if (W(e, (r, n) => {
+                    e.hasOwnProperty(n) && (this.props[n] !== r || N(r) || R(r)) && (this._setProp(n, r), s = !0)
+                }), s) return this.save(), !0
+        }
+        return !1
+    }
+    unregister(e) {
+        this.syncCookieProperties();
+        var t = typeof e == "string" ? [e] : e,
+            s = !1;
+        for (var r of t) r in this.props && (this._deleteProp(r), s = !0);
+        s && this.save()
+    }
+    update_campaign_params() {
+        var e = k == null ? void 0 : k.URL;
+        if (e !== this._campaign_params_url) {
+            var t = Ka(this._config.custom_campaign_params, this._config.mask_personal_data_properties, this._config.custom_personal_data_properties),
+                s = !Be(rn(t));
+            return s && this.register(t), this._campaign_params_url = e, s ? t : void 0
+        }
+    }
+    update_search_keyword() {
+        var e;
+        this.register((e = k == null ? void 0 : k.referrer) ? Qa(e) : {})
+    }
+    update_referrer_info() {
+        var e;
+        this.register_once({
+            $referrer: Ya(),
+            $referring_domain: k != null && k.referrer && ((e = Zt(k.referrer)) == null ? void 0 : e.host) || gs
+        }, void 0)
+    }
+    set_initial_person_info() {
+        if (!this.props[_r] && !this.props[pr]) {
+            var e = Za(this._config.mask_personal_data_properties, this._config.custom_personal_data_properties, this._config.disable_capture_url_hashes);
+            this.register_once({
+                [Nt]: this._storesIdentityInCookie ? {
+                    r: Di(e.r),
+                    u: e.u ? Di(e.u) : void 0
+                } : e
+            }, void 0)
+        }
+    }
+    get_initial_props() {
+        var e = {};
+        W([pr, _r], r => {
+            var n = this.props[r];
+            n && W(n, function(o, a) {
+                e["$initial_" + yr(a)] = o
+            })
+        });
+        var t = this.props[Nt];
+        if (t) {
+            var s = function(r, n) {
+                n === void 0 && (n = !1);
+                var o = Xa(r, n),
+                    a = {};
+                return W(o, function(l, c) {
+                    a["$initial_" + yr(c)] = l
+                }), a
+            }(t, this._config.disable_capture_url_hashes);
+            Z(e, s)
+        }
+        return e
+    }
+    safe_merge(e) {
+        return W(this.props, function(t, s) {
+            s in e || (e[s] = t)
+        }), e
+    }
+    update_config(e, t, s) {
+        var r = e.persistence !== t.persistence,
+            n = !((g, m) => {
+                if (g.length !== m.length) return !1;
+                var v = [...g].sort(),
+                    y = [...m].sort();
+                return v.every((w, E) => w === y[E])
+            })(e.cookie_persisted_properties || [], t.cookie_persisted_properties || []),
+            o = r || n,
+            a = e.cookieWinsOnConflict !== t.cookieWinsOnConflict,
+            l = e.disable_persistence || !!s,
+            c = !!this._disabled && !l;
+        l || this._syncCookieProperties(t, c), this._config = e, !l && (r || n || a) && (this._lastSeenCookiePropertiesFingerprint = void 0, this._lastSeenMainCookieValue = void 0, this._syncCookieProperties(S({}, e, {
+            cookie_persisted_properties: t.cookie_persisted_properties
+        }), c));
+        var u = o || a ? this._buildStorage(e) : this._storage;
+        this._truncateExistingPersonInfoForCookie();
+        var d = this._resolveSplitStorage(e),
+            h = o || d !== this._splitStorage,
+            _ = !l && (h || e.cross_subdomain_cookie !== this._cross_subdomain || e.secure_cookie !== this._secure) && this._beginCookieSyncSuppression(c);
+        this._storageMigrationInProgress = h;
+        try {
+            if (this._default_expiry = this._expire_days = e.cookie_expiration, this.set_disabled(l), this.set_cross_subdomain(e.cross_subdomain_cookie), this.set_secure(e.secure_cookie), h) {
+                var p = this.props;
+                this.clear(), this._storage = u, this._splitStorage = d, this.props = p, this.save()
+            } else a && (this._storage = u, l || (delete this._slotState[me], this._writeNow()))
+        } finally {
+            this._storageMigrationInProgress = !1, _ && this._endCookieSyncSuppression()
+        }
+    }
+    _truncateExistingPersonInfoForCookie() {
+        var e = this.props[Nt];
+        if (this._storesIdentityInCookie && N(e) && typeof e.r == "string") {
+            var t = Di(e.r),
+                s = typeof e.u == "string" ? Di(e.u) : e.u;
+            t === e.r && s === e.u || this._setProp(Nt, S({}, e, {
+                r: t,
+                u: s
+            }))
+        }
+    }
+    set_disabled(e) {
+        this._disabled = e, this._disabled ? this.remove() : this.save()
+    }
+    set_cross_subdomain(e) {
+        e !== this._cross_subdomain && (this._cross_subdomain = e, this.remove({
+            keepGroupEntries: !0
+        }), this.save())
+    }
+    set_secure(e) {
+        e !== this._secure && (this._secure = e, this.remove({
+            keepGroupEntries: !0
+        }), this.save())
+    }
+    set_event_timer(e, t) {
+        var s = this.props[hi] || {};
+        s[e] = t, this._setProp(hi, s), this.save()
+    }
+    remove_event_timer(e) {
+        var t = this.props[hi] || {},
+            s = t[e];
+        return b(s) || (delete t[e], this._setProp(hi, t), this.save()), s
+    }
+    get_property(e) {
+        return this.props[e]
+    }
+    set_property(e, t) {
+        this._setProp(e, t), this.save()
+    }
+    _setProp(e, t, s) {
+        var r;
+        s === void 0 && (s = !0);
+        var n = this.props[e];
+        this.props[e] = t, s && (e !== Se && e !== H || n === t || (this._localIdentityChangePending = !0), e !== Ae || ht(n, t) || (this._facebookClickIdChangePending = !0), this._markPendingCrossTabFeatureFlagChanges(e, n, t), (r = we(e)) != null && r.volatile || this._markGroupDirty(e))
+    }
+    _deleteProp(e, t) {
+        t === void 0 && (t = !0), delete this.props[e], t && (Bs(e) && this._setCrossTabFeatureFlagChangesPending(e, !0), e === Ae && (this._facebookClickIdChangePending = !0), this._markGroupDirty(e))
+    }
+    _markGroupDirty(e) {
+        var t, s = (t = we(e)) == null ? void 0 : t.storageGroup;
+        s && (this._slotWriteState(s).dirty = !0)
+    }
+    _slotWriteState(e) {
+        return this._slotState[e] || (this._slotState[e] = {})
+    }
+}
+var $e = {
+        GZipJS: "gzip-js",
+        Base64: "base64"
+    },
+    oi = {
+        Activation: "events",
+        Cancellation: "cancelEvents"
+    },
+    Ns = {
+        Popover: "popover",
+        API: "api",
+        Widget: "widget"
+    },
+    ut = {
+        SHOWN: "survey shown",
+        DISMISSED: "survey dismissed",
+        SENT: "survey sent"
+    },
+    qs = {
+        SURVEY_ID: "$survey_id",
+        SURVEY_ITERATION: "$survey_iteration",
+        SURVEY_LAST_SEEN_DATE: "$survey_last_seen_date"
+    },
+    Or = {
+        Popover: "popover",
+        Inline: "inline"
+    };
+
+function Bi(i) {
+    var e = !0;
+    return {
+        dispose() {
+            if (e) {
+                e = !1;
+                var t = i();
+                t && Pe(t.then) && t.then(void 0, () => {})
+            }
+        }
+    }
+}
+var rc = {
+        SHOWN: "product tour shown"
+    },
+    Xn = {
+        TOUR_LAST_SEEN_DATE: "$product_tour_last_seen_date",
+        TOUR_TYPE: "$product_tour_type"
+    },
+    eo = ae("[RateLimiter]");
+class nc {
+    constructor(e) {
+        this.serverLimits = {}, this.lastEventRateLimited = !1, this.checkForLimiting = t => {
+            var s = t.text;
+            if (s && s.length) try {
+                (JSON.parse(s).quota_limited || []).forEach(r => {
+                    eo.info((r || "events") + " is quota limited."), this.serverLimits[r] = new Date().getTime() + 6e4
+                })
+            } catch (r) {
+                return void eo.warn('could not rate limit - continuing. Error: "' + (r == null ? void 0 : r.message) + '"', {
+                    text: s
+                })
+            }
+        }, this.instance = e, this.lastEventRateLimited = this.clientRateLimitContext(!0).isRateLimited
+    }
+    get captureEventsPerSecond() {
+        var e;
+        return ((e = this.instance.config.rate_limiting) == null ? void 0 : e.events_per_second) || 10
+    }
+    get captureEventsBurstLimit() {
+        var e;
+        return Math.max(((e = this.instance.config.rate_limiting) == null ? void 0 : e.events_burst_limit) || 10 * this.captureEventsPerSecond, this.captureEventsPerSecond)
+    }
+    clientRateLimitContext(e) {
+        var t, s, r;
+        e === void 0 && (e = !1);
+        var n = this.captureEventsBurstLimit,
+            o = this.captureEventsPerSecond,
+            a = new Date().getTime(),
+            l = (t = (s = this.instance.persistence) == null ? void 0 : s.get_property(hr)) !== null && t !== void 0 ? t : {
+                tokens: n,
+                last: a
+            };
+        l.tokens += (a - l.last) / 1e3 * o, l.last = a, l.tokens > n && (l.tokens = n);
+        var c = 1 > l.tokens;
+        if (c || e || (l.tokens = Math.max(0, l.tokens - 1)), c && !e) {
+            var u = (de(l.dropped) ? l.dropped : 0) + 1;
+            l.dropped = u, !this.lastEventRateLimited && this._captureWarning(u) && (l.dropped = 0)
+        }
+        return this.lastEventRateLimited = c, (r = this.instance.persistence) == null || r.set_property(hr, l), {
+            isRateLimited: c,
+            remainingTokens: l.tokens
+        }
+    }
+    _isPropertyAllowed(e) {
+        var t = this.instance.config.property_denylist;
+        return !R(t) || !t.includes(e)
+    }
+    _triggeringPage() {
+        var e;
+        if (this._isPropertyAllowed("$current_url") && this._isPropertyAllowed("$pathname") && ne != null && ne.pathname) return "" + ((e = ne.origin) !== null && e !== void 0 ? e : "") + ne.pathname
+    }
+    _captureWarning(e) {
+        var t, s, r = this.captureEventsBurstLimit,
+            n = this.captureEventsPerSecond,
+            o = this._triggeringPage(),
+            a = this._isPropertyAllowed("$session_id") ? (t = (s = this.instance).get_session_id) == null ? void 0 : t.call(s) : void 0,
+            l = [e + " event(s) dropped since the last warning", o ? "triggered on " + o : void 0, a ? "session " + a : void 0].filter(Boolean).join(", ");
+        return !!this.instance.capture("$$client_ingestion_warning", {
+            $$client_ingestion_warning_message: "posthog-js client rate limited: " + l + ". Config is set to " + n + " events per second and " + r + " events burst limit."
+        }, {
+            skip_client_rate_limiting: !0
+        })
+    }
+    isServerRateLimited(e) {
+        var t = this.serverLimits[e || "events"] || !1;
+        return t !== !1 && new Date().getTime() < t
+    }
+}
+var _t = ae("[RemoteConfig]");
+class tl {
+    constructor(e) {
+        this._instance = e
+    }
+    get remoteConfig() {
+        var e;
+        return (e = I._POSTHOG_REMOTE_CONFIG) == null || (e = e[this._instance.config.token]) == null ? void 0 : e.config
+    }
+    _loadRemoteConfigJs(e) {
+        var t, s;
+        (t = I.__PosthogExtensions__) != null && t.loadExternalDependency ? (s = I.__PosthogExtensions__) == null || s.loadExternalDependency == null || s.loadExternalDependency(this._instance, "remote-config", () => e(this.remoteConfig)) : e()
+    }
+    _loadRemoteConfigJSON(e) {
+        this._instance._send_request({
+            method: "GET",
+            url: this._instance.requestRouter.endpointFor("assets", "/array/" + this._instance.config.token + "/config"),
+            callback: e
+        })
+    }
+    load() {
+        try {
+            if (this.remoteConfig) return _t.info("Using preloaded remote config", this.remoteConfig), void this._onRemoteConfig(this.remoteConfig);
+            if (this._instance._shouldDisableFlags()) return void _t.warn("Remote config is disabled. Falling back to local config.");
+            this._loadRemoteConfigJs(e => {
+                if (!e) return _t.info("No config found after loading remote JS config. Falling back to JSON."), void this._loadRemoteConfigJSON(t => {
+                    this._onRemoteConfig(t.json, t)
+                });
+                this._onRemoteConfig(e)
+            })
+        } catch (e) {
+            _t.error("Error loading remote config", e), this._onRemoteConfig()
+        }
+    }
+    _onRemoteConfig(e, t) {
+        !e && t && (t.statusCode === 0 ? t.error || _t.warn("Failed to fetch remote config from PostHog.") : _t.error("Failed to fetch remote config from PostHog."));
+        try {
+            this._instance._onRemoteConfig(e ? {
+                ok: !0,
+                config: e
+            } : {
+                ok: !1
+            })
+        } catch (r) {
+            _t.error("Error applying remote config", r)
+        }
+        if ((e == null ? void 0 : e.hasFeatureFlags) !== !1 && !this._instance.config.advanced_disable_feature_flags_on_first_load) try {
+            var s;
+            (s = this._instance.featureFlags) == null || s.ensureFlagsLoaded()
+        } catch (r) {
+            _t.error("Error loading feature flags", r)
+        }
+    }
+}
+var Ve = Uint8Array,
+    Le = Uint16Array,
+    ti = Uint32Array,
+    ln = new Ve([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0]),
+    un = new Ve([0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 0, 0]),
+    to = new Ve([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]),
+    il = function(i, e) {
+        for (var t = new Le(31), s = 0; 31 > s; ++s) t[s] = e += 1 << i[s - 1];
+        var r = new ti(t[30]);
+        for (s = 1; 30 > s; ++s)
+            for (var n = t[s]; t[s + 1] > n; ++n) r[n] = n - t[s] << 5 | s;
+        return [t, r]
+    },
+    sl = il(ln, 2),
+    $r = sl[1];
+sl[0][28] = 258, $r[258] = 28;
+for (var io = il(un, 0)[1], rl = new Le(32768), oe = 0; 32768 > oe; ++oe) {
+    var Lt = (43690 & oe) >>> 1 | (21845 & oe) << 1;
+    rl[oe] = ((65280 & (Lt = (61680 & (Lt = (52428 & Lt) >>> 2 | (13107 & Lt) << 2)) >>> 4 | (3855 & Lt) << 4)) >>> 8 | (255 & Lt) << 8) >>> 1
+}
+var bi = function(i, e, t) {
+        for (var s = i.length, r = 0, n = new Le(e); s > r; ++r) ++n[i[r] - 1];
+        var o, a = new Le(e);
+        for (r = 0; e > r; ++r) a[r] = a[r - 1] + n[r - 1] << 1;
+        for (o = new Le(s), r = 0; s > r; ++r) o[r] = rl[a[i[r] - 1]++] >>> 15 - i[r];
+        return o
+    },
+    Ft = new Ve(288);
+for (oe = 0; 144 > oe; ++oe) Ft[oe] = 8;
+for (oe = 144; 256 > oe; ++oe) Ft[oe] = 9;
+for (oe = 256; 280 > oe; ++oe) Ft[oe] = 7;
+for (oe = 280; 288 > oe; ++oe) Ft[oe] = 8;
+var vs = new Ve(32);
+for (oe = 0; 32 > oe; ++oe) vs[oe] = 5;
+var oc = bi(Ft, 9),
+    ac = bi(vs, 5),
+    nl = function(i) {
+        return (i / 8 >> 0) + (7 & i && 1)
+    },
+    ol = function(i, e, t) {
+        (t == null || t > i.length) && (t = i.length);
+        var s = new(i instanceof Le ? Le : i instanceof ti ? ti : Ve)(t - e);
+        return s.set(i.subarray(e, t)), s
+    },
+    st = function(i, e, t) {
+        var s = e / 8 >> 0;
+        i[s] |= t <<= 7 & e, i[s + 1] |= t >>> 8
+    },
+    ai = function(i, e, t) {
+        var s = e / 8 >> 0;
+        i[s] |= t <<= 7 & e, i[s + 1] |= t >>> 8, i[s + 2] |= t >>> 16
+    },
+    zs = function(i, e) {
+        for (var t = [], s = 0; i.length > s; ++s) i[s] && t.push({
+            s,
+            f: i[s]
+        });
+        var r = t.length,
+            n = t.slice();
+        if (!r) return [new Ve(0), 0];
+        if (r == 1) {
+            var o = new Ve(t[0].s + 1);
+            return o[t[0].s] = 1, [o, 1]
+        }
+        t.sort(function(x, M) {
+            return x.f - M.f
+        }), t.push({
+            s: -1,
+            f: 25001
+        });
+        var a = t[0],
+            l = t[1],
+            c = 0,
+            u = 1,
+            d = 2;
+        for (t[0] = {
+                s: -1,
+                f: a.f + l.f,
+                l: a,
+                r: l
+            }; u != r - 1;) a = t[t[d].f > t[c].f ? c++ : d++], l = t[c != u && t[d].f > t[c].f ? c++ : d++], t[u++] = {
+            s: -1,
+            f: a.f + l.f,
+            l: a,
+            r: l
+        };
+        var h = n[0].s;
+        for (s = 1; r > s; ++s) n[s].s > h && (h = n[s].s);
+        var _ = new Le(h + 1),
+            p = Dr(t[u - 1], _, 0);
+        if (p > e) {
+            s = 0;
+            var g = 0,
+                m = p - e,
+                v = 1 << m;
+            for (n.sort(function(x, M) {
+                    return _[M.s] - _[x.s] || x.f - M.f
+                }); r > s; ++s) {
+                var y = n[s].s;
+                if (e >= _[y]) break;
+                g += v - (1 << p - _[y]), _[y] = e
+            }
+            for (g >>>= m; g > 0;) {
+                var w = n[s].s;
+                e > _[w] ? g -= 1 << e - _[w]++ - 1 : ++s
+            }
+            for (; s >= 0 && g; --s) {
+                var E = n[s].s;
+                _[E] == e && (--_[E], ++g)
+            }
+            p = e
+        }
+        return [new Ve(_), p]
+    },
+    Dr = function(i, e, t) {
+        return i.s == -1 ? Math.max(Dr(i.l, e, t + 1), Dr(i.r, e, t + 1)) : e[i.s] = t
+    },
+    so = function(i) {
+        for (var e = i.length; e && !i[--e];);
+        for (var t = new Le(++e), s = 0, r = i[0], n = 1, o = function(l) {
+                t[s++] = l
+            }, a = 1; e >= a; ++a)
+            if (i[a] == r && a != e) ++n;
+            else {
+                if (!r && n > 2) {
+                    for (; n > 138; n -= 138) o(32754);
+                    n > 2 && (o(n > 10 ? n - 11 << 5 | 28690 : n - 3 << 5 | 12305), n = 0)
+                } else if (n > 3) {
+                    for (o(r), --n; n > 6; n -= 6) o(8304);
+                    n > 2 && (o(n - 3 << 5 | 8208), n = 0)
+                }
+                for (; n--;) o(r);
+                n = 1, r = i[a]
+            } return [t.subarray(0, s), e]
+    },
+    li = function(i, e) {
+        for (var t = 0, s = 0; e.length > s; ++s) t += i[s] * e[s];
+        return t
+    },
+    Br = function(i, e, t) {
+        var s = t.length,
+            r = nl(e + 2);
+        i[r] = 255 & s, i[r + 1] = s >>> 8, i[r + 2] = 255 ^ i[r], i[r + 3] = 255 ^ i[r + 1];
+        for (var n = 0; s > n; ++n) i[r + n + 4] = t[n];
+        return 8 * (r + 4 + s)
+    },
+    ro = function(i, e, t, s, r, n, o, a, l, c, u) {
+        st(e, u++, t), ++r[256];
+        for (var d = zs(r, 15), h = d[0], _ = d[1], p = zs(n, 15), g = p[0], m = p[1], v = so(h), y = v[0], w = v[1], E = so(g), x = E[0], M = E[1], A = new Le(19), F = 0; y.length > F; ++F) A[31 & y[F]]++;
+        for (F = 0; x.length > F; ++F) A[31 & x[F]]++;
+        for (var $ = zs(A, 7), P = $[0], B = $[1], T = 19; T > 4 && !P[to[T - 1]]; --T);
+        var L, z, J, V, ee = c + 5 << 3,
+            ie = li(r, Ft) + li(n, vs) + o,
+            _e = li(r, h) + li(n, g) + o + 14 + 3 * T + li(A, P) + (2 * A[16] + 3 * A[17] + 7 * A[18]);
+        if (ie >= ee && _e >= ee) return Br(e, u, i.subarray(l, l + c));
+        if (st(e, u, 1 + (ie > _e)), u += 2, ie > _e) {
+            L = bi(h, _), z = h, J = bi(g, m), V = g;
+            var Ee = bi(P, B);
+            for (st(e, u, w - 257), st(e, u + 5, M - 1), st(e, u + 10, T - 4), u += 14, F = 0; T > F; ++F) st(e, u + 3 * F, P[to[F]]);
+            u += 3 * T;
+            for (var pe = [y, x], ge = 0; 2 > ge; ++ge) {
+                var te = pe[ge];
+                for (F = 0; te.length > F; ++F) st(e, u, Ee[ve = 31 & te[F]]), u += P[ve], ve > 15 && (st(e, u, te[F] >>> 5 & 127), u += te[F] >>> 12)
+            }
+        } else L = oc, z = Ft, J = ac, V = vs;
+        for (F = 0; a > F; ++F)
+            if (s[F] > 255) {
+                var ve;
+                ai(e, u, L[257 + (ve = s[F] >>> 18 & 31)]), u += z[ve + 257], ve > 7 && (st(e, u, s[F] >>> 23 & 31), u += ln[ve]);
+                var ue = 31 & s[F];
+                ai(e, u, J[ue]), u += V[ue], ue > 3 && (ai(e, u, s[F] >>> 5 & 8191), u += un[ue])
+            } else ai(e, u, L[s[F]]), u += z[s[F]];
+        return ai(e, u, L[256]), u + z[256]
+    },
+    lc = new ti([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]),
+    uc = function() {
+        for (var i = new ti(256), e = 0; 256 > e; ++e) {
+            for (var t = e, s = 9; --s;) t = (1 & t && 3988292384) ^ t >>> 1;
+            i[e] = t
+        }
+        return i
+    }(),
+    js = function(i, e, t) {
+        for (; t; ++e) i[e] = t, t >>>= 8
+    };
+
+function cc(i, e) {
+    e === void 0 && (e = {});
+    var t = function() {
+            var d = 4294967295;
+            return {
+                p(h) {
+                    for (var _ = d, p = 0; h.length > p; ++p) _ = uc[255 & _ ^ h[p]] ^ _ >>> 8;
+                    d = _
+                },
+                d() {
+                    return 4294967295 ^ d
+                }
+            }
+        }(),
+        s = i.length;
+    t.p(i);
+    var r, n, o, a, l, c = (a = 10 + ((r = e).filename && r.filename.length + 1 || 0), l = 8, function(d, h, _, p, g, m) {
+            var v = d.length,
+                y = new Ve(p + v + 5 * (1 + Math.floor(v / 7e3)) + g),
+                w = y.subarray(p, y.length - g),
+                E = 0;
+            if (!h || 8 > v)
+                for (var x = 0; v >= x; x += 65535) {
+                    var M = x + 65535;
+                    v > M ? E = Br(w, E, d.subarray(x, M)) : (w[x] = !0, E = Br(w, E, d.subarray(x, v)))
+                } else {
+                    for (var A = lc[h - 1], F = A >>> 13, $ = 8191 & A, P = (1 << _) - 1, B = new Le(32768), T = new Le(P + 1), L = Math.ceil(_ / 3), z = 2 * L, J = function(ks) {
+                            return (d[ks] ^ d[ks + 1] << L ^ d[ks + 2] << z) & P
+                        }, V = new ti(25e3), ee = new Le(288), ie = new Le(32), _e = 0, Ee = 0, pe = (x = 0, 0), ge = 0, te = 0; v > x; ++x) {
+                        var ve = J(x),
+                            ue = 32767 & x,
+                            qe = T[ve];
+                        if (B[ue] = qe, T[ve] = ue, x >= ge) {
+                            var Je = v - x;
+                            if ((_e > 7e3 || pe > 24576) && Je > 423) {
+                                E = ro(d, w, 0, V, ee, ie, Ee, pe, te, x - te, E), pe = _e = Ee = 0, te = x;
+                                for (var Q = 0; 286 > Q; ++Q) ee[Q] = 0;
+                                for (Q = 0; 30 > Q; ++Q) ie[Q] = 0
+                            }
+                            var le = 2,
+                                fe = 0,
+                                Me = $,
+                                ye = ue - qe & 32767;
+                            if (Je > 2 && ve == J(x - ye))
+                                for (var Qe = Math.min(F, Je) - 1, yt = Math.min(32767, x), Te = Math.min(258, Je); yt >= ye && --Me && ue != qe;) {
+                                    if (d[x + le] == d[x + le - ye]) {
+                                        for (var Ue = 0; Te > Ue && d[x + Ue] == d[x + Ue - ye]; ++Ue);
+                                        if (Ue > le) {
+                                            if (le = Ue, fe = ye, Ue > Qe) break;
+                                            var xl = Math.min(ye, Ue - 2),
+                                                cn = 0;
+                                            for (Q = 0; xl > Q; ++Q) {
+                                                var Es = x - ye + Q + 32768 & 32767,
+                                                    dn = Es - B[Es] + 32768 & 32767;
+                                                dn > cn && (cn = dn, qe = Es)
+                                            }
+                                        }
+                                    }
+                                    ye += (ue = qe) - (qe = B[ue]) + 32768 & 32767
+                                }
+                            if (fe) {
+                                V[pe++] = 268435456 | $r[le] << 18 | io[fe];
+                                var hn = 31 & $r[le],
+                                    _n = 31 & io[fe];
+                                Ee += ln[hn] + un[_n], ++ee[257 + hn], ++ie[_n], ge = x + le, ++_e
+                            } else V[pe++] = d[x], ++ee[d[x]]
+                        }
+                    }
+                    E = ro(d, w, !0, V, ee, ie, Ee, pe, te, x - te, E)
+                }
+            return ol(y, 0, p + nl(E) + g)
+        }(n = i, (o = e).level == null ? 6 : o.level, o.mem == null ? Math.ceil(1.5 * Math.max(8, Math.min(13, Math.log(n.length)))) : 12 + o.mem, a, l)),
+        u = c.length;
+    return function(d, h) {
+        var _ = h.filename;
+        if (d[0] = 31, d[1] = 139, d[2] = 8, d[8] = 2 > h.level ? 4 : h.level == 9 ? 2 : 0, d[9] = 3, h.mtime != 0 && js(d, 4, Math.floor(new Date(h.mtime || Date.now()) / 1e3)), _) {
+            d[3] = 8;
+            for (var p = 0; _.length >= p; ++p) d[p + 10] = _.charCodeAt(p)
+        }
+    }(c, e), js(c, u - 8, t.d()), js(c, u - 4, s), c
+}
+var dc = !!mr || !!Kr,
+    al = "text/plain",
+    Ki = !1,
+    ll = (i, e) => {
+        var t = i.split("#"),
+            s = t[1],
+            r = t[0].split("?"),
+            n = r[0],
+            o = r[1];
+        if (!o) return i;
+        var a = o.split("&").filter(l => l.split("=")[0] !== e).join("&");
+        return n + (a ? "?" + a : "") + (s ? "#" + s : "")
+    },
+    Ii = function(i, e, t) {
+        var s;
+        t === void 0 && (t = !0);
+        var r = i.split("?"),
+            n = r[0],
+            o = r[1],
+            a = S({}, e),
+            l = (s = o == null ? void 0 : o.split("&").map(u => {
+                var d, h = u.split("="),
+                    _ = h[0],
+                    p = t && (d = a[_]) !== null && d !== void 0 ? d : h[1];
+                return delete a[_], _ + "=" + p
+            })) !== null && s !== void 0 ? s : [],
+            c = function(u, d) {
+                var h, _;
+                d === void 0 && (d = "&");
+                var p = [];
+                return W(u, function(g, m) {
+                    b(g) || b(m) || m === "undefined" || (h = encodeURIComponent((v => v instanceof File)(g) ? g.name : g.toString()), _ = encodeURIComponent(m), p[p.length] = _ + "=" + h)
+                }), p.join(d)
+            }(a);
+        return c && l.push(c), l.length > 0 ? n + "?" + l.join("&") : n
+    },
+    Vs = i => {
+        if (i._encodedBody) return i._encodedBody;
+        var e = i.data,
+            t = i.compression;
+        if (e) {
+            if (t === $e.GZipJS) {
+                var s = cc(function(a, l) {
+                    var c = a.length;
+                    if (typeof TextEncoder < "u") return new TextEncoder().encode(a);
+                    for (var u = new Ve(a.length + (a.length >>> 1)), d = 0, h = function(m) {
+                            u[d++] = m
+                        }, _ = 0; c > _; ++_) {
+                        if (d + 5 > u.length) {
+                            var p = new Ve(d + 8 + (c - _ << 1));
+                            p.set(u), u = p
+                        }
+                        var g = a.charCodeAt(_);
+                        128 > g ? h(g) : 2048 > g ? (h(192 | g >>> 6), h(128 | 63 & g)) : g > 55295 && 57344 > g ? (h(240 | (g = 65536 + (1047552 & g) | 1023 & a.charCodeAt(++_)) >>> 18), h(128 | g >>> 12 & 63), h(128 | g >>> 6 & 63), h(128 | 63 & g)) : (h(224 | g >>> 12), h(128 | g >>> 6 & 63), h(128 | 63 & g))
+                    }
+                    return ol(u, 0, d)
+                }(zt(e)), {
+                    mtime: 0
+                });
+                return {
+                    contentType: al,
+                    body: s.buffer.slice(s.byteOffset, s.byteOffset + s.byteLength),
+                    estimatedSize: s.byteLength
+                }
+            }
+            if (t === $e.Base64) {
+                var r = function(a) {
+                        return a && btoa(encodeURIComponent(a).replace(/%([0-9A-F]{2})/g, (l, c) => String.fromCharCode(parseInt(c, 16))))
+                    }(zt(e)),
+                    n = (a => "data=" + encodeURIComponent(typeof a == "string" ? a : zt(a)))(r);
+                return {
+                    contentType: "application/x-www-form-urlencoded",
+                    body: n,
+                    estimatedSize: new Blob([n]).size
+                }
+            }
+            var o = zt(e);
+            return {
+                contentType: "application/json",
+                body: o,
+                estimatedSize: new Blob([o]).size
+            }
+        }
+    },
+    ul = i => {
+        var e, t, s = () => i.transport === "sendBeacon" ? {
+            url: Ii(i.url, {
+                compression: $e.Base64
+            }),
+            encodedBody: Vs(S({}, i, {
+                compression: $e.Base64,
+                _encodedBody: void 0
+            }))
+        } : {
+            url: ll(i.url, "compression"),
+            encodedBody: Vs(S({}, i, {
+                compression: void 0,
+                _encodedBody: void 0
+            }))
+        };
+        try {
+            e = Vs(i)
+        } catch (r) {
+            if (Fn(i.compression, Xt(i.url, "compression"))) return C.error("Failed to gzip request body, sending uncompressed payload", r), s();
+            throw r
+        }
+        return e && Fn(i.compression, Xt(i.url, "compression")) && !((t = e.body) instanceof ArrayBuffer ? Pr(new Uint8Array(t)) : ArrayBuffer.isView(t) && Pr(new Uint8Array(t.buffer, t.byteOffset, t.byteLength))) ? (Ki = !0, s()) : {
+            url: i.url,
+            encodedBody: e
+        }
+    },
+    cl = i => {
+        try {
+            return ul(i)
+        } catch (e) {
+            return C.error(e), void(i.callback == null || i.callback({
+                statusCode: 0,
+                error: e
+            }))
+        }
+    },
+    hc = function() {
+        var i = X(function*(e) {
+            var t = zt(e.data),
+                s = yield function(n, o, a) {
+                    return Fr.apply(this, arguments)
+                }(t, Y.DEBUG, {
+                    rethrow: !0
+                });
+            if (!s) return e;
+            var r = yield s.arrayBuffer();
+            return S({}, e, {
+                _encodedBody: {
+                    contentType: al,
+                    body: r,
+                    estimatedSize: r.byteLength
+                }
+            })
+        });
+        return function(e) {
+            return i.apply(this, arguments)
+        }
+    }(),
+    _c = /Failed to fetch|NetworkError|Load failed/i,
+    dl = i => (i == null ? void 0 : i.name) === "TypeError" && _c.test((i == null ? void 0 : i.message) || ""),
+    hl = i => {
+        var e = cl(i);
+        if (e) {
+            var t = e.url,
+                s = e.encodedBody,
+                r = s ?? {},
+                n = r.contentType,
+                o = r.body,
+                a = r.estimatedSize,
+                l = new Headers;
+            W(i.headers, function(p, g) {
+                l.append(g, p)
+            }), n && l.append("Content-Type", n);
+            var c = null,
+                u = !1;
+            if (vn) {
+                var d = new vn;
+                c = {
+                    signal: d.signal,
+                    timeout: setTimeout(() => {
+                        var p;
+                        u = !0, d.abort(ya("AbortError", "PostHog request timed out" + ((p = i.timeout) ? " after " + p + "ms" : "")))
+                    }, i.timeout)
+                }
+            }
+            var h = p => {
+                u && (p == null ? void 0 : p.name) === "AbortError" || dl(p) ? C.warn(p) : C.error(p), i.callback == null || i.callback({
+                    statusCode: 0,
+                    error: p
+                })
+            };
+            try {
+                var _;
+                Kr(t, S({
+                    method: (i == null ? void 0 : i.method) || "GET",
+                    headers: l,
+                    keepalive: i.method === "POST" && !i._keepaliveDisabled && 52428.8 > (a || 0),
+                    body: o,
+                    signal: (_ = c) == null ? void 0 : _.signal
+                }, i.fetchOptions)).then(p => p.text().then(g => {
+                    var m = {
+                        statusCode: p.status,
+                        text: g
+                    };
+                    if (p.status === 200) try {
+                        m.json = JSON.parse(g)
+                    } catch (v) {
+                        C.error(v)
+                    }
+                    i.callback == null || i.callback(m)
+                })).catch(h).finally(() => c ? clearTimeout(c.timeout) : null)
+            } catch (p) {
+                c && clearTimeout(c.timeout), h(p)
+            }
+        }
+    },
+    Hr = i => {
+        try {
+            var e, t = ul(i),
+                s = t.url,
+                r = t.encodedBody,
+                n = r ?? {},
+                o = n.body,
+                a = n.estimatedSize;
+            if (!o) return;
+            var l = o instanceof Blob ? o : new Blob([o], {
+                type: n.contentType
+            });
+            if (be.sendBeacon(s, l)) return;
+            var c = R(i.data) ? i.data : (e = i.data) == null ? void 0 : e.batch;
+            if (R(c) && c.length > 1 && (a ?? 0) > 16384) {
+                var u = Math.ceil(c.length / 2),
+                    d = h => R(i.data) ? h : S({}, i.data, {
+                        batch: h
+                    });
+                return Hr(S({}, i, {
+                    data: d(c.slice(0, u))
+                })), void Hr(S({}, i, {
+                    data: d(c.slice(u))
+                }))
+            }
+            C.warn("Beacon of ~" + (a ?? 0) + " bytes was rejected by the browser, falling back to fetch"), hl(S({}, i, {
+                _keepaliveDisabled: !0
+            }))
+        } catch (h) {
+            C.warn("Beacon send failed", h)
+        }
+    },
+    no = (i, e, t, s) => {
+        var r = s === "query" ? e === "POST" ? "sent_at" : "_" : void 0;
+        return Ii(t === $e.GZipJS ? ll(i, "compression") : i, S({}, r ? {
+            [r]: Date.now().toString()
+        } : {}, t === $e.GZipJS ? {} : {
+            compression: t
+        }))
+    },
+    Ji = [];
+Kr && Ji.push({
+    transport: "fetch",
+    method: hl
+}), mr && Ji.push({
+    transport: "XHR",
+    method(i) {
+        var e = cl(i);
+        if (e) {
+            var t = new mr,
+                s = e.encodedBody;
+            t.open(i.method || "GET", e.url, !0);
+            var r = s ?? {},
+                n = r.contentType,
+                o = r.body;
+            W(i.headers, function(a, l) {
+                t.setRequestHeader(l, a)
+            }), n && t.setRequestHeader("Content-Type", n), i.timeout && (t.timeout = i.timeout), t.onreadystatechange = () => {
+                if (t.readyState === 4) {
+                    var a = {
+                        statusCode: t.status,
+                        text: t.responseText
+                    };
+                    if (t.status === 200) try {
+                        a.json = JSON.parse(t.responseText)
+                    } catch {}
+                    i.callback == null || i.callback(a)
+                }
+            }, t.send(o)
+        }
+    }
+}), be != null && be.sendBeacon && Ji.push({
+    transport: "sendBeacon",
+    method: Hr
+});
+var Nr = 3e3;
+class pc {
+    constructor(e, t) {
+        this._isPaused = !0, this._queue = [], this._flushTimeoutMs = tt((t == null ? void 0 : t.flush_interval_ms) || Nr, 250, 5e3, C.createLogger("flush interval"), Nr), this._sendRequest = e
+    }
+    enqueue(e) {
+        this._queue.push(e), this._flushTimeout || this._setFlushTimeout()
+    }
+    unload() {
+        this._clearFlushTimeout();
+        var e = this._queue.length > 0 ? this._formatQueue() : {},
+            t = Object.values(e);
+        [...t.filter(s => s.url.indexOf("/e") === 0), ...t.filter(s => s.url.indexOf("/e") !== 0)].map(s => {
+            this._sendRequestSafely(S({}, s, {
+                transport: "sendBeacon"
+            }))
+        })
+    }
+    enable() {
+        this._isPaused = !1, this._setFlushTimeout()
+    }
+    _setFlushTimeout() {
+        var e = this;
+        this._isPaused || (this._flushTimeout = setTimeout(() => {
+            if (this._clearFlushTimeout(), this._queue.length > 0) {
+                var t = this._formatQueue(),
+                    s = function() {
+                        var n = t[r],
+                            o = new Date().getTime();
+                        n.data && R(n.data) && W(n.data, a => {
+                            a.offset = Math.abs(a.timestamp - o), delete a.timestamp
+                        }), e._sendRequestSafely(n)
+                    };
+                for (var r in t) s()
+            }
+        }, this._flushTimeoutMs))
+    }
+    _sendRequestSafely(e) {
+        try {
+            this._sendRequest(e)
+        } catch (t) {
+            C.error(t)
+        }
+    }
+    _clearFlushTimeout() {
+        clearTimeout(this._flushTimeout), this._flushTimeout = void 0
+    }
+    _formatQueue() {
+        var e = {};
+        return W(this._queue, t => {
+            var s, r = t,
+                n = (r ? r.batchKey : null) || r.url;
+            b(e[n]) && (e[n] = S({}, r, {
+                data: []
+            })), (s = e[n].data) == null || s.push(r.data)
+        }), this._queue = [], e
+    }
+}
+var gc = ["retriesPerformedSoFar"];
+class vc {
+    constructor(e) {
+        this._isPolling = !1, this._pollIntervalMs = 3e3, this._queue = [], this._instance = e, this._queue = [], this._areWeOnline = !0, !b(f) && "onLine" in f.navigator && (this._areWeOnline = f.navigator.onLine, this._onlineListener = () => {
+            this._areWeOnline = !0, this._flush()
+        }, this._offlineListener = () => {
+            this._areWeOnline = !1
+        }, K(f, "online", this._onlineListener), K(f, "offline", this._offlineListener))
+    }
+    get length() {
+        return this._queue.length
+    }
+    retriableRequest(e) {
+        var t = e.retriesPerformedSoFar,
+            s = Mo(e, gc);
+        nt(t) && (s.url = Ii(s.url, {
+            retry_count: t
+        })), this._instance._send_request(S({}, s, {
+            callback: r => {
+                if (r.statusCode !== 200 && (400 > r.statusCode || r.statusCode >= 500)) {
+                    if ((r.statusCode === 0 ? 3 : 10) > (t ?? 0)) return void this._enqueue(S({
+                        retriesPerformedSoFar: t
+                    }, s));
+                    r.statusCode === 0 && C.warn("Request failed before receiving an HTTP response; this can happen due to network issues, CORS, browser blocking, or ad blockers. Stopped retrying after " + (t ?? 0) + " retries.")
+                }
+                s.callback == null || s.callback(r)
+            }
+        }))
+    }
+    _enqueue(e) {
+        var t = e.retriesPerformedSoFar || 0;
+        e.retriesPerformedSoFar = t + 1;
+        var s = function(o) {
+                var a = 3e3 * Math.pow(2, o),
+                    l = a / 2,
+                    c = Math.min(18e5, a),
+                    u = Math.random() - .5;
+                return Math.ceil(c + u * (c - l))
+            }(t),
+            r = Date.now() + s;
+        this._queue.push({
+            retryAt: r,
+            requestOptions: e
+        });
+        var n = "Enqueued failed request for retry in " + s;
+        navigator.onLine || (n += " (Browser is offline)"), C.warn(n), this._isPolling || (this._isPolling = !0, this._poll())
+    }
+    _poll() {
+        if (this._poller && clearTimeout(this._poller), this._queue.length === 0) return this._isPolling = !1, void(this._poller = void 0);
+        this._poller = setTimeout(() => {
+            this._areWeOnline && this._queue.length > 0 && this._flush(), this._poll()
+        }, this._pollIntervalMs)
+    }
+    _flush() {
+        var e = Date.now(),
+            t = [],
+            s = this._queue.filter(n => e > n.retryAt || (t.push(n), !1));
+        if (this._queue = t, s.length > 0)
+            for (var r of s) this.retriableRequest(r.requestOptions)
+    }
+    unload() {
+        for (var e of (this._poller && (clearTimeout(this._poller), this._poller = void 0), this._isPolling = !1, b(f) || (this._onlineListener && (f.removeEventListener("online", this._onlineListener), this._onlineListener = void 0), this._offlineListener && (f.removeEventListener("offline", this._offlineListener), this._offlineListener = void 0)), this._queue)) {
+            var t = e.requestOptions;
+            try {
+                this._instance._send_request(S({}, t, {
+                    transport: "sendBeacon"
+                }))
+            } catch (s) {
+                C.error(s)
+            }
+        }
+        this._queue = []
+    }
+}
+class fc {
+    constructor(e) {
+        this._updateScrollData = () => {
+            var t, s, r, n;
+            this._context || (this._context = {});
+            var o = this.scrollElement(),
+                a = this.scrollY(),
+                l = o ? Math.max(0, o.scrollHeight - o.clientHeight) : 0,
+                c = a + ((o == null ? void 0 : o.clientHeight) || 0),
+                u = (o == null ? void 0 : o.scrollHeight) || 0;
+            this._context.lastScrollY = Math.ceil(a), this._context.maxScrollY = Math.max(a, (t = this._context.maxScrollY) !== null && t !== void 0 ? t : 0), this._context.maxScrollHeight = Math.max(l, (s = this._context.maxScrollHeight) !== null && s !== void 0 ? s : 0), this._context.lastContentY = c, this._context.maxContentY = Math.max(c, (r = this._context.maxContentY) !== null && r !== void 0 ? r : 0), this._context.maxContentHeight = Math.max(u, (n = this._context.maxContentHeight) !== null && n !== void 0 ? n : 0)
+        }, this._instance = e
+    }
+    get _scrollRoot() {
+        return this._instance.config.scroll_root_selector
+    }
+    getContext() {
+        return this._context
+    }
+    resetContext() {
+        var e = this._context;
+        return setTimeout(this._updateScrollData, 0), e
+    }
+    startMeasuringScrollPosition() {
+        K(f, "scroll", this._updateScrollData, {
+            capture: !0
+        }), K(f, "scrollend", this._updateScrollData, {
+            capture: !0
+        }), K(f, "resize", this._updateScrollData)
+    }
+    scrollElement() {
+        var e;
+        if (!this._scrollRoot) return f == null || (e = f.document) == null ? void 0 : e.documentElement;
+        var t = R(this._scrollRoot) ? this._scrollRoot : [this._scrollRoot];
+        for (var s of t) {
+            var r, n = f == null || (r = f.document) == null ? void 0 : r.querySelector(s);
+            if (n) return n
+        }
+    }
+    _scrollPosition(e) {
+        var t, s, r = e === "y" ? "scrollTop" : "scrollLeft";
+        if (this._scrollRoot) {
+            var n = this.scrollElement();
+            return n && n[r] || 0
+        }
+        return f ? e === "y" ? f.scrollY || f.pageYOffset || ((t = f.document) == null || (t = t.documentElement) == null ? void 0 : t.scrollTop) || 0 : f.scrollX || f.pageXOffset || ((s = f.document) == null || (s = s.documentElement) == null ? void 0 : s.scrollLeft) || 0 : 0
+    }
+    scrollY() {
+        return this._scrollPosition("y")
+    }
+    scrollX() {
+        return this._scrollPosition("x")
+    }
+}
+var mc = i => Za(i == null ? void 0 : i.config.mask_personal_data_properties, i == null ? void 0 : i.config.custom_personal_data_properties, i == null ? void 0 : i.config.disable_capture_url_hashes);
+class oo {
+    constructor(e, t, s, r) {
+        this._onSessionIdCallback = n => {
+            var o = this._getStored();
+            if (!o || o.sessionId !== n) {
+                var a = {
+                    sessionId: n,
+                    props: this._sessionSourceParamGenerator(this._instance)
+                };
+                this._persistence.register({
+                    [dr]: a
+                })
+            }
+        }, this._instance = e, this._sessionIdManager = t, this._persistence = s, this._sessionSourceParamGenerator = r || mc, this._sessionIdManager.onSessionId(this._onSessionIdCallback)
+    }
+    _getStored() {
+        return this._persistence.props[dr]
+    }
+    getSetOnceProps() {
+        var e, t = (e = this._getStored()) == null ? void 0 : e.props;
+        return t ? "r" in t ? Xa(t, this._instance.config.disable_capture_url_hashes) : {
+            $referring_domain: t.referringDomain,
+            $pathname: t.initialPathName,
+            utm_source: t.utm_source,
+            utm_campaign: t.utm_campaign,
+            utm_medium: t.utm_medium,
+            utm_content: t.utm_content,
+            utm_term: t.utm_term
+        } : {}
+    }
+    getSessionProps() {
+        var e = {};
+        return W(rn(this.getSetOnceProps()), (t, s) => {
+            s === "$current_url" && (s = "url"), e["$session_entry_" + yr(s)] = t
+        }), e
+    }
+}
+class fs {
+    on(e, t) {
+        return this._events[e] || (this._events[e] = []), this._events[e].push(t), () => {
+            this._events[e] = this._events[e].filter(s => s !== t)
+        }
+    }
+    emit(e, t) {
+        for (var s of this._events[e] || []) s(t);
+        for (var r of this._events["*"] || []) r(e, t)
+    }
+    constructor() {
+        this._events = {}
+    }
+}
+var Mt = ae("[SessionId]"),
+    ao = 864e5;
+class lo {
+    on(e, t) {
+        return this._eventEmitter.on(e, t)
+    }
+    constructor(e, t, s) {
+        var r;
+        if (this._lastPersistedActivityTimestamp = null, this._lastCookieSyncTimestamp = null, this._sessionIdChangedHandlers = [], this._beforeUnloadListener = void 0, this._destroyed = !1, this._eventEmitter = new fs, this._sessionHasBeenIdleTooLong = (l, c) => !(!nt(l) || !nt(c)) && Math.abs(l - c) > this.sessionTimeoutMs, !e.persistence) throw new Error("SessionIdManager requires a PostHogPersistence instance");
+        if (e.config.cookieless_mode === lt) throw new Error('SessionIdManager cannot be used with cookieless_mode="always"');
+        this._config = e.config, this._persistence = e.persistence, this._windowId = void 0, this._sessionId = void 0, this._sessionStartTimestamp = null, this._pendingBootstrapSession = void 0, this._sessionActivityTimestamp = null, this._sessionIdGenerator = t || Ke, this._windowIdGenerator = s || Ke;
+        var n = this._config.persistence_name || this._config.token;
+        if (this._sessionTimeoutMs = 1e3 * tt(this._config.session_idle_timeout_seconds || 1800, 60, 36e3, Mt.createLogger("session_idle_timeout_seconds"), 1800), e.register({
+                $configured_session_timeout_ms: this._sessionTimeoutMs
+            }), this._resetIdleTimer(), this._window_id_storage_key = "ph_" + n + "_window_id", this._primary_window_exists_storage_key = "ph_" + n + "_primary_window_exists", this._canUseSessionStorage()) {
+            var o = G._parse(this._window_id_storage_key),
+                a = G._parse(this._primary_window_exists_storage_key);
+            o && !a ? this._windowId = o : G._remove(this._window_id_storage_key), G._set(this._primary_window_exists_storage_key, !0)
+        }(r = this._config.bootstrap) != null && r.sessionID && this.setBootstrapSessionId(this._config.bootstrap.sessionID), this._listenToReloadWindow()
+    }
+    get sessionTimeoutMs() {
+        return this._sessionTimeoutMs
+    }
+    onSessionId(e) {
+        return b(this._sessionIdChangedHandlers) && (this._sessionIdChangedHandlers = []), this._sessionIdChangedHandlers.push(e), this._sessionId && e(this._sessionId, this._windowId), () => {
+            this._sessionIdChangedHandlers = this._sessionIdChangedHandlers.filter(t => t !== e)
+        }
+    }
+    _canUseSessionStorage() {
+        return this._config.persistence !== "memory" && !this._persistence._disabled && G._is_supported()
+    }
+    _setWindowId(e) {
+        e !== this._windowId && (this._windowId = e, this._canUseSessionStorage() && G._set(this._window_id_storage_key, e))
+    }
+    _getWindowId() {
+        return this._windowId ? this._windowId : this._canUseSessionStorage() ? G._parse(this._window_id_storage_key) : null
+    }
+    _isActivityChangeBelowGranularity(e) {
+        var t = this._lastPersistedActivityTimestamp;
+        return !ce(t) && !ce(e) && 5e3 > Math.abs(e - t)
+    }
+    _setSessionId(e, t, s) {
+        var r = t !== this._sessionActivityTimestamp,
+            n = !(e !== this._sessionId || s !== this._sessionStartTimestamp);
+        this._sessionStartTimestamp = s, this._sessionActivityTimestamp = t, this._sessionId = e, n && !r || n && this._isActivityChangeBelowGranularity(t) || (this._lastPersistedActivityTimestamp = t, this._persistence.register({
+            [Ht]: [t, e, s]
+        }))
+    }
+    _useCrossTabRefreshHardening() {
+        var e, t = (e = this._config) == null ? void 0 : e.persistence_save_debounce_ms;
+        return nt(t) && t > 0
+    }
+    _refreshSessionIdFromStorage() {
+        this._useCrossTabRefreshHardening() ? this._persistence.refreshKey(Ht) : (this._persistence.flush(), this._persistence.load())
+    }
+    _flushPendingActivityTimestamp() {
+        var e;
+        if (!ce(this._sessionActivityTimestamp) && this._sessionActivityTimestamp !== this._lastPersistedActivityTimestamp) {
+            this._refreshSessionIdFromStorage();
+            var t = this._getSessionId();
+            t[1] === this._sessionId && t[2] === this._sessionStartTimestamp && (this._lastPersistedActivityTimestamp = this._sessionActivityTimestamp, this._persistence.register({
+                [Ht]: [this._sessionActivityTimestamp, (e = this._sessionId) !== null && e !== void 0 ? e : null, this._sessionStartTimestamp]
+            }), this._persistence.flush())
+        }
+    }
+    _freshestActivityTimestamp() {
+        var e = this._getSessionId()[0],
+            t = nt(e) ? e : 0,
+            s = nt(this._sessionActivityTimestamp) ? this._sessionActivityTimestamp : 0;
+        return Math.max(t, s)
+    }
+    _isSessionIdleAfterCrossTabRefresh(e) {
+        return this._refreshSessionIdFromStorage(), this._sessionHasBeenIdleTooLong(e, this._freshestActivityTimestamp())
+    }
+    _getSessionId() {
+        var e = this._persistence.props[Ht];
+        return R(e) && e.length === 2 && e.push(e[0]), e || [0, null, 0]
+    }
+    resetSessionId() {
+        this._lastPersistedActivityTimestamp = null, this._pendingBootstrapSession = void 0, clearTimeout(this._enforceIdleTimeout), this._enforceIdleTimeout = void 0, this._setSessionId(null, null, null)
+    }
+    setBootstrapSessionId(e, t) {
+        t === void 0 && (t = !1);
+        var s = function(r, n) {
+            n === void 0 && (n = new Date().getTime());
+            try {
+                var o = (a => {
+                    var l = a.replace(/-/g, "");
+                    if (l.length !== 32) throw new Error("Not a valid UUID");
+                    if (l[12] !== "7") throw new Error("Not a UUIDv7");
+                    return parseInt(l.substring(0, 12), 16)
+                })(r);
+                return o > n + 6e4 ? void Mt.error("Bootstrap sessionID cannot be in the future") : o
+            } catch (a) {
+                return void Mt.error("Invalid sessionID in bootstrap", a)
+            }
+        }(e);
+        return !b(s) && (t ? this._pendingBootstrapSession = {
+            sessionId: e,
+            sessionStartTimestamp: s
+        } : this._setSessionId(e, new Date().getTime(), s), !0)
+    }
+    destroy() {
+        this._destroyed = !0, this._flushPendingActivityTimestamp(), clearTimeout(this._enforceIdleTimeout), this._enforceIdleTimeout = void 0, this._beforeUnloadListener && f && (f.removeEventListener(Zi, this._beforeUnloadListener, {
+            capture: !1
+        }), this._beforeUnloadListener = void 0), this._sessionIdChangedHandlers = []
+    }
+    _listenToReloadWindow() {
+        this._beforeUnloadListener = () => {
+            this._flushPendingActivityTimestamp(), this._canUseSessionStorage() && G._remove(this._primary_window_exists_storage_key)
+        }, K(f, Zi, this._beforeUnloadListener, {
+            capture: !1
+        })
+    }
+    checkAndGetSessionAndWindowId(e, t, s) {
+        if (e === void 0 && (e = !1), t === void 0 && (t = null), s === void 0 && (s = !1), this._config.cookieless_mode === lt) throw new Error('checkAndGetSessionAndWindowId should not be called with cookieless_mode="always"');
+        var r = t || new Date().getTime(),
+            n = this._sessionId;
+        if (s) this._lastCookieSyncTimestamp = r;
+        else if (ce(this._lastCookieSyncTimestamp) || this._lastCookieSyncTimestamp > r || r - this._lastCookieSyncTimestamp >= 1e3) {
+            var o, a;
+            (o = (a = this._persistence).syncCookieProperties) == null || o.call(a), this._lastCookieSyncTimestamp = r
+        }
+        var l = this._getSessionId(),
+            c = l[1],
+            u = l[2],
+            d = !b(n) && c !== n,
+            h = this._freshestActivityTimestamp(),
+            _ = this._getWindowId(),
+            p = this._pendingBootstrapSession,
+            g = !!p && (p.sessionStartTimestamp > r + 6e4 || r - p.sessionStartTimestamp > ao),
+            m = p ? g : nt(u) && Math.abs(r - u) > ao,
+            v = !1,
+            y = d,
+            w = !c || !!p,
+            E = c,
+            x = !w && !e && this._sessionHasBeenIdleTooLong(r, h);
+        if (x) {
+            (x = this._isSessionIdleAfterCrossTabRefresh(r)) || Mt.info("cross-tab refresh kept the session alive", {
+                sessionId: c
+            });
+            var M = this._getSessionId();
+            c = M[1], u = M[2]
+        }
+        if (w || x || m) {
+            y = !1;
+            var A = p && !g;
+            c = A ? p.sessionId : this._sessionIdGenerator(), _ = this._windowIdGenerator(), Mt.info("new session ID assigned", {
+                sessionId: c,
+                windowId: _,
+                bootstrapped: !!A,
+                changeReason: {
+                    noSessionId: w,
+                    activityTimeout: x,
+                    sessionPastMaximumLength: m
+                }
+            }), u = A ? p.sessionStartTimestamp : r, this._pendingBootstrapSession = void 0, v = !0
+        } else _ || (_ = this._windowIdGenerator(), v = !0), (y = y || c !== E) && (Mt.info("adopted cross-tab session id", {
+            sessionId: c,
+            windowId: _
+        }), v = !0);
+        var F = nt(h) && e && !m ? h : r,
+            $ = nt(u) ? u : new Date().getTime();
+        this._setWindowId(_), this._setSessionId(c, F, $), e || this._resetIdleTimer();
+        var P = {
+            noSessionId: w,
+            activityTimeout: x,
+            sessionPastMaximumLength: m,
+            crossTabAdoption: y
+        };
+        return v && this._sessionIdChangedHandlers.forEach(B => B(c, _, P)), {
+            sessionId: c,
+            windowId: _,
+            sessionStartTimestamp: $,
+            changeReason: v ? P : void 0,
+            lastActivityTimestamp: h
+        }
+    }
+    _resetIdleTimer() {
+        this._destroyed || (clearTimeout(this._enforceIdleTimeout), this._enforceIdleTimeout = setTimeout(() => {
+            if (!this._destroyed)
+                if (this._isSessionIdleAfterCrossTabRefresh(new Date().getTime())) {
+                    var e = this._sessionId;
+                    this.resetSessionId(), this._eventEmitter.emit("forcedIdleReset", {
+                        idleSessionId: e
+                    })
+                } else this._resetIdleTimer()
+        }, 1.1 * this.sessionTimeoutMs))
+    }
+}
+var _l = function(i, e) {
+    if (!i) return !1;
+    var t = i.userAgent;
+    if (t && fn(t, e)) return !0;
+    try {
+        var s = i == null ? void 0 : i.userAgentData;
+        if (s != null && s.brands && s.brands.some(r => fn(r == null ? void 0 : r.brand, e))) return !0
+    } catch {}
+    return !!i.webdriver
+};
+
+function pl() {
+    return (pl = X(function*() {
+        var i = be == null ? void 0 : be.userAgentData;
+        if (i != null && i.getHighEntropyValues) try {
+            var e = yield i.getHighEntropyValues(["model"]), t = e == null ? void 0 : e.model;
+            return q(t) && t.length > 0 ? t : void 0
+        } catch (s) {
+            return void C.info("Unable to resolve $device_model from userAgentData.getHighEntropyValues", s)
+        }
+    })).apply(this, arguments)
+}
+
+function gl(i) {
+    var e;
+    return !((e = i.conditions) == null || (e = e.events) == null || (e = e.values) == null || !e.length)
+}
+var ms = (i, e) => {
+        if (!(t => {
+                try {
+                    new RegExp(t)
+                } catch {
+                    return !1
+                }
+                return !0
+            })(e)) return !1;
+        try {
+            return new RegExp(e).test(i)
+        } catch {
+            return !1
+        }
+    },
+    Hi = i => i.toLowerCase(),
+    vl = {
+        exact: (i, e) => e.some(t => i.some(s => t === s)),
+        is_not: (i, e) => e.every(t => i.every(s => t !== s)),
+        regex: (i, e) => e.some(t => i.some(s => ms(t, s))),
+        not_regex: (i, e) => e.every(t => i.every(s => !ms(t, s))),
+        icontains: (i, e) => e.map(Hi).some(t => i.map(Hi).some(s => t.includes(s))),
+        not_icontains: (i, e) => e.map(Hi).every(t => i.map(Hi).every(s => !t.includes(s))),
+        gt: (i, e) => e.some(t => {
+            var s = parseFloat(t);
+            return !isNaN(s) && i.some(r => s > parseFloat(r))
+        }),
+        lt: (i, e) => e.some(t => {
+            var s = parseFloat(t);
+            return !isNaN(s) && i.some(r => s < parseFloat(r))
+        })
+    };
+
+function fl(i, e) {
+    return !i || Object.entries(i).every(t => {
+        var s = t[1],
+            r = e == null ? void 0 : e[t[0]];
+        if (r == null) return !1;
+        var n = vl[s.operator];
+        return !!n && n(s.values, [String(r)])
+    })
+}
+
+function Us(i, e, t) {
+    return zt({
+        distinct_id: i,
+        userPropertiesToSet: e,
+        userPropertiesToSetOnce: t
+    })
+}
+var qr = "custom",
+    uo = "i.posthog.com",
+    yc = /^\/static\//,
+    bc = ["/s/", "/e/", "/i/"];
+class Sc {
+    constructor(e) {
+        this._regionCache = {}, this.instance = e
+    }
+    get apiHost() {
+        var e = this.instance.config.api_host.trim().replace(/\/$/, "");
+        return e === "https://app.posthog.com" ? "https://us.i.posthog.com" : e
+    }
+    get flagsApiHost() {
+        var e = this.instance.config.flags_api_host;
+        return e ? e.trim().replace(/\/$/, "") : this.apiHost
+    }
+    get uiHost() {
+        var e, t = (e = this.instance.config.ui_host) == null ? void 0 : e.replace(/\/$/, "");
+        return t || (t = this.apiHost.replace("." + uo, ".posthog.com")), t === "https://app.posthog.com" ? "https://us.posthog.com" : t
+    }
+    get region() {
+        return this._regionCache[this.apiHost] || (this._regionCache[this.apiHost] = /https:\/\/(app|us|us-assets)(\.i)?\.posthog\.com/i.test(this.apiHost) ? "us" : /https:\/\/(eu|eu-assets)(\.i)?\.posthog\.com/i.test(this.apiHost) ? "eu" : qr), this._regionCache[this.apiHost]
+    }
+    _staticAssetHostOverride(e) {
+        if (yc.test(e)) {
+            var t = this.instance.config.asset_host;
+            if (typeof t == "string") return t.trim().replace(/\/$/, "") || void 0
+        }
+    }
+    _urlKey(e) {
+        var t = Zt(e);
+        return t ? t.protocol + "//" + t.host + t.pathname : void 0
+    }
+    _prepareEndpoint(e, t, s) {
+        if (e === "ui") return s;
+        var r = s,
+            n = this.instance.config.rewriteRequestPath;
+        if (n) {
+            var o, a = ((o = Zt(s)) == null ? void 0 : o.href) || s;
+            r = n(new URL(a)).toString()
+        }
+        if (n && e === "api" && bc.some(h => t.indexOf(h) === 0)) {
+            var l = this._urlKey(r);
+            if (l) {
+                var c, u = this.apiHost,
+                    d = this._ingestionEndpoints;
+                ((c = d) == null ? void 0 : c.apiHost) === u && d.rewriteRequestPath === n || (d = {
+                    apiHost: u,
+                    rewriteRequestPath: n,
+                    urls: new Set
+                }, this._ingestionEndpoints = d), d.urls.add(l)
+            }
+        }
+        return r
+    }
+    isIngestionEndpoint(e) {
+        var t = this._ingestionEndpoints,
+            s = this._urlKey(e);
+        return (t == null ? void 0 : t.apiHost) === this.apiHost && t.rewriteRequestPath === this.instance.config.rewriteRequestPath && !!s && t.urls.has(s)
+    }
+    endpointFor(e, t) {
+        if (t === void 0 && (t = ""), t && (t = t[0] === "/" ? t : "/" + t), e === "ui") return this._prepareEndpoint(e, t, this.uiHost + t);
+        if (e === "flags") return this._prepareEndpoint(e, t, this.flagsApiHost + t);
+        if (e === "assets") {
+            var s = this._staticAssetHostOverride(t);
+            if (s) return this._prepareEndpoint(e, t, "" + s + t)
+        }
+        if (this.region === qr) return this._prepareEndpoint(e, t, this.apiHost + t);
+        var r = uo + t;
+        switch (e) {
+            case "assets":
+                return this._prepareEndpoint(e, t, "https://" + this.region + "-assets." + r);
+            case "api":
+                return this._prepareEndpoint(e, t, "https://" + this.region + "." + r)
+        }
+    }
+}
+var U = ae("[Surveys]"),
+    ml = "seenSurvey_",
+    yl = i => {
+        try {
+            var e = (t => ((s, r) => "" + ml + function(n) {
+                return n.current_iteration && n.current_iteration > 0 ? n.id + "_" + n.current_iteration : n.id
+            }(r))(0, t))(i);
+            if (localStorage.getItem(e)) return;
+            localStorage.setItem(e, "true")
+        } catch (t) {
+            U.error("Failed to persist survey seen state", t)
+        }
+    },
+    wc = [Ns.Popover, Ns.Widget, Ns.API],
+    Ec = {
+        ignoreConditions: !1,
+        ignoreDelay: !1,
+        displayType: Or.Popover
+    },
+    kc = ae("[PostHog ExternalIntegrations]"),
+    Cc = {
+        intercom: "intercom-integration",
+        crispChat: "crisp-chat-integration"
+    };
+class xc {
+    constructor(e) {
+        this._instance = e
+    }
+    _loadScript(e, t) {
+        var s;
+        (s = I.__PosthogExtensions__) == null || s.loadExternalDependency == null || s.loadExternalDependency(this._instance, e, r => {
+            if (r) return kc.error("failed to load script", r);
+            t()
+        })
+    }
+    startIfEnabledOrStop() {
+        var e = this,
+            t = function() {
+                var n, o, a, l = s[0],
+                    c = s[1];
+                !c || (n = I.__PosthogExtensions__) != null && (n = n.integrations) != null && n[l] || e._loadScript(Cc[l], () => {
+                    var u;
+                    (u = I.__PosthogExtensions__) == null || (u = u.integrations) == null || (u = u[l]) == null || u.start(e._instance)
+                }), !c && (o = I.__PosthogExtensions__) != null && (o = o.integrations) != null && o[l] && ((a = I.__PosthogExtensions__) == null || (a = a.integrations) == null || (a = a[l]) == null || a.stop())
+            };
+        for (var s of Object.entries((r = this._instance.config.integrations) !== null && r !== void 0 ? r : {})) {
+            var r;
+            t()
+        }
+    }
+}
+class Pc {
+    constructor(e, t) {
+        this._logger = e, this._client = t, this._extensions = new Map, this._disposed = !1
+    }
+    add(e) {
+        var t = this;
+        return X(function*() {
+            if (t._disposed) throw new Error("Cannot add an extension to a disposed ExtensionRuntime");
+            if (t._extensions.has(e.name)) throw new Error('Browser extension "' + e.name + '" is already registered');
+            t._extensions.set(e.name, e);
+            try {
+                var s = e.setup(t._client);
+                s && (yield s)
+            } catch (n) {
+                var r = t._extensions.get(e.name) === e;
+                r && t._extensions.delete(e.name), t._logger.error('Failed to set up browser extension "' + e.name + '"', n), r && t._disposeExtension(e)
+            }
+        })()
+    }
+    getExtension(e) {
+        return this._extensions.get(e)
+    }
+    dispose() {
+        if (!this._disposed) {
+            this._disposed = !0;
+            var e = Array.from(this._extensions.values()).reverse();
+            for (var t of (this._extensions.clear(), e)) this._disposeExtension(t)
+        }
+    }
+    _disposeExtension(e) {
+        try {
+            var t = e.dispose == null ? void 0 : e.dispose();
+            t && Pe(t.then) && t.then(void 0, s => {
+                this._logger.error('Failed to dispose browser extension "' + e.name + '"', s)
+            })
+        } catch (s) {
+            this._logger.error('Failed to dispose browser extension "' + e.name + '"', s)
+        }
+    }
+}
+class Fc {
+    constructor(e) {
+        this._instance = e
+    }
+    initialize() {}
+    get(e) {
+        var t = this._instance.persistence;
+        if (typeof e == "string") return t == null ? void 0 : t.get_property(e);
+        var s = {};
+        for (var r of e) {
+            var n = t == null ? void 0 : t.get_property(r);
+            b(n) || (s[r] = n)
+        }
+        return s
+    }
+    set(e, t) {
+        var s;
+        (s = this._instance.persistence) == null || s.register(typeof e == "string" ? {
+            [e]: t
+        } : e)
+    }
+    remove(e) {
+        var t;
+        (t = this._instance.persistence) == null || t.unregister(e)
+    }
+}
+var co = "extensionsRemoteConfig";
+class Ic {
+    constructor(e) {
+        this._disposed = !1, this.instance = e, this._logger = C, this._latestRemoteConfigResult = e._lastRemoteConfig, this.kv = new Fc(e), this.onEvent = t => Bi(this.instance.on("eventCaptured", s => {
+            try {
+                t({
+                    event: s.event,
+                    properties: s.properties
+                })
+            } catch (r) {
+                this._logger.error("Browser extension event listener failed", r)
+            }
+        })), this.onRemoteConfig = t => {
+            if (this._disposed) return Bi(() => {});
+            var s = n => {
+                    try {
+                        t(n)
+                    } catch (o) {
+                        this._logger.error("Browser extension remote config listener failed", o)
+                    }
+                },
+                r = this.instance._internalEventEmitter.on(co, s);
+            return this._latestRemoteConfigResult && s(this._latestRemoteConfigResult), Bi(r)
+        }, this._runtime = new Pc(C.createLogger("[BrowserExtensions]"), this)
+    }
+    get logger() {
+        return this._logger
+    }
+    get distinctId() {
+        return this.instance.get_distinct_id()
+    }
+    get anonymousId() {
+        var e;
+        return (e = this.instance.get_property(Ei)) !== null && e !== void 0 ? e : this.distinctId
+    }
+    get deviceId() {
+        var e = this.instance.get_property(Ei);
+        return typeof e == "string" ? e : void 0
+    }
+    get library() {
+        return {
+            name: Y.LIB_NAME,
+            version: Y.LIB_VERSION
+        }
+    }
+    get initialPersonProperties() {
+        var e, t;
+        return (e = (t = this.instance.persistence) == null ? void 0 : t.get_initial_props()) !== null && e !== void 0 ? e : {}
+    }
+    get groups() {
+        return this.instance.getGroups()
+    }
+    get session() {
+        try {
+            var e, t, s, r, n = (e = this.instance.sessionManager) == null ? void 0 : e.checkAndGetSessionAndWindowId(!0);
+            return {
+                sessionId: (t = n == null ? void 0 : n.sessionId) !== null && t !== void 0 ? t : "",
+                windowId: (s = n == null ? void 0 : n.windowId) !== null && s !== void 0 ? s : "",
+                sessionStartTimestamp: (r = n == null ? void 0 : n.sessionStartTimestamp) !== null && r !== void 0 ? r : 0
+            }
+        } catch {
+            return {
+                sessionId: "",
+                windowId: "",
+                sessionStartTimestamp: 0
+            }
+        }
+    }
+    get canCapture() {
+        return this.instance.is_capturing()
+    }
+    get projectToken() {
+        return this.instance.config.token
+    }
+    add(e) {
+        return this._runtime.add(e)
+    }
+    getExtension(e) {
+        return this._runtime.getExtension(e)
+    }
+    capture(e, t, s) {
+        var r = this;
+        return X(function*() {
+            s ? r.instance.capture(e, t, {
+                timestamp: s.timestamp,
+                uuid: s.uuid,
+                $set: s.set,
+                $set_once: s.setOnce
+            }) : r.instance.capture(e, t)
+        })()
+    }
+    registerDynamicEventProperties(e) {
+        return Bi(this.instance._registerExtensionEventProperties(e))
+    }
+    handleRemoteConfig(e) {
+        this._disposed || (this._latestRemoteConfigResult = e, this.instance._internalEventEmitter.emit(co, e))
+    }
+    sendRequest(e, t) {
+        var s = this;
+        return X(function*() {
+            var r;
+            t === void 0 && (t = {});
+            var n = s.instance.requestRouter.endpointFor((r = t.target) !== null && r !== void 0 ? r : "api", e),
+                o = {
+                    method: t.method,
+                    url: t.query ? Ii(n, t.query) : n,
+                    data: t.body,
+                    headers: t.headers,
+                    timeout: t.timeoutMs,
+                    fireCallbackOnDrop: !0,
+                    transport: t.transport,
+                    compression: t.compression,
+                    compressionFallback: t.target === "flags" && t.compression === "best-available" ? br.Base64 : void 0,
+                    timestampMode: t.sentAt
+                };
+            return t.transport === "sendBeacon" ? (s.instance._send_request(o), {
+                statusCode: 202
+            }) : new Promise(a => {
+                o.callback = a, s.instance._send_request(o)
+            })
+        })()
+    }
+    dispose() {
+        this._disposed || (this._disposed = !0, this._runtime.dispose())
+    }
+}
+var Si = {},
+    Ws = 0,
+    wi = () => {},
+    ho = 'Consent opt in/out is not valid with cookieless_mode="always" and will be ignored',
+    ui = "Surveys module not available",
+    _o = "sanitize_properties is deprecated. Use before_send instead",
+    bl = "Invalid value for property_denylist config: ",
+    Tc = /^[A-Za-z0-9_-]{1,400}$/,
+    Gs = /^fb\.[0-9]+\.[0-9]+\.[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)?$/,
+    Rc = ["token", "distinct_id", zo],
+    Dt = "posthog",
+    Sl = !dc && (Re == null ? void 0 : Re.indexOf("MSIE")) === -1 && (Re == null ? void 0 : Re.indexOf("Mozilla")) === -1,
+    Ac = i => {
+        var e = {};
+        return i && i !== "unset" && ("2025-11-30" > i || (e.strictMinimumDuration = !0), "2026-05-30" > i || (e.canvasCapture = {
+            resolutionScale: .6
+        }), "2026-06-25" > i || (e.streamNetworkBody = !0), "2026-08-30" > i || (e.captureJsonLd = !0)), e
+    },
+    Ks = i => {
+        var e;
+        return S({
+            api_host: "https://us.i.posthog.com",
+            flags_api_host: null,
+            ui_host: null,
+            asset_host: null,
+            token: "",
+            autocapture: !0,
+            cross_subdomain_cookie: Ru(k == null ? void 0 : k.location),
+            persistence: "localStorage+cookie",
+            persistence_name: "",
+            cookie_persisted_properties: [],
+            loaded: wi,
+            save_campaign_params: !0,
+            custom_campaign_params: [],
+            custom_blocked_useragents: [],
+            save_referrer: !0,
+            capture_pageleave: "if_capture_pageview",
+            defaults: i ?? "unset",
+            __preview_deferred_init_extensions: !1,
+            __preview_external_dependency_versioned_paths: !1,
+            __preview_cookie_wins_on_conflict: !1,
+            debug: ne && q(ne == null ? void 0 : ne.search) && ne.search.indexOf("__posthog_debug=true") !== -1 || !1,
+            cookie_expiration: 365,
+            upgrade: !1,
+            disable_session_recording: !1,
+            disable_persistence: !1,
+            disable_web_experiments: !0,
+            disable_surveys: !1,
+            disable_surveys_automatic_display: !1,
+            disable_conversations: !1,
+            disable_product_tours: !1,
+            disableDeviceModel: !1,
+            reuseAnonymousId: !1,
+            disable_external_dependency_loading: !1,
+            strict_script_versioning: "fallback",
+            enable_recording_console_log: void 0,
+            secure_cookie: (f == null || (e = f.location) == null ? void 0 : e.protocol) === "https:",
+            ip: !1,
+            opt_out_capturing_by_default: !1,
+            opt_out_persistence_by_default: !1,
+            opt_out_useragent_filter: !1,
+            opt_out_capturing_persistence_type: "localStorage",
+            consent_persistence_name: null,
+            opt_out_capturing_cookie_prefix: null,
+            opt_in_site_apps: !1,
+            property_denylist: [],
+            respect_dnt: !1,
+            sanitize_properties: null,
+            request_headers: {},
+            request_batching: !0,
+            properties_string_max_length: 65535,
+            mask_all_element_attributes: !1,
+            mask_all_text: !1,
+            mask_personal_data_properties: !1,
+            custom_personal_data_properties: [],
+            advanced_disable_flags: !1,
+            advanced_disable_decide: !1,
+            advanced_disable_feature_flags: !1,
+            advanced_disable_feature_flags_on_first_load: !1,
+            advanced_only_evaluate_survey_feature_flags: !1,
+            advanced_feature_flags_dedup_per_session: !1,
+            advanced_enable_surveys: !1,
+            advanced_disable_toolbar_metrics: !1,
+            feature_flag_request_timeout_ms: 3e3,
+            surveys_request_timeout_ms: 1e4,
+            on_request_error(t) {
+                C.error("Bad HTTP status: " + t.statusCode + " " + t.text)
+            },
+            get_device_id: t => t,
+            capture_performance: void 0,
+            name: "posthog",
+            bootstrap: {},
+            disable_compression: !1,
+            session_idle_timeout_seconds: 1800,
+            person_profiles: vr,
+            before_send: void 0,
+            get_current_url: void 0,
+            request_queue_config: {
+                flush_interval_ms: Nr
+            },
+            error_tracking: {},
+            _onCapture: wi
+        }, (t => ({
+            rageclick: t && t >= "2026-05-30" ? {
+                content_ignorelist: zu,
+                ignore_text_selection: !0
+            } : !t || "2025-11-30" > t || {
+                content_ignorelist: !0
+            },
+            capture_pageview: !t || "2025-05-24" > t || "history_change",
+            session_recording: Ac(t),
+            external_scripts_inject_target: t && t >= "2026-01-30" ? "head" : "body",
+            internal_or_test_user_hostname: t && t >= "2026-01-30" ? /^(localhost|127\.0\.0\.1)$/ : void 0,
+            persistence_save_debounce_ms: t && t >= "2026-05-30" ? 250 : 0,
+            split_storage: !(!t || "2026-05-30" > t),
+            detect_google_search_app: !(!t || "2026-05-30" > t),
+            disable_capture_url_hashes: !(!t || "2026-06-25" > t),
+            cookieWinsOnConflict: !(!t || t === "unset" || "2026-08-29" > t)
+        }))(i))
+    },
+    Lc = [
+        ["process_person", "person_profiles"],
+        ["xhr_headers", "request_headers"],
+        ["cookie_name", "persistence_name"],
+        ["disable_cookie", "disable_persistence"],
+        ["__preview_disable_beacon", "disable_beacon"],
+        ["store_google", "save_campaign_params"],
+        ["verbose", "debug"],
+        ["__preview_cookie_wins_on_conflict", "cookieWinsOnConflict"]
+    ],
+    po = i => {
+        var e = {};
+        for (var t of Lc) {
+            var s = t[0],
+                r = t[1];
+            b(i[s]) || (e[r] = i[s])
+        }
+        var n = Z({}, e, i),
+            o = i.__preview_external_dependency_versioned_paths;
+        return b(o) || (b(i.strict_script_versioning) && (n.strict_script_versioning = !!o), q(o) && b(i.asset_host) && (n.asset_host = o)), R(i.property_blacklist) && (b(i.property_denylist) ? n.property_denylist = i.property_blacklist : R(i.property_denylist) ? n.property_denylist = [...i.property_blacklist, ...i.property_denylist] : C.error(bl + i.property_denylist)), n
+    };
+class Mc {
+    constructor() {
+        this.__forceAllowLocalhost = !1
+    }
+    get _forceAllowLocalhost() {
+        return this.__forceAllowLocalhost
+    }
+    set _forceAllowLocalhost(e) {
+        C.error("WebPerformanceObserver is deprecated and has no impact on network capture. Use `_forceAllowLocalhostNetworkCapture` on `posthog.sessionRecording`"), this.__forceAllowLocalhost = e
+    }
+}
+class De {
+    _removeExtension(e) {
+        if (e) {
+            var t = this._extensions.indexOf(e);
+            t !== -1 && this._extensions.splice(t, 1)
+        }
+    }
+    _replaceExtension(e, t) {
+        return this._removeExtension(e), this._extensions.push(t), t.initialize == null || t.initialize(), t
+    }
+    _inCookielessMode() {
+        return this.config.cookieless_mode === lt || this.config.cookieless_mode === pt && this.consent.isRejected()
+    }
+    _warnIfVolatileIdentityWithoutStableId() {
+        if (!(this._hasWarnedAboutVolatileIdentity || this.config.reuseAnonymousId || this.config.segment || this._inCookielessMode())) {
+            var e, t, s, r = this.config.persistence === "memory" || this.config.persistence === "sessionStorage";
+            (r || this.config.disable_persistence) && (this._hasStableInitialDistinctId || (r ? (e = "persistence is set to '" + this.config.persistence + "'", t = this.config.persistence === "memory" ? "on every page load" : "for every new browser tab or window", s = "Either set persistence to 'localStorage+cookie', keep this persistence and pass a stable ID through bootstrap.distinctID, or enable reuseAnonymousId.") : (e = "persistence is disabled (disable_persistence is true)", t = "on every page load", s = "Either set disable_persistence to false, keep persistence disabled and pass a stable ID through bootstrap.distinctID, or enable reuseAnonymousId."), this._hasWarnedAboutVolatileIdentity = !0, console.warn("[PostHog.js]", e + " but no bootstrap.distinctID was provided. PostHog will mint a new distinct ID " + t + ", so calling identify() merges a new ID onto the person each time. A person can then pass the distinct-ID limit and its events stop appearing on person pages and the session tab. " + s)))
+        }
+    }
+    _healCookielessSentinelDistinctId() {
+        if (!this._inCookielessMode() && this.get_distinct_id() === It) {
+            var e = this.persistence;
+            if (e) {
+                this._is_persistence_disabled() || e.load(!0);
+                var t = this.get_distinct_id();
+                if (!t || t === It) {
+                    var s = this.config.get_device_id(Ke());
+                    this.register({
+                        distinct_id: s,
+                        $device_id: s
+                    }), e.set_property(H, he)
+                }
+                this._sync_opt_out_with_persistence()
+            }
+        }
+    }
+    get decideEndpointWasHit() {
+        var e, t;
+        return (e = (t = this.featureFlags) == null ? void 0 : t.hasLoadedFlags) !== null && e !== void 0 && e
+    }
+    get flagsEndpointWasHit() {
+        var e, t;
+        return (e = (t = this.featureFlags) == null ? void 0 : t.hasLoadedFlags) !== null && e !== void 0 && e
+    }
+    constructor() {
+        var e;
+        this.webPerformance = new Mc, this._personProcessingSetOncePropertiesSent = !1, this.version = Y.LIB_VERSION, this._sessionRegisteredPropKeys = new Set, this._sessionRegisteredPropertiesStorageKey = "", this._internalEventEmitter = new fs, this._extensions = [], this._extensionEventPropertyProducers = [], this._hasStableInitialDistinctId = !1, this._hasWarnedAboutVolatileIdentity = !1, this._calculate_event_properties = this.calculateEventProperties.bind(this), this.config = Ks(), this.SentryIntegration = Qu, this.sentryIntegration = s => function(r, n) {
+            var o = Ua(r, n);
+            return {
+                name: Va,
+                processEvent: a => o(a)
+            }
+        }(this, s), this.__request_queue = [], this.__loaded = !1, this.analyticsDefaultEndpoint = "/e/", this._initialPageviewCaptured = !1, this._visibilityStateListener = null, this._initialPersonProfilesConfig = null, this._cachedPersonProperties = null, this.scrollManager = new fc(this), this.pageViewManager = new Qn(this), this.rateLimiter = new nc(this), this.requestRouter = new Sc(this), this.consent = new Du(this), this.externalIntegrations = new xc(this);
+        var t = (e = De.__defaultExtensionClasses) !== null && e !== void 0 ? e : {};
+        this.featureFlags = t.featureFlags && new t.featureFlags(this), this.toolbar = t.toolbar && new t.toolbar(this), this.surveys = t.surveys && new t.surveys(this), this.conversations = t.conversations && new t.conversations(this), this.logs = t.logs && new t.logs(this), this.metrics = t.metrics && new t.metrics(this), this.experiments = t.experiments && new t.experiments(this), this.exceptions = t.exceptions && new t.exceptions(this), this.people = {
+            set: (s, r, n) => {
+                var o = q(s) ? {
+                    [s]: r
+                } : s;
+                this.setPersonProperties(o), n == null || n({})
+            },
+            set_once: (s, r, n) => {
+                var o = q(s) ? {
+                    [s]: r
+                } : s;
+                this.setPersonProperties(void 0, o), n == null || n({})
+            }
+        }, this.on("eventCaptured", s => C.info('send "' + (s == null ? void 0 : s.event) + '"', s))
+    }
+    init(e, t, s) {
+        if (s && s !== Dt) {
+            var r, n = (r = Si[s]) !== null && r !== void 0 ? r : new De;
+            return n._init(e, t, s), Si[s] = n, Si[Dt][s] = n, n
+        }
+        return this._init(e, t, s)
+    }
+    _init(e, t, s) {
+        var r, n, o;
+        t === void 0 && (t = {});
+        var a, l = q(e) ? e.trim() : "";
+        if (!l) return C.critical("PostHog was initialized without a token. This likely indicates a misconfiguration. Please check the first argument passed to posthog.init()"), this;
+        if (this.__loaded) return l !== ((a = this.config) == null ? void 0 : a.token) ? console.warn("[PostHog.js]", "You have already initialized PostHog with a different project token! Re-initializing is a no-op, so events will keep going to the project this instance was initialized with. To capture into a second project, load PostHog once, then initialize a named instance after the SDK has loaded, e.g. posthog.init('" + l + "', { ... }, 'project2')") : console.warn("[PostHog.js]", "You have already initialized PostHog! Re-initializing is a no-op"), this;
+        this.__loaded = !0, this.config = Ks(t.defaults), t.debug = this._checkLocalStorageForDebug(t.debug), this._originalUserConfig = t, this._triggered_notifs = [], t.person_profiles ? this._initialPersonProfilesConfig = t.person_profiles : t.process_person && (this._initialPersonProfilesConfig = t.process_person);
+        var c = Ks(t.defaults),
+            u = po(t),
+            d = Z({}, c, u, {
+                name: s,
+                token: l
+            });
+        N(c.rageclick) && N(u.rageclick) && (d.rageclick = Z({}, c.rageclick, u.rageclick)), N(c.session_recording) && N(u.session_recording) && (d.session_recording = Z({}, c.session_recording, u.session_recording)), this.set_config(d), this.config.on_xhr_error && C.error("on_xhr_error is deprecated. Use on_request_error instead"), this.compression = t.disable_compression ? void 0 : $e.GZipJS;
+        var h = this._is_persistence_disabled();
+        if (this.persistence = new Hs(this.config, h), this.sessionPersistence = this.config.persistence === "sessionStorage" || this.config.persistence === "memory" ? this.persistence : new Hs(S({}, this.config, {
+                persistence: "sessionStorage"
+            }), h, !1), this._sessionRegisteredPropertiesStorageKey = "ph_" + (this.config.persistence_name || this.config.token) + "_session_registered_properties", this.config.persistence !== "memory" && !h && G._is_supported()) {
+            var _ = G._parse(this._sessionRegisteredPropertiesStorageKey);
+            R(_) && _.forEach(F => {
+                q(F) && this._sessionRegisteredPropKeys.add(F)
+            })
+        } else G._remove(this._sessionRegisteredPropertiesStorageKey);
+        var p = S({}, this.persistence.props),
+            g = S({}, this.sessionPersistence.props);
+        this.register({
+            $initialization_time: new Date().toISOString()
+        }), this._requestQueue = new pc(F => this._send_retriable_request(F), this.config.request_queue_config), this._retryQueue = new vc(this), this.__request_queue = [];
+        var m = this._inCookielessMode();
+        m || (this.sessionManager = new lo(this), this.sessionPropsManager = new oo(this, this.sessionManager, this.persistence), this.sessionManager.onSessionId((F, $, P) => {
+            (P != null && P.activityTimeout || P != null && P.sessionPastMaximumLength || P != null && P.crossTabAdoption) && this._clearSessionRegisteredProps()
+        })), this._enrollFeatureFlags(), this.config.__preview_deferred_init_extensions ? (C.info("Deferring extension initialization to improve startup performance"), setTimeout(() => {
+            this._initExtensions(m)
+        }, 0)) : (C.info("Initializing extensions synchronously"), this._initExtensions(m)), Y.DEBUG = Y.DEBUG || this.config.debug, Y.DEBUG && C.info("Starting in debug mode", {
+            this: this,
+            config: t,
+            thisC: S({}, this.config),
+            p,
+            s: g
+        }), !this.config.identity_distinct_id || (r = t.bootstrap) != null && r.distinctID || (t.bootstrap = S({}, t.bootstrap, {
+            distinctID: this.config.identity_distinct_id,
+            isIdentifiedID: !0
+        }));
+        var v = (n = t.bootstrap) == null ? void 0 : n.distinctID;
+        if (this._hasStableInitialDistinctId = !!v && !vi(v), ((o = t.bootstrap) == null ? void 0 : o.distinctID) !== void 0) {
+            var y = t.bootstrap.distinctID,
+                w = this.get_distinct_id(),
+                E = this.persistence.get_property(H);
+            if (t.bootstrap.isIdentifiedID && w != null && w !== y && E === he) this.identify(y);
+            else if (t.bootstrap.isIdentifiedID && w != null && w !== y && E === Ce) C.warn("Bootstrap distinctID differs from an already-identified user. The existing identity is preserved. Call reset() before reinitializing if you intend to switch users.");
+            else {
+                var x = this.config.get_device_id(Ke()),
+                    M = t.bootstrap.isIdentifiedID ? x : y;
+                this.persistence.set_property(H, t.bootstrap.isIdentifiedID ? Ce : he), this.register({
+                    distinct_id: y,
+                    $device_id: M
+                })
+            }
+        }
+        if (m) this.register_once({
+            distinct_id: It,
+            $device_id: null
+        }, "");
+        else if (!this.get_distinct_id()) {
+            var A = this.config.get_device_id(Ke());
+            this.register_once({
+                distinct_id: A,
+                $device_id: A
+            }, ""), this.persistence.set_property(H, he)
+        }
+        return K(f, "onpagehide" in self ? "pagehide" : "unload", this._handle_unload.bind(this), {
+            passive: !1
+        }), t.segment ? Jn(this, () => this._loaded()) : this._loaded(), Pe(this.config._onCapture) && this.config._onCapture !== wi && (C.warn("onCapture is deprecated. Please use `before_send` instead"), this.on("eventCaptured", F => this.config._onCapture(F.event, F))), this.config.ip && C.warn('The `ip` config option has NO EFFECT AT ALL and has been deprecated. Use a custom transformation or "Discard IP data" project setting instead. See https://posthog.com/tutorials/web-redact-properties#hiding-customer-ip-address for more information.'), this.config.disableDeviceModel || function() {
+            return pl.apply(this, arguments)
+        }().then(F => {
+            F && this.register({
+                [Cs]: F
+            })
+        }).catch(wi), this
+    }
+    _isSharedExtension(e) {
+        var t = e;
+        return q(t.name) && Pe(t.setup)
+    }
+    _enrollExtension(e, t) {
+        this._isSharedExtension(e) ? t.push(() => {
+            this._getBrowserClientAdapter().add(e).catch(() => e.dispose == null ? void 0 : e.dispose()).catch(s => {
+                C.error('Failed to dispose browser extension "' + e.name + '"', s)
+            })
+        }) : this._extensions.push(e)
+    }
+    _enrollFeatureFlags() {
+        var e, t, s, r, n, o, a = (e = (t = this.config.__extensionClasses) == null ? void 0 : t.featureFlags) !== null && e !== void 0 ? e : (s = De.__defaultExtensionClasses) == null ? void 0 : s.featureFlags;
+        a && (this.featureFlags && this.featureFlags instanceof a || ((r = this._featureFlagsReloadingUnsubscribe) == null || r.call(this), this._featureFlagsReloadingUnsubscribe = void 0, this.featureFlags = new a(this)), Pe(this.featureFlags.onReloading) && Pe(this.featureFlags.setup) ? this._featureFlagsReloadingUnsubscribe || (this._featureFlagsReloadingUnsubscribe = this.featureFlags.onReloading(() => {
+            this._internalEventEmitter.emit("featureFlagsReloading", !0)
+        }), this._getBrowserClientAdapter().add(this.featureFlags)) : (n = (o = this.featureFlags).initialize) == null || n.call(o))
+    }
+    _initExtensions(e) {
+        var t, s, r, n, o, a, l, c = performance.now(),
+            u = S({}, De.__defaultExtensionClasses, this.config.__extensionClasses),
+            d = [];
+        u.exceptions && this._extensions.push(this.exceptions = (t = this.exceptions) !== null && t !== void 0 ? t : new u.exceptions(this)), u.historyAutocapture && this._extensions.push(this.historyAutocapture = new u.historyAutocapture(this)), u.tracingHeaders && this._extensions.push(this.tracingHeaders = new u.tracingHeaders(this)), u.siteApps && this._extensions.push(this.siteApps = new u.siteApps(this)), u.sessionRecording && !e && this._extensions.push(this.sessionRecording = new u.sessionRecording(this)), this.config.disable_scroll_properties || d.push(() => {
+            this.scrollManager.startMeasuringScrollPosition()
+        }), u.autocapture && this._enrollExtension(this.autocapture = new u.autocapture(this), d), u.surveys && this._enrollExtension(this.surveys = (s = this.surveys) !== null && s !== void 0 ? s : new u.surveys(this), d), u.logs && this._enrollExtension(this.logs = (r = this.logs) !== null && r !== void 0 ? r : new u.logs(this), d), u.metrics && this._extensions.push(this.metrics = (n = this.metrics) !== null && n !== void 0 ? n : new u.metrics(this)), u.conversations && this._extensions.push(this.conversations = (o = this.conversations) !== null && o !== void 0 ? o : new u.conversations(this)), u.productTours && this._extensions.push(this.productTours = new u.productTours(this)), u.heatmaps && this._extensions.push(this.heatmaps = new u.heatmaps(this)), u.webVitalsAutocapture && this._extensions.push(this.webVitalsAutocapture = new u.webVitalsAutocapture(this)), u.exceptionObserver && this._extensions.push(this.exceptionObserver = new u.exceptionObserver(this)), u.deadClicksAutocapture && this._extensions.push(this.deadClicksAutocapture = new u.deadClicksAutocapture(this, Ju)), u.toolbar && this._extensions.push(this.toolbar = (a = this.toolbar) !== null && a !== void 0 ? a : new u.toolbar(this)), u.experiments && this._extensions.push(this.experiments = (l = this.experiments) !== null && l !== void 0 ? l : new u.experiments(this)), this._extensions.forEach(h => {
+            h.initialize && d.push(() => {
+                h.initialize == null || h.initialize()
+            })
+        }), d.push(() => {
+            if (this._pendingRemoteConfig) {
+                var h = this._pendingRemoteConfig;
+                this._pendingRemoteConfig = void 0, this._extensions.forEach(_ => _.onRemoteConfig == null ? void 0 : _.onRemoteConfig(h))
+            }
+        }), this._processInitTaskQueue(d, c)
+    }
+    _processInitTaskQueue(e, t) {
+        for (; e.length > 0;) {
+            if (this.config.__preview_deferred_init_extensions && performance.now() - t >= 30 && e.length > 0) return void setTimeout(() => {
+                this._processInitTaskQueue(e, t)
+            }, 0);
+            var s = e.shift();
+            if (s) try {
+                s()
+            } catch (n) {
+                C.error("Error initializing extension:", n)
+            }
+        }
+        var r = Math.round(performance.now() - t);
+        this.register_for_session({
+            [jo]: this.config.__preview_deferred_init_extensions ? "deferred" : "synchronous",
+            [Vo]: r
+        }), this.config.__preview_deferred_init_extensions && C.info("PostHog extensions initialized (" + r + "ms)")
+    }
+    _onRemoteConfig(e) {
+        var t;
+        if (!k || !k.body) return C.info("document not ready yet, trying again in 500 milliseconds..."), void setTimeout(() => {
+            this._onRemoteConfig(e)
+        }, 500);
+        if (this.config.__preview_deferred_init_extensions && (this._pendingRemoteConfig = e), this._lastRemoteConfig = e, this.compression = void 0, e.ok) {
+            var s, r = e.config;
+            r.supportedCompression && !this.config.disable_compression && (this.compression = O(r.supportedCompression, $e.GZipJS) ? $e.GZipJS : O(r.supportedCompression, $e.Base64) ? $e.Base64 : void 0), (s = r.analytics) != null && s.endpoint && (this.analyticsDefaultEndpoint = r.analytics.endpoint)
+        }
+        this.set_config({
+            person_profiles: this._initialPersonProfilesConfig ? this._initialPersonProfilesConfig : vr
+        }), (t = this._browserClientAdapter) == null || t.handleRemoteConfig(e), this._extensions.forEach(n => n.onRemoteConfig == null ? void 0 : n.onRemoteConfig(e))
+    }
+    _loaded() {
+        try {
+            this.config.loaded(this)
+        } catch (s) {
+            C.critical("`loaded` function failed", s)
+        }
+        if (this._start_queue_if_opted_in(), this.config.internal_or_test_user_hostname && ne != null && ne.hostname) {
+            var e = ne.hostname,
+                t = this.config.internal_or_test_user_hostname;
+            (typeof t == "string" ? e === t : t.test(e)) && this.setInternalOrTestUser()
+        }
+        this.config.capture_pageview && setTimeout(() => {
+            (this.consent.isOptedIn() || this._inCookielessMode()) && this._captureInitialPageview()
+        }, 1), this._remoteConfigLoader = new tl(this), this._remoteConfigLoader.load()
+    }
+    _start_queue_if_opted_in() {
+        var e;
+        this.is_capturing() && this.config.request_batching && ((e = this._requestQueue) == null || e.enable())
+    }
+    _dom_loaded() {
+        this.is_capturing() && Ai(this.__request_queue, e => this._send_retriable_request(e)), this.__request_queue = [], this._start_queue_if_opted_in()
+    }
+    _handle_unload() {
+        var e, t, s, r, n;
+        (e = this.surveys) == null || e.handlePageUnload == null || e.handlePageUnload(), (t = this.metrics) == null || t.flush("sendBeacon"), this.config.request_batching ? (this._shouldCapturePageleave() && this.capture(xs), (s = this.logs) == null || s.flushLogs("sendBeacon"), (r = this._requestQueue) == null || r.unload(), (n = this._retryQueue) == null || n.unload()) : this._shouldCapturePageleave() && this.capture(xs, null, {
+            transport: "sendBeacon"
+        })
+    }
+    _send_request(e) {
+        var t;
+        this.__loaded ? Sl ? this.__request_queue.push(e) : this.rateLimiter.isServerRateLimited(e.batchKey) ? e.fireCallbackOnDrop && (e.callback == null || e.callback({
+            statusCode: 429
+        })) : (e.transport = e.transport || this.config.api_transport, e.headers = S({}, this.config.request_headers, e.headers), e.compression = e.compression === "best-available" ? (t = this.compression) !== null && t !== void 0 ? t : e.compressionFallback : e.compression, (b(this.config.disable_beacon) ? this.config.__preview_disable_beacon : this.config.disable_beacon) && (e.disableTransport = ["sendBeacon"]), e.fetchOptions = e.fetchOptions || this.config.fetch_options, (s => {
+            var r, n, o, a = S({}, s);
+            a.timeout = a.timeout || 6e4;
+            var l, c, u, d, h, _ = (r = a.transport) !== null && r !== void 0 ? r : "fetch";
+            _ === "sendBeacon" && b(a.compression) && a.data && (a.compression = $e.Base64), a.method === "POST" && a.data && (a.timestampMode === "capture-body" ? a.data = {
+                api_key: (c = (h = (d = (R(l = a.data) ? l : [l]).map(v => S({}, v, v.timestamp instanceof Date && !isNaN(v.timestamp.getTime()) ? {
+                    timestamp: v.timestamp.toISOString()
+                } : {})))[0]) == null || (u = h.properties) == null ? void 0 : u.token) !== null && c !== void 0 ? c : h == null ? void 0 : h.token,
+                batch: d,
+                sent_at: new Date().toISOString()
+            } : a.timestampMode === "body" && (a.data = function(v, y) {
+                return y === void 0 && (y = new Date().toISOString()), R(v) ? v.map(w => S({}, w, {
+                    sent_at: y
+                })) : S({}, v, {
+                    sent_at: y
+                })
+            }(a.data))), a.url = no(a.url, a.method, a.compression, a.timestampMode);
+            var p = Ji.filter(v => !a.disableTransport || !v.transport || !a.disableTransport.includes(v.transport)),
+                g = (n = (o = function(v, y) {
+                    for (var w = 0; v.length > w; w++)
+                        if (v[w].transport === _) return v[w]
+                }(p)) == null ? void 0 : o.method) !== null && n !== void 0 ? n : p[0].method;
+            if (!g) throw new Error("No available transport method");
+            var m = v => {
+                try {
+                    g(v)
+                } catch (y) {
+                    dl(y) ? C.warn(y) : C.error(y), a.callback == null || a.callback({
+                        statusCode: 0,
+                        error: y
+                    })
+                }
+            };
+            _ !== "sendBeacon" && a.data && a.compression === $e.GZipJS && Pl && typeof Promise < "u" && !Ki ? hc(a).then(v => {
+                m(v)
+            }).catch(v => {
+                if (In(v)) return Ki = !0, void m(S({}, a, {
+                    compression: void 0,
+                    url: no(s.url, s.method, void 0, s.timestampMode)
+                }));
+                (y => {
+                    if (!y || typeof y != "object") return !1;
+                    var w = "name" in y ? String(y.name) : "";
+                    return In(y) || w === Ea
+                })(v) && (Ki = !0), m(a)
+            }) : g(a)
+        })(S({}, e, {
+            callback: s => {
+                var r, n;
+                this.rateLimiter.checkForLimiting(s), 400 > s.statusCode || (r = (n = this.config).on_request_error) == null || r.call(n, s), e.callback == null || e.callback(s)
+            }
+        }))) : e.fireCallbackOnDrop && (e.callback == null || e.callback({
+            statusCode: 0
+        }))
+    }
+    _send_retriable_request(e) {
+        this._retryQueue ? this._retryQueue.retriableRequest(e) : this._send_request(e)
+    }
+    _execute_array(e) {
+        Ws++;
+        try {
+            var t, s = [],
+                r = [],
+                n = [];
+            Ai(e, a => {
+                if (a)
+                    if (R(t = a[0])) n.push(a);
+                    else if (Pe(a)) try {
+                    a.call(this)
+                } catch (l) {
+                    C.error("Error executing queued PostHog call", a, l)
+                } else R(a) && t === "alias" ? s.push(a) : R(a) && t.indexOf("capture") !== -1 && Pe(this[t]) ? n.push(a) : r.push(a)
+            });
+            var o = function(a, l) {
+                Ai(a, function(c) {
+                    try {
+                        if (R(c[0])) {
+                            var u = l;
+                            W(c, function(d) {
+                                u = u[d[0]].apply(u, d.slice(1))
+                            })
+                        } else l[c[0]].apply(l, c.slice(1))
+                    } catch (d) {
+                        C.error("Error executing queued PostHog call", c, d)
+                    }
+                })
+            };
+            o(s, this), o(r, this), o(n, this)
+        } finally {
+            Ws--
+        }
+    }
+    push(e) {
+        if (Ws > 0 && R(e) && q(e[0])) {
+            var t = De.prototype[e[0]];
+            Pe(t) && t.apply(this, e.slice(1))
+        } else this._execute_array([e])
+    }
+    _getPersistedFacebookClickId() {
+        var e, t = (e = this.persistence) == null ? void 0 : e.get_property(Ae);
+        return q(t) && Gs.test(t) ? {
+            value: t,
+            delivered: !1
+        } : N(t) && q(t.value) && Gs.test(t.value) ? {
+            value: t.value,
+            delivered: t.delivered === !0
+        } : void 0
+    }
+    _updateFacebookClickId(e, t, s, r) {
+        if (this.persistence) {
+            this.persistence.refreshKey(Ae);
+            var n = this._getPersistedFacebookClickId();
+            if (!r) {
+                if (s) return q(t) && Gs.test(t) ? (t !== (n == null ? void 0 : n.value) && this.persistence.register({
+                    [Ae]: {
+                        value: t,
+                        delivered: !1
+                    }
+                }), {
+                    value: t,
+                    pending: t !== (n == null ? void 0 : n.value) || !n.delivered
+                }) : void this.persistence.unregister(Ae);
+                if (q(e) && Tc.test(e)) {
+                    if ((n == null ? void 0 : n.value.split(".")[3]) === e) return {
+                        value: n.value,
+                        pending: !n.delivered
+                    };
+                    var o = "fb.1." + Date.now() + "." + e;
+                    return this.persistence.register({
+                        [Ae]: {
+                            value: o,
+                            delivered: !1
+                        }
+                    }), {
+                        value: o,
+                        pending: !0
+                    }
+                }
+                return n ? {
+                    value: n.value,
+                    pending: !n.delivered
+                } : void 0
+            }
+            this.persistence.unregister(Ae)
+        }
+    }
+    _markFacebookClickIdDelivered(e) {
+        if (this.persistence) {
+            this.persistence.refreshKey(Ae);
+            var t = this._getPersistedFacebookClickId();
+            (t == null ? void 0 : t.value) !== e || t.delivered || this.persistence.register({
+                [Ae]: {
+                    value: e,
+                    delivered: !0
+                }
+            })
+        }
+    }
+    capture(e, t, s) {
+        var r, n, o, a, l, c, u, d, h, _;
+        if (this.__loaded && this.persistence && this.sessionPersistence && this._requestQueue) {
+            if (this.is_capturing())
+                if (!b(e) && q(e)) {
+                    this._healCookielessSentinelDistinctId();
+                    var p = !this.config.opt_out_useragent_filter && this._is_bot();
+                    if (!p || this.config.__preview_capture_bot_pageviews) {
+                        var g = s != null && s.skip_client_rate_limiting ? void 0 : this.rateLimiter.clientRateLimitContext();
+                        if (g == null || !g.isRateLimited) {
+                            var m;
+                            t != null && t.$current_url && !q(t == null ? void 0 : t.$current_url) && (C.error("Invalid `$current_url` property provided to `posthog.capture`. Input must be a string. Ignoring provided value."), t == null || delete t.$current_url), e !== "$exception" || s != null && s._originatedFromCaptureException || C.warn("Using `posthog.capture('$exception')` is unreliable because it does not attach required metadata. Use `posthog.captureException(error)` instead, which attaches required metadata automatically."), this.sessionPersistence.update_search_keyword(), this.config.save_campaign_params && (m = this.sessionPersistence.update_campaign_params()), this.config.save_referrer && this.sessionPersistence.update_referrer_info(), (this.config.save_campaign_params || this.config.save_referrer) && this.persistence.set_initial_person_info();
+                            var v = new Date,
+                                y = (s == null ? void 0 : s.timestamp) || v,
+                                w = wn(s == null ? void 0 : s.uuid, Ke),
+                                E = {
+                                    uuid: w,
+                                    event: e,
+                                    properties: this.calculateEventProperties(e, t || {}, y, w)
+                                };
+                            e === qt && this.config.__preview_capture_bot_pageviews && p && (E.event = "$bot_pageview", E.properties.$browser_type = "bot"), g && (E.properties.$lib_rate_limit_remaining_tokens = g.remainingTokens);
+                            var x = e === "$feature_flag_called" && E.properties.$feature_flag_has_experiment === !1 && this.get_property(jt) === !0;
+                            s != null && s.$set && !x && (E.$set = s == null ? void 0 : s.$set);
+                            var M = N(t == null ? void 0 : t.$set) ? t.$set : void 0,
+                                A = !(s == null || !s.$set) && it in s.$set,
+                                F = A || !!M && it in M,
+                                $ = A ? s == null || (r = s.$set) == null ? void 0 : r[it] : M == null ? void 0 : M[it],
+                                P = R(t == null ? void 0 : t.$unset) ? t.$unset : [],
+                                B = (s == null ? void 0 : s.$unset) || [],
+                                T = P.indexOf(it) !== -1 || B.indexOf(it) !== -1,
+                                L = this._updateFacebookClickId((n = m) == null ? void 0 : n.fbclid, $, F, T);
+                            L && E.properties.$process_person_profile === !0 && L.pending && !F && !x && (E.$set = S({
+                                [it]: L.value
+                            }, E.$set));
+                            var z = s == null ? void 0 : s.$unset;
+                            z && (E.$unset = z);
+                            var J, V, ee, ie = x ? void 0 : this._calculate_set_once_properties(s == null ? void 0 : s.$set_once, e !== gn, e === fr);
+                            if (ie && (E.$set_once = ie), s != null && s._noTruncate || (u = this.config.properties_string_max_length, d = E, h = Q => q(Q) ? Q.slice(0, u) : Q, _ = new Set, E = function Q(le, fe) {
+                                    if (le !== Object(le)) return h ? h(le) : le;
+                                    if (!_.has(le)) {
+                                        var Me;
+                                        if (_.add(le), R(le)) Me = [], Ai(le, Qe => {
+                                            Me.push(Q(Qe))
+                                        });
+                                        else {
+                                            var ye = {};
+                                            W(le, (Qe, yt) => {
+                                                _.has(Qe) || (ye[yt] = Q(Qe))
+                                            }), Me = ye
+                                        }
+                                        return Me
+                                    }
+                                }(d)), E.timestamp = y, b(s == null ? void 0 : s.timestamp) || (E.properties.$event_time_override_provided = !0, E.properties.$event_time_override_system_time = v), x && (E.properties = function(Q, le) {
+                                    le === void 0 && (le = []);
+                                    var fe = {},
+                                        Me = ye => {
+                                            Q[ye] !== void 0 && (fe[ye] = Q[ye])
+                                        };
+                                    return yu.forEach(Me), le.forEach(Me), fe
+                                }(E.properties, Rc)), e === ut.DISMISSED || e === ut.SENT) {
+                                var _e = t == null ? void 0 : t[qs.SURVEY_ID],
+                                    Ee = t == null ? void 0 : t[qs.SURVEY_ITERATION];
+                                yl({
+                                    id: _e,
+                                    current_iteration: Ee
+                                }), E.$set = S({}, E.$set, {
+                                    [(J = {
+                                        id: _e,
+                                        current_iteration: Ee
+                                    }, V = e === ut.SENT ? "responded" : "dismissed", ee = "$survey_" + V + "/" + J.id, J.current_iteration && J.current_iteration > 0 && (ee = "$survey_" + V + "/" + J.id + "/" + J.current_iteration), ee)]: !0
+                                })
+                            } else e === ut.SHOWN && (E.$set = S({}, E.$set, {
+                                [qs.SURVEY_LAST_SEEN_DATE]: new Date().toISOString()
+                            }));
+                            if (e === rc.SHOWN) {
+                                var pe = t == null ? void 0 : t[Xn.TOUR_TYPE];
+                                pe && (E.$set = S({}, E.$set, {
+                                    [Xn.TOUR_LAST_SEEN_DATE + "/" + pe]: new Date().toISOString()
+                                }))
+                            }
+                            var ge = S({}, E.properties.$set, E.$set);
+                            if (Be(ge) || this.setPersonPropertiesForFlags(ge), !D(this.config.before_send)) {
+                                var te = this._runBeforeSend(E);
+                                if (!te) return;
+                                (E = te).uuid = wn(E.uuid, Ke)
+                            }
+                            var ve = (o = (a = E.$set) == null ? void 0 : a[it]) !== null && o !== void 0 ? o : N((l = E.properties) == null ? void 0 : l.$set) ? E.properties.$set[it] : void 0,
+                                ue = L != null && L.pending && ve === L.value ? L.value : void 0;
+                            this._internalEventEmitter.emit("eventCaptured", E);
+                            var qe = (c = s == null ? void 0 : s._url) !== null && c !== void 0 ? c : this.requestRouter.endpointFor("api", this.analyticsDefaultEndpoint),
+                                Je = S({
+                                    method: "POST",
+                                    url: qe,
+                                    data: E,
+                                    compression: "best-available",
+                                    timestampMode: (s == null ? void 0 : s._batchKey) === "recordings" || /\/s\/(?:\?|$)/.test(qe) ? "body" : "capture-body",
+                                    batchKey: s == null ? void 0 : s._batchKey
+                                }, s != null && s.transport ? {
+                                    transport: s.transport
+                                } : {}, ue ? {
+                                    fireCallbackOnDrop: !0,
+                                    callback: Q => {
+                                        Q.statusCode >= 200 && 300 > Q.statusCode && this._markFacebookClickIdDelivered(ue)
+                                    }
+                                } : {});
+                            return !this.config.request_batching || s && (s == null || !s._batchKey) || s != null && s.send_instantly || ue ? this._send_retriable_request(Je) : this._requestQueue.enqueue(Je), E
+                        }
+                        C.critical("This capture call is ignored due to client rate limiting.")
+                    }
+                } else C.error("No event name provided to posthog.capture")
+        } else C.uninitializedWarning("posthog.capture")
+    }
+    _addCaptureHook(e) {
+        return this.on("eventCaptured", t => e(t.event, t))
+    }
+    getExtension(e) {
+        var t;
+        return (t = this._browserClientAdapter) == null ? void 0 : t.getExtension(e)
+    }
+    _getBrowserClientAdapter() {
+        var e;
+        return (e = this._browserClientAdapter) !== null && e !== void 0 ? e : this._browserClientAdapter = new Ic(this)
+    }
+    _registerExtensionEventProperties(e) {
+        this._extensionEventPropertyProducers.push(e);
+        var t = !0;
+        return () => {
+            if (t) {
+                t = !1;
+                var s = this._extensionEventPropertyProducers.indexOf(e);
+                s !== -1 && this._extensionEventPropertyProducers.splice(s, 1)
+            }
+        }
+    }
+    _processCookieIdentityChange(e) {
+        var t, s, r;
+        return e === void 0 && (e = !0), !((t = this.persistence) == null || !t.consumeCookieIdentityChange()) && (this._cachedPersonProperties = null, this.persistence.get_property(H) === he && ((r = this.sessionPersistence) == null || r.clear(), this._sessionRegisteredPropKeys.clear(), this._persistSessionRegisteredPropKeys()), (s = this.featureFlags) == null || s.reset(), e && this.reloadFeatureFlags(), !0)
+    }
+    calculateEventProperties(e, t, s, r, n) {
+        if (s = s || new Date, !this.persistence || !this.sessionPersistence) return t;
+        this.persistence.syncCookieProperties(), this._processCookieIdentityChange();
+        var o = n ? void 0 : this.persistence.remove_event_timer(e),
+            a = S({}, t);
+        if (a.token = this.config.token, a.$config_defaults = this.config.defaults, this._inCookielessMode() && (a[zo] = !0), e === "$snapshot") {
+            var l = S({}, this.persistence.properties(), this.sessionPersistence.properties());
+            return a.distinct_id = l.distinct_id, (!q(a.distinct_id) && !de(a.distinct_id) || vi(a.distinct_id)) && C.error("Invalid distinct_id for replay event. This indicates a bug in your implementation"), a
+        }
+        var c, u = function(A, F, $, P) {
+            var B, T, L, z;
+            if (P === void 0 && (P = !1), !Re) return {};
+            var J, V = A ? [...ei, ...F || []] : [],
+                ee = fa(Re),
+                ie = ee[0],
+                _e = ee[1],
+                Ee = (J = "u" > typeof navigator ? navigator : void 0) != null && J.brave ? {
+                    brave: !0
+                } : {},
+                pe = {};
+            b($) || (pe.detectGoogleSearchApp = $);
+            var ge = {},
+                te = (B = navigator) == null || (B = B.userAgentData) == null ? void 0 : B.platform,
+                ve = (T = navigator) == null ? void 0 : T.maxTouchPoints,
+                ue = f == null || (L = f.screen) == null ? void 0 : L.width,
+                qe = f == null || (z = f.screen) == null ? void 0 : z.height,
+                Je = f == null ? void 0 : f.devicePixelRatio;
+            b(te) || (ge.userAgentDataPlatform = te), b(ve) || (ge.maxTouchPoints = ve), b(ue) || (ge.screenWidth = ue), b(qe) || (ge.screenHeight = qe), b(Je) || (ge.devicePixelRatio = Je);
+            var Q, le, fe, Me, ye, Qe, yt, Te, Ue = Z(rn({
+                $os: ie,
+                $os_version: _e,
+                $browser: va(Re, navigator.vendor, Ee, pe),
+                $device: bn(Re),
+                $device_type: (le = Re, fe = ge, Te = bn(le), Te === Zo || Te === Yo || Te === "Kobo" || Te === "Kindle Fire" || Te === da ? Jt : Te === ki || Te === Wt || Te === Ci || Te === wr ? "Console" : Te === ea ? "Wearable" : Te ? Ne : (fe == null ? void 0 : fe.userAgentDataPlatform) === "Android" && ((Me = fe == null ? void 0 : fe.maxTouchPoints) !== null && Me !== void 0 ? Me : 0) > 0 ? 600 > Math.min((ye = fe == null ? void 0 : fe.screenWidth) !== null && ye !== void 0 ? ye : 0, (Qe = fe == null ? void 0 : fe.screenHeight) !== null && Qe !== void 0 ? Qe : 0) / ((yt = fe == null ? void 0 : fe.devicePixelRatio) !== null && yt !== void 0 ? yt : 1) ? Ne : Jt : "Desktop"),
+                $timezone: el(),
+                $timezone_offset: tc()
+            }), {
+                $current_url: Pi(P ? ft(ne == null ? void 0 : ne.href) : ne == null ? void 0 : ne.href, V, Fi),
+                $host: ne == null ? void 0 : ne.host,
+                $pathname: ne == null ? void 0 : ne.pathname,
+                $raw_user_agent: Re.length > 1e3 ? Re.substring(0, 997) + "..." : Re,
+                $browser_version: Ul(Re, navigator.vendor, Ee, pe),
+                $browser_language: Yn(),
+                $browser_language_prefix: (Q = Yn(), typeof Q == "string" ? Q.split("-")[0] : void 0),
+                $screen_height: f == null ? void 0 : f.screen.height,
+                $screen_width: f == null ? void 0 : f.screen.width,
+                $viewport_height: f == null ? void 0 : f.innerHeight,
+                $viewport_width: f == null ? void 0 : f.innerWidth,
+                $lib: Y.LIB_NAME,
+                $lib_version: Y.LIB_VERSION,
+                $insert_id: Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10),
+                $time: Date.now() / 1e3
+            });
+            return Y.SDK_DIST_CHANNEL && (Ue.$sdk_dist_channel = Y.SDK_DIST_CHANNEL), Ue
+        }(this.config.mask_personal_data_properties, this.config.custom_personal_data_properties, this.config.detect_google_search_app, this.config.disable_capture_url_hashes);
+        if (this.sessionManager) {
+            var d = this.sessionManager.checkAndGetSessionAndWindowId(n, s.getTime(), !0),
+                h = d.windowId;
+            a.$session_id = d.sessionId, a.$window_id = h
+        }
+        this.sessionPropsManager && Z(a, this.sessionPropsManager.getSessionProps());
+        try {
+            var _;
+            this.sessionRecording && Z(a, this.sessionRecording.sdkDebugProperties), a.$sdk_debug_retry_queue_size = (_ = this._retryQueue) == null ? void 0 : _.length
+        } catch (A) {
+            a.$sdk_debug_error_capturing_properties = String(A)
+        }
+        if (this.requestRouter.region === qr && (a.$lib_custom_api_host = this.config.api_host), c = e !== qt || n ? e !== xs || n ? this.pageViewManager.doEvent() : this.pageViewManager.doPageLeave(s) : this.pageViewManager.doPageView(s, r), a = Z(a, c), e === qt && k && (a.title = k.title), !b(o)) {
+            var p = s.getTime() - o;
+            a.$duration = parseFloat((p / 1e3).toFixed(3))
+        }
+        Re && this.config.opt_out_useragent_filter && (a.$browser_type = this._is_bot() ? "bot" : "browser");
+        var g = this.persistence.properties(),
+            m = this.sessionPersistence.properties(),
+            v = a.$groups,
+            y = g.$groups;
+        N(v) && !Be(v) && (a.$groups = S({}, N(y) ? y : {}, v)), W(["$referrer", "$referring_domain"], A => {
+            A in g && delete m[A]
+        });
+        var w = {};
+        if (this._extensionEventPropertyProducers.length > 0)
+            for (var E of this._extensionEventPropertyProducers.slice()) try {
+                Z(w, E())
+            } catch (A) {
+                C.error("Failed to produce browser extension event properties", A)
+            }(a = Z({}, u, g, m, S({}, w, a))).$is_identified = this._isIdentified(), R(this.config.property_denylist) ? W(this.config.property_denylist, function(A) {
+                delete a[A]
+            }) : C.error(bl + this.config.property_denylist + " or property_blacklist config: " + this.config.property_blacklist);
+        var x = this.config.sanitize_properties;
+        x && (C.error(_o), a = x(a, e));
+        var M = this._hasPersonProcessing();
+        return a.$process_person_profile = M, M && !n && this._requirePersonProcessing("_calculate_event_properties"), a
+    }
+    _calculate_set_once_properties(e, t, s) {
+        var r;
+        if (t === void 0 && (t = !0), s === void 0 && (s = !1), !this.persistence || !this._hasPersonProcessing() || this._personProcessingSetOncePropertiesSent && !s) return e;
+        var n = this.persistence.get_initial_props(),
+            o = (r = this.sessionPropsManager) == null ? void 0 : r.getSetOnceProps(),
+            a = Z({}, n, o || {}, e || {}),
+            l = this.config.sanitize_properties;
+        return l && (C.error(_o), a = l(a, "$set_once")), t && (this._personProcessingSetOncePropertiesSent = !0), Be(a) ? void 0 : a
+    }
+    register(e, t) {
+        var s;
+        (s = this.persistence) == null || s.register(e, t)
+    }
+    register_once(e, t, s) {
+        var r;
+        (r = this.persistence) == null || r.register_once(e, t, s)
+    }
+    register_for_session(e) {
+        var t, s;
+        (t = this.persistence) == null || t.syncCookieProperties(), this._processCookieIdentityChange(), (s = this.sessionPersistence) == null || s.register(e), Object.keys(e).forEach(r => this._sessionRegisteredPropKeys.add(r)), this._persistSessionRegisteredPropKeys()
+    }
+    unregister(e) {
+        var t;
+        (t = this.persistence) == null || t.unregister(e)
+    }
+    unregister_for_session(e) {
+        var t;
+        (t = this.sessionPersistence) == null || t.unregister(e), this._sessionRegisteredPropKeys.delete(e), this._persistSessionRegisteredPropKeys()
+    }
+    _register_single(e, t) {
+        this.register({
+            [e]: t
+        })
+    }
+    _clearSessionRegisteredProps() {
+        this._sessionRegisteredPropKeys.forEach(e => {
+            var t;
+            (t = this.sessionPersistence) == null || t.unregister(e)
+        }), this._sessionRegisteredPropKeys.clear(), this._persistSessionRegisteredPropKeys()
+    }
+    _persistSessionRegisteredPropKeys() {
+        var e;
+        if (this._sessionRegisteredPropertiesStorageKey)
+            if (this.config.persistence === "memory" || (e = this.sessionPersistence) != null && e._disabled || !G._is_supported()) G._remove(this._sessionRegisteredPropertiesStorageKey);
+            else {
+                var t = [];
+                this._sessionRegisteredPropKeys.forEach(s => t.push(s)), t.length > 0 ? G._set(this._sessionRegisteredPropertiesStorageKey, t) : G._remove(this._sessionRegisteredPropertiesStorageKey)
+            }
+    }
+    getFeatureFlag(e, t) {
+        var s;
+        return (s = this.featureFlags) == null ? void 0 : s.getFeatureFlag(e, t)
+    }
+    getFeatureFlagPayload(e) {
+        var t;
+        return (t = this.featureFlags) == null ? void 0 : t.getFeatureFlagPayload(e)
+    }
+    getFeatureFlagResult(e, t) {
+        var s;
+        return (s = this.featureFlags) == null ? void 0 : s.getFeatureFlagResult(e, t)
+    }
+    getAllFeatureFlags() {
+        var e, t;
+        return (e = (t = this.featureFlags) == null ? void 0 : t.getAllFeatureFlags()) !== null && e !== void 0 ? e : []
+    }
+    isFeatureEnabled(e, t) {
+        var s, r;
+        return (s = (r = this.featureFlags) == null ? void 0 : r.isFeatureEnabled(e, t)) !== null && s !== void 0 ? s : t == null ? void 0 : t.defaultValue
+    }
+    reloadFeatureFlags() {
+        var e;
+        (e = this.featureFlags) == null || e.reloadFeatureFlags()
+    }
+    updateFlags(e, t, s) {
+        var r;
+        (r = this.featureFlags) == null || r.updateFlags(e, t, s)
+    }
+    updateEarlyAccessFeatureEnrollment(e, t, s) {
+        var r;
+        (r = this.featureFlags) == null || r.updateEarlyAccessFeatureEnrollment(e, t, s)
+    }
+    getEarlyAccessFeatures(e, t, s) {
+        var r;
+        return t === void 0 && (t = !1), (r = this.featureFlags) == null ? void 0 : r.getEarlyAccessFeatures(e, t, s)
+    }
+    on(e, t) {
+        return this._internalEventEmitter.on(e, t)
+    }
+    onFeatureFlags(e) {
+        return this.featureFlags ? this.featureFlags.onFeatureFlags(e) : (e([], {}, {
+            errorsLoading: !0
+        }), () => {})
+    }
+    onSurveysLoaded(e) {
+        return this.surveys ? this.surveys.onSurveysLoaded(e) : (e([], {
+            isLoaded: !1,
+            error: ui
+        }), () => {})
+    }
+    onSessionId(e) {
+        var t, s;
+        return (t = (s = this.sessionManager) == null ? void 0 : s.onSessionId(e)) !== null && t !== void 0 ? t : () => {}
+    }
+    getSurveys(e, t) {
+        t === void 0 && (t = !1), this.surveys ? this.surveys.getSurveys(e, t) : e([], {
+            isLoaded: !1,
+            error: ui
+        })
+    }
+    getActiveMatchingSurveys(e, t) {
+        t === void 0 && (t = !1), this.surveys ? this.surveys.getActiveMatchingSurveys(e, t) : e([], {
+            isLoaded: !1,
+            error: ui
+        })
+    }
+    renderSurvey(e, t) {
+        var s;
+        (s = this.surveys) == null || s.renderSurvey(e, t)
+    }
+    displaySurvey(e, t) {
+        var s;
+        t === void 0 && (t = Ec), (s = this.surveys) == null || s.displaySurvey(e, t)
+    }
+    cancelPendingSurvey(e) {
+        var t;
+        (t = this.surveys) == null || t.cancelPendingSurvey(e)
+    }
+    canRenderSurvey(e) {
+        var t, s;
+        return (t = (s = this.surveys) == null ? void 0 : s.canRenderSurvey(e)) !== null && t !== void 0 ? t : {
+            visible: !1,
+            disabledReason: ui
+        }
+    }
+    canRenderSurveyAsync(e, t) {
+        var s, r;
+        return t === void 0 && (t = !1), (s = (r = this.surveys) == null ? void 0 : r.canRenderSurveyAsync(e, t)) !== null && s !== void 0 ? s : Promise.resolve({
+            visible: !1,
+            disabledReason: ui
+        })
+    }
+    _validateIdentifyId(e) {
+        return !e || vi(e) ? (C.critical("Unique user id has not been set in posthog.identify"), !1) : e === It ? (C.critical('The string "' + e + '" was set in posthog.identify which indicates an error. This ID is only used as a sentinel value.'), !1) : !["distinct_id", "distinctid"].includes(e.toLowerCase()) && !["undefined", "null"].includes(e.toLowerCase()) || (C.critical('The string "' + e + '" was set in posthog.identify which indicates an error. This ID should be unique to the user and not a hardcoded string.'), !1)
+    }
+    identify(e, t, s) {
+        if (!this.__loaded || !this.persistence) return C.uninitializedWarning("posthog.identify");
+        if (de(e) && (e = e.toString(), C.warn("The first argument to posthog.identify was a number, but it should be a string. It has been converted to a string.")), this._validateIdentifyId(e) && this._requirePersonProcessing("posthog.identify")) {
+            this._healCookielessSentinelDistinctId();
+            var r = this.get_distinct_id(),
+                n = this.persistence.syncCookieProperties() && this.get_distinct_id() !== r,
+                o = this._processCookieIdentityChange(!1),
+                a = this.persistence._beginCookieSyncSuppression(),
+                l = !1;
+            try {
+                var c = this.get_distinct_id();
+                this.register({
+                    $user_id: e
+                }), this.get_property(Ei) || this.register_once({
+                    $had_persisted_distinct_id: !0,
+                    $device_id: c
+                }, ""), e !== c && e !== this.get_property(Bt) && (this.unregister(Bt), this.register({
+                    distinct_id: e
+                }));
+                var u = (this.persistence.get_property(H) || he) === he,
+                    d = e !== c,
+                    h = !d && u;
+                if (d && u) {
+                    var _, p = this.config.reuseAnonymousId ? {
+                        distinct_id: e
+                    } : {
+                        distinct_id: e,
+                        $anon_distinct_id: c
+                    };
+                    this.persistence.set_property(H, Ce), this.setPersonPropertiesForFlags({
+                        $set: t || {},
+                        $set_once: s || {}
+                    }, !1), this.config.cookieWinsOnConflict && this.persistence._publishSuppressedCookieSnapshot(), this.capture(fr, p, {
+                        $set: t || {},
+                        $set_once: s || {}
+                    }), this._cachedPersonProperties = Us(e, t, s), (_ = this.featureFlags) == null || _.setAnonymousDistinctId(this.config.reuseAnonymousId ? void 0 : c)
+                } else if (h) {
+                    this.persistence.set_property(H, Ce);
+                    var g = t || {},
+                        m = s || {};
+                    this.setPersonPropertiesForFlags({
+                        $set: g,
+                        $set_once: m
+                    }, !1), this.config.cookieWinsOnConflict && this.persistence._publishSuppressedCookieSnapshot(), this.capture("$set", {
+                        $set: g,
+                        $set_once: m
+                    }), this._cachedPersonProperties = Us(e, t, s)
+                } else(t || s) && this.setPersonProperties(t, s);
+                d || n || o ? (this.reloadFeatureFlags(), this.featureFlags ? this.featureFlags.resetFlagCallReported() : this.unregister(at)) : h && (t || s) && this.reloadFeatureFlags(), l = !0
+            } finally {
+                a && this.persistence._endCookieSyncSuppression(l)
+            }
+        }
+    }
+    setPersonProperties(e, t) {
+        if ((e || t) && this._requirePersonProcessing("posthog.setPersonProperties")) {
+            var s = Us(this.get_distinct_id(), e, t);
+            this._cachedPersonProperties !== s ? (this.setPersonPropertiesForFlags({
+                $set: e || {},
+                $set_once: t || {}
+            }, !0), this.capture("$set", {
+                $set: e || {},
+                $set_once: t || {}
+            }), this._cachedPersonProperties = s) : C.info("A duplicate setPersonProperties call was made with the same properties. It has been ignored.")
+        }
+    }
+    unsetPersonProperties(e) {
+        var t, s = (R(e) ? e : [e]).filter(r => q(r) && r.length > 0);
+        s.length !== 0 && this._requirePersonProcessing("posthog.unsetPersonProperties") && ((t = this.featureFlags) == null || t.unsetPersonPropertiesForFlags(s, !0), this.capture("$set", {
+            $unset: s
+        }), this._cachedPersonProperties = null)
+    }
+    group(e, t, s) {
+        var r;
+        if (e && t) {
+            (r = this.persistence) == null || r.syncCookieProperties(), this._processCookieIdentityChange();
+            var n = this.getGroups(),
+                o = n[e] !== t;
+            if (o && this.resetGroupPropertiesForFlags(e), this.register({
+                    $groups: S({}, n, {
+                        [e]: t
+                    })
+                }), (o || s) && this._hasPersonProcessing()) {
+                var a = {
+                    $group_type: e,
+                    $group_key: t
+                };
+                s && (a.$group_set = s), this.capture(gn, a)
+            }
+            s && this.setGroupPropertiesForFlags({
+                [e]: s
+            }), o && !s && this.reloadFeatureFlags()
+        } else C.error("posthog.group requires a group type and group key")
+    }
+    resetGroups() {
+        this.register({
+            $groups: {}
+        }), this.resetGroupPropertiesForFlags(), this.reloadFeatureFlags()
+    }
+    setPersonPropertiesForFlags(e, t) {
+        var s;
+        t === void 0 && (t = !0), (s = this.featureFlags) == null || s.setPersonPropertiesForFlags(e, t)
+    }
+    resetPersonPropertiesForFlags(e) {
+        var t;
+        e === void 0 && (e = !0), (t = this.featureFlags) == null || t.resetPersonPropertiesForFlags(e)
+    }
+    setGroupPropertiesForFlags(e, t) {
+        var s;
+        t === void 0 && (t = !0), this._requirePersonProcessing("posthog.setGroupPropertiesForFlags") && ((s = this.featureFlags) == null || s.setGroupPropertiesForFlags(e, t))
+    }
+    resetGroupPropertiesForFlags(e) {
+        var t;
+        (t = this.featureFlags) == null || t.resetGroupPropertiesForFlags(e)
+    }
+    reset(e) {
+        var t = Ie(e) ? e : e == null ? void 0 : e.resetDeviceID,
+            s = Ie(e) || e == null ? void 0 : e.bootstrap;
+        this._reset(t, !1, s)
+    }
+    _reset(e, t, s) {
+        var r, n, o;
+        if (t === void 0 && (t = !1), C.info("reset"), !this.__loaded) return C.uninitializedWarning("posthog.reset");
+        var a = s == null ? void 0 : s.sessionID;
+        this.config.bootstrap = s || ((r = this._originalUserConfig) == null ? void 0 : r.bootstrap) || {}, (n = this.featureFlags) == null || n.updateConfig == null || n.updateConfig(this.config, this._shouldDisableFlags());
+        var l = this.get_property(Ei),
+            c = this.get_property(Cs),
+            u = this.get_property(xt),
+            d = this.is_capturing();
+        this.consent.reset(), t || !d || this.is_capturing() || console.warn("[PostHog.js]", "reset() cleared the stored consent, and capturing is now off because of `opt_out_capturing_by_default`. Call opt_in_capturing() again, and prefer calling reset() before opting in rather than after.");
+        var h = (o = this.persistence) == null || o._beginCookieSyncSuppression == null ? void 0 : o._beginCookieSyncSuppression(),
+            _ = !1;
+        try {
+            var p, g, m, v, y, w, E, x, M, A, F, $, P;
+            if ((p = this.persistence) == null || p.clear(), (g = this.sessionPersistence) == null || g.clear(), this._sessionRegisteredPropKeys.clear(), this._persistSessionRegisteredPropKeys(), b(u) || (A = this.persistence) == null || A.register({
+                    [xt]: u
+                }), (m = this.surveys) == null || m.reset(), (v = this.featureFlags) == null || v.reset(), (y = this.conversations) == null || y.reset(), (w = this.logs) == null || w.reset(), (E = this.metrics) == null || E.reset(), (x = this.persistence) == null || x.set_property(H, he), (M = this.sessionManager) == null || M.resetSessionId(), this._cachedPersonProperties = null, this.config.cookieless_mode === lt) this.register_once({
+                distinct_id: It,
+                $device_id: null
+            }, "");
+            else {
+                var B = this.config.get_device_id(Ke());
+                this.register_once({
+                    distinct_id: B,
+                    $device_id: e ? B : l
+                }, ""), e || b(c) || this.register({
+                    [Cs]: c
+                })
+            }
+            if (this.register({
+                    $last_posthog_reset: new Date().toISOString()
+                }, 1), s && (s.distinctID === void 0 || this._inCookielessMode() || ((P = this.persistence) == null || P.set_property(H, s.isIdentifiedID ? Ce : he), this.register({
+                    distinct_id: s.distinctID
+                })), (F = this.featureFlags) == null || F.initialize(), !(b(a) || ($ = this.sessionManager) != null && $.setBootstrapSessionId(a, !0)))) {
+                var T = S({}, s);
+                delete T.sessionID, this.config.bootstrap = T
+            }
+            delete this.config.identity_distinct_id, delete this.config.identity_hash, delete this.config.identity_claims, _ = !0
+        } finally {
+            var L;
+            h && ((L = this.persistence) == null || L._endCookieSyncSuppression == null || L._endCookieSyncSuppression(_))
+        }
+        this.reloadFeatureFlags()
+    }
+    shutdown(e) {
+        var t = this;
+        return X(function*() {
+            var s, r, n, o, a, l, c;
+            if (t.__loaded) {
+                t._getBrowserClientAdapter().dispose(), (s = t.sessionRecording) == null || s.dispose(), (r = t.logs) == null || r.flushLogs("sendBeacon"), (n = t.metrics) == null || n.flush("sendBeacon"), (o = t._requestQueue) == null || o.unload(), (a = t._retryQueue) == null || a.unload();
+                try {
+                    var u;
+                    (u = t.featureFlags) == null || u.destroy()
+                } catch (d) {
+                    C.error("Error while destroying feature flags", d)
+                }(l = t.persistence) == null || l.destroy(), (c = t.sessionPersistence) == null || c.destroy()
+            } else C.uninitializedWarning("posthog.shutdown")
+        })()
+    }
+    setIdentity(e, t) {
+        var s;
+        delete this.config.identity_claims, this.config.identity_distinct_id = e, this.config.identity_hash = t, this.alias(e), (s = this.conversations) == null || s._onIdentityChanged()
+    }
+    clearIdentity() {
+        var e;
+        delete this.config.identity_distinct_id, delete this.config.identity_hash, delete this.config.identity_claims, (e = this.conversations) == null || e._onIdentityCleared()
+    }
+    get_distinct_id() {
+        return this.get_property("distinct_id")
+    }
+    getGroups() {
+        return this.get_property("$groups") || {}
+    }
+    get_session_id() {
+        var e, t;
+        return (e = (t = this.sessionManager) == null ? void 0 : t.checkAndGetSessionAndWindowId(!0).sessionId) !== null && e !== void 0 ? e : ""
+    }
+    get_session_replay_url(e) {
+        if (!this.sessionManager) return "";
+        var t = this.sessionManager.checkAndGetSessionAndWindowId(!0),
+            s = t.sessionStartTimestamp,
+            r = this.requestRouter.endpointFor("ui", "/project/" + this.config.token + "/replay/" + t.sessionId);
+        if (e != null && e.withTimestamp && s) {
+            var n, o = (n = e.timestampLookBack) !== null && n !== void 0 ? n : 10;
+            if (!s) return r;
+            r += "?t=" + Math.max(Math.floor((new Date().getTime() - s) / 1e3) - o, 0)
+        }
+        return r
+    }
+    alias(e, t) {
+        return e === this.get_property(Oo) ? (C.critical("Attempting to create alias for existing People user - aborting."), -2) : this._requirePersonProcessing("posthog.alias") ? (b(t) && (t = this.get_distinct_id()), e !== t ? (this._register_single(Bt, e), this.capture("$create_alias", {
+            alias: e,
+            distinct_id: t
+        })) : (C.warn("alias matches current distinct_id - skipping api call."), this.identify(e), -1)) : void 0
+    }
+    set_config(e) {
+        var t = S({}, this.config);
+        if (N(e)) {
+            var s, r, n, o, a, l, c, u, d, h, _, p;
+            Z(this.config, po(e));
+            var g = this._is_persistence_disabled();
+            (s = this.persistence) == null || s.update_config(this.config, t, g), this.sessionPersistence = this.config.persistence === "sessionStorage" || this.config.persistence === "memory" ? this.persistence : new Hs(S({}, this.config, {
+                persistence: "sessionStorage"
+            }), g, !1);
+            var m, v = this._checkLocalStorageForDebug(this.config.debug);
+            Ie(v) && (this.config.debug = v), Ie(this.config.debug) && (this.config.debug ? (Y.DEBUG = !0, j._is_supported() && j._set("ph_debug", !0), C.info("set_config", {
+                config: e,
+                oldConfig: t,
+                newConfig: S({}, this.config)
+            })) : (Y.DEBUG = !1, j._is_supported() && j._remove("ph_debug"))), (r = this.featureFlags) == null || r.updateConfig == null || r.updateConfig(this.config, this._shouldDisableFlags()), (n = this.exceptionObserver) == null || n.onConfigChange(), (o = this.exceptions) == null || o.onConfigChange(), (a = this.sessionRecording) == null || a.startIfEnabledOrStop(), (l = this.tracingHeaders) == null || l.startIfEnabledOrStop(), (c = this.autocapture) == null || c.startIfEnabled(), (u = this.heatmaps) == null || u.startIfEnabled(), ("capture_pageview" in e || "disable_capture_url_hashes" in e) && ((m = this.historyAutocapture) == null || m.startIfEnabledOrStop()), (d = this.exceptionObserver) == null || d.startIfEnabledOrStop(), (h = this.deadClicksAutocapture) == null || h.startIfEnabledOrStop(), (_ = this.surveys) == null || _.loadIfEnabled(), this._sync_opt_out_with_persistence(), (p = this.externalIntegrations) == null || p.startIfEnabledOrStop(), !t.segment && this.config.segment && this.persistence && Jn(this, wi, !1)
+        }
+    }
+    _overrideSDKInfo(e, t) {
+        Y.LIB_NAME = e, Y.LIB_VERSION = t
+    }
+    startSessionRecording(e) {
+        var t, s, r, n, o, a = e === !0,
+            l = {
+                sampling: a || !(e == null || !e.sampling),
+                linked_flag: a || !(e == null || !e.linked_flag),
+                url_trigger: a || !(e == null || !e.url_trigger),
+                event_trigger: a || !(e == null || !e.event_trigger)
+            };
+        Object.values(l).some(Boolean) && ((t = this.sessionManager) == null || t.checkAndGetSessionAndWindowId(), l.sampling && ((s = this.sessionRecording) == null || s.overrideSampling()), l.linked_flag && ((r = this.sessionRecording) == null || r.overrideLinkedFlag()), l.url_trigger && ((n = this.sessionRecording) == null || n.overrideTrigger("url")), l.event_trigger && ((o = this.sessionRecording) == null || o.overrideTrigger("event"))), this.set_config({
+            disable_session_recording: !1
+        })
+    }
+    stopSessionRecording() {
+        this.set_config({
+            disable_session_recording: !0
+        })
+    }
+    sessionRecordingStarted() {
+        var e;
+        return !((e = this.sessionRecording) == null || !e.started)
+    }
+    captureException(e, t) {
+        try {
+            if (!this.exceptions) return;
+            var s = new Error("PostHog syntheticException"),
+                r = this.exceptions.buildProperties(e, {
+                    handled: !0,
+                    syntheticException: s
+                });
+            return this.exceptions.sendExceptionEvent(S({}, r, t))
+        } catch {
+            return
+        }
+    }
+    addExceptionStep(e, t) {
+        var s;
+        (s = this.exceptions) == null || s.addExceptionStep(e, t)
+    }
+    captureLog(e) {
+        var t;
+        (t = this.logs) == null || t.captureLog(e)
+    }
+    get logger() {
+        var e, t;
+        return (e = (t = this.logs) == null ? void 0 : t.logger) !== null && e !== void 0 ? e : De._noopLogger
+    }
+    startExceptionAutocapture(e) {
+        this.set_config({
+            capture_exceptions: e == null || e
+        })
+    }
+    stopExceptionAutocapture() {
+        this.set_config({
+            capture_exceptions: !1
+        })
+    }
+    loadToolbar(e) {
+        var t, s;
+        return (t = (s = this.toolbar) == null ? void 0 : s.loadToolbar(e)) !== null && t !== void 0 && t
+    }
+    get_property(e) {
+        var t;
+        return (t = this.persistence) == null ? void 0 : t.props[e]
+    }
+    getSessionProperty(e) {
+        var t;
+        return (t = this.sessionPersistence) == null ? void 0 : t.props[e]
+    }
+    toString() {
+        var e, t = (e = this.config.name) !== null && e !== void 0 ? e : Dt;
+        return t !== Dt && (t = Dt + "." + t), t
+    }
+    _isIdentified() {
+        var e, t;
+        return ((e = this.persistence) == null ? void 0 : e.get_property(H)) === Ce || ((t = this.sessionPersistence) == null ? void 0 : t.get_property(H)) === Ce
+    }
+    _hasPersonProcessing() {
+        var e, t;
+        return !(this.config.person_profiles === "never" || this.config.person_profiles === vr && !this._isIdentified() && Be(this.getGroups()) && ((e = this.persistence) == null || (e = e.props) == null || !e[Bt]) && ((t = this.persistence) == null || (t = t.props) == null || !t[Yi]))
+    }
+    _shouldCapturePageleave() {
+        return this.config.capture_pageleave === !0 || this.config.capture_pageleave === "if_capture_pageview" && !!this.config.capture_pageview
+    }
+    createPersonProfile() {
+        this._hasPersonProcessing() || this._requirePersonProcessing("posthog.createPersonProfile") && this.setPersonProperties({}, {})
+    }
+    setInternalOrTestUser() {
+        this._requirePersonProcessing("posthog.setInternalOrTestUser") && this.setPersonProperties({
+            $internal_or_test_user: !0
+        })
+    }
+    _requirePersonProcessing(e) {
+        return this.config.person_profiles === "never" ? (C.error(e + ' was called, but process_person is set to "never". This call will be ignored.'), !1) : (this._warnIfVolatileIdentityWithoutStableId(), this._register_single(Yi, !0), !0)
+    }
+    _is_persistence_disabled() {
+        if (this.config.cookieless_mode === "always") return !0;
+        var e = this.consent.isOptedOut();
+        return this.config.disable_persistence || e && !(!this.config.opt_out_persistence_by_default && this.config.cookieless_mode !== pt)
+    }
+    _sync_opt_out_with_persistence() {
+        var e, t, s, r, n, o = this._is_persistence_disabled();
+        return this.is_capturing() || (s = this.logs) == null || s._onOptOut(), ((e = this.persistence) == null ? void 0 : e._disabled) !== o && ((r = this.persistence) == null || r.set_disabled(o)), ((t = this.sessionPersistence) == null ? void 0 : t._disabled) !== o && ((n = this.sessionPersistence) == null || n.set_disabled(o)), o && (this._sessionRegisteredPropKeys.clear(), this._persistSessionRegisteredPropKeys()), o
+    }
+    opt_in_capturing(e) {
+        var t;
+        if (this.config.cookieless_mode !== lt) {
+            if (this._inCookielessMode()) {
+                var s, r, n, o, a, l;
+                (s = this.sessionRecording) == null || s.dispose({
+                    discardBufferedEvents: !0
+                }), this._reset(!0, !0), (r = this.sessionManager) == null || r.destroy(), (n = this.pageViewManager) == null || n.destroy(), this.sessionManager = new lo(this), this.pageViewManager = new Qn(this), this.persistence && (this.sessionPropsManager = new oo(this, this.sessionManager, this.persistence));
+                var c, u = (o = (a = this.config.__extensionClasses) == null ? void 0 : a.sessionRecording) !== null && o !== void 0 ? o : (l = De.__defaultExtensionClasses) == null ? void 0 : l.sessionRecording;
+                u && (this.sessionRecording = this._replaceExtension(this.sessionRecording, new u(this)), this._lastRemoteConfig && ((c = this.sessionRecording) == null || c.onRemoteConfig == null || c.onRemoteConfig(this._lastRemoteConfig)))
+            }
+            var d, h;
+            this.consent.optInOut(!0), this._sync_opt_out_with_persistence(), this._start_queue_if_opted_in(), (t = this.sessionRecording) == null || t.startIfEnabledOrStop(), this.config.cookieless_mode == pt && ((d = this.surveys) == null || d.loadIfEnabled()), (b(e == null ? void 0 : e.captureEventName) || e != null && e.captureEventName) && this.capture((h = e == null ? void 0 : e.captureEventName) !== null && h !== void 0 ? h : "$opt_in", e == null ? void 0 : e.captureProperties, {
+                send_instantly: !0
+            }), this.config.capture_pageview && this._captureInitialPageview()
+        } else C.warn(ho)
+    }
+    opt_out_capturing() {
+        if (this.config.cookieless_mode !== lt) {
+            var e, t, s = this.config.cookieless_mode === pt ? this.sessionRecording : void 0;
+            s == null || s.dispose({
+                discardBufferedEvents: !0
+            }), this.config.cookieless_mode === pt && this.consent.isOptedIn() && this._reset(!0, !0), this.consent.optInOut(!1), this._sync_opt_out_with_persistence(), this.config.cookieless_mode === pt && (this.register({
+                distinct_id: It,
+                $device_id: null
+            }), this._removeExtension(s), this.sessionRecording = void 0, (e = this.sessionManager) == null || e.destroy(), (t = this.pageViewManager) == null || t.destroy(), this.sessionManager = void 0, this.sessionPropsManager = void 0, this.config.capture_pageview && this._captureInitialPageview(), this._start_queue_if_opted_in())
+        } else C.warn(ho)
+    }
+    has_opted_in_capturing() {
+        return this.consent.isOptedIn()
+    }
+    has_opted_out_capturing() {
+        return this.consent.isOptedOut()
+    }
+    get_explicit_consent_status() {
+        var e = this.consent.consent;
+        return e === 1 ? "granted" : e === 0 ? "denied" : "pending"
+    }
+    is_capturing() {
+        return this.config.cookieless_mode === lt || (this.config.cookieless_mode === pt ? this.consent.isRejected() || this.consent.isOptedIn() : !this.has_opted_out_capturing())
+    }
+    clear_opt_in_out_capturing() {
+        this.consent.reset(), this._sync_opt_out_with_persistence()
+    }
+    _is_bot() {
+        return be ? _l(be, this.config.custom_blocked_useragents) : void 0
+    }
+    _captureInitialPageview() {
+        k && (k.visibilityState === "visible" ? this._initialPageviewCaptured || (this._initialPageviewCaptured = !0, this.capture(qt, {
+            title: k.title
+        }, {
+            send_instantly: !0
+        }), this._visibilityStateListener && (k.removeEventListener(Kt, this._visibilityStateListener), this._visibilityStateListener = null)) : this._visibilityStateListener || (this._visibilityStateListener = this._captureInitialPageview.bind(this), K(k, Kt, this._visibilityStateListener)))
+    }
+    debug(e) {
+        e === !1 ? (f == null || f.console.log("You've disabled debug mode."), this.set_config({
+            debug: !1
+        })) : (f == null || f.console.log("You're now in debug mode. All calls to PostHog will be logged in your console.\nYou can disable this with `posthog.debug(false)`."), this.set_config({
+            debug: !0
+        }))
+    }
+    _shouldDisableFlags() {
+        var e = this._originalUserConfig || {};
+        return "advanced_disable_flags" in e ? !!e.advanced_disable_flags : this.config.advanced_disable_flags !== !1 ? !!this.config.advanced_disable_flags : this.config.advanced_disable_decide === !0 ? (C.warn("Config field 'advanced_disable_decide' is deprecated. Please use 'advanced_disable_flags' instead. The old field will be removed in a future major version."), !0) : function(t, s, r, n, o) {
+            var a = s in t && !D(t[s]),
+                l = r in t && !D(t[r]);
+            return a ? t[s] : !!l && (o && o.warn("Config field '" + r + "' is deprecated. Please use '" + s + "' instead. The old field will be removed in a future major version."), t[r])
+        }(e, "advanced_disable_flags", "advanced_disable_decide", 0, C)
+    }
+    _runBeforeSend(e) {
+        var t;
+        if (D(this.config.before_send)) return e;
+        var s = Object.keys((t = e.properties) !== null && t !== void 0 ? t : {}).filter(Ll),
+            r = R(this.config.before_send) ? this.config.before_send : [this.config.before_send],
+            n = e;
+        for (var o of r) try {
+            if (n = o(n), D(n)) {
+                var a = "Event '" + e.event + "' was rejected in beforeSend function";
+                return Al(e.event) ? C.warn(a + ". This can cause unexpected behavior.") : C.info(a), null
+            }
+            n.properties && !Be(n.properties) || C.warn("Event '" + e.event + "' has no properties after beforeSend function, this is likely an error.")
+        } catch (c) {
+            return C.error("Error in beforeSend function for event '" + e.event + "':", c), null
+        }
+        for (var l of s)
+            if (n.properties && D(n.properties[l])) return C.warn("Event '" + e.event + "' had its '" + l + "' property removed in a beforeSend function. This property is required for ingestion, so the event will be dropped."), null;
+        return n
+    }
+    getPageViewId() {
+        var e;
+        return (e = this.pageViewManager._currentPageview) == null ? void 0 : e.pageViewId
+    }
+    captureTraceFeedback(e, t) {
+        this.capture("$ai_feedback", {
+            $ai_trace_id: String(e),
+            $ai_feedback_text: t
+        })
+    }
+    captureTraceMetric(e, t, s) {
+        this.capture("$ai_metric", {
+            $ai_trace_id: String(e),
+            $ai_metric_name: t,
+            $ai_metric_value: String(s)
+        })
+    }
+    _checkLocalStorageForDebug(e) {
+        var t = Ie(e) && !e,
+            s = j._is_supported() && j._get("ph_debug") === "true";
+        return !t && (!!s || e)
+    }
+}
+De.__defaultExtensionClasses = {}, De._noopLogger = (() => {
+        var i = () => {};
+        return {
+            trace: i,
+            debug: i,
+            info: i,
+            warn: i,
+            error: i,
+            fatal: i
+        }
+    })(),
+    function(i, e) {
+        for (var t = 0; e.length > t; t++) i.prototype[e[t]] = Iu(i.prototype[e[t]])
+    }(De, ["identify"]);
+class wl {
+    constructor(e) {
+        this.disabled = e === !1;
+        var t = N(e) ? e : {};
+        this.thresholdPx = t.threshold_px || 30, this.timeoutMs = t.timeout_ms || 1e3, this.clickCount = t.click_count || 3, this.clicks = []
+    }
+    isRageClick(e, t, s) {
+        if (this.disabled) return !1;
+        var r = this.clicks[this.clicks.length - 1];
+        if (r && Math.abs(e - r.x) + Math.abs(t - r.y) < this.thresholdPx && this.timeoutMs > s - r.timestamp) {
+            if (this.clicks.push({
+                    x: e,
+                    y: t,
+                    timestamp: s
+                }), this.clicks.length === this.clickCount) return !0
+        } else this.clicks = [{
+            x: e,
+            y: t,
+            timestamp: s
+        }];
+        return !1
+    }
+}
+var Js = "$copy_autocapture",
+    Ni = ae("[AutoCapture]");
+
+function Qs(i, e) {
+    return e.length > i ? e.slice(0, i) + "..." : e
+}
+
+function Oc(i) {
+    if (i.previousElementSibling) return i.previousElementSibling;
+    var e = i;
+    do e = e.previousSibling; while (e && !mt(e));
+    return e
+}
+
+function $c(i, e) {
+    var t, s, r = e.e,
+        n = e.maskAllElementAttributes,
+        o = e.maskAllText,
+        a = e.elementAttributeIgnoreList,
+        l = e.elementsChainAsString,
+        c = e.disableCaptureUrlHashes;
+    if (!mt(i)) return {
+        props: {}
+    };
+    for (var u = [i], d = new Set([i]), h = i; h.parentNode && !He(h, "body") && $a > u.length;)
+        if (Oa(h.parentNode)) {
+            var _ = h.parentNode.host;
+            if (d.has(_)) break;
+            d.add(_), u.push(_), h = _
+        } else {
+            if (!mt(h.parentNode) || d.has(h.parentNode)) break;
+            d.add(h.parentNode), u.push(h.parentNode), h = h.parentNode
+        } var p, g, m = [],
+        v = {},
+        y = !1,
+        w = !1;
+    if (W(u, F => {
+            var $ = Mr(F);
+            if (He(F, "a")) {
+                var P = F.getAttribute("href");
+                y = !!($ && P && yi(P)) && (c ? ft(P) : P)
+            }
+            O(_s(F), "ph-no-capture") && (w = !0), m.push(function(T, L, z, J, V) {
+                V === void 0 && (V = !1);
+                var ee = T.tagName.toLowerCase(),
+                    ie = {
+                        tag_name: ee
+                    };
+                on.indexOf(ee) > -1 && !z && (ie.$el_text = ee.toLowerCase() === "a" || ee.toLowerCase() === "button" ? Qs(1024, Wn(T)) : Qs(1024, xi(T)));
+                var _e = _s(T);
+                _e.length > 0 && (ie.classes = _e.filter(function(te) {
+                    return te !== ""
+                })), W(T.attributes, function(te) {
+                    var ve;
+                    if ((!za(T) || ["name", "id", "class", "aria-label"].indexOf(te.name) !== -1) && (J == null || !J.includes(te.name)) && !L && yi(te.value) && (!q(ve = te.name) || ve.substring(0, 10) !== "_ngcontent" && ve.substring(0, 7) !== "_nghost")) {
+                        var ue = te.value;
+                        te.name === "class" && (ue = nn(ue).join(" ")), ie["attr__" + te.name] = Qs(1024, te.name === "href" && V ? ft(ue) : ue)
+                    }
+                });
+                for (var Ee = 1, pe = 1, ge = T; ge = Oc(ge);) Ee++, ge.tagName === T.tagName && pe++;
+                return ie.nth_child = Ee, ie.nth_of_type = pe, ie
+            }(F, n, o, a, c));
+            var B = function(T) {
+                if (!Mr(T)) return {};
+                var L = {};
+                return W(T.attributes, function(z) {
+                    if (z.name && z.name.indexOf("data-ph-capture-attribute") === 0) {
+                        var J = z.name.replace("data-ph-capture-attribute-", ""),
+                            V = z.value;
+                        J && V && yi(V) && (L[J] = V)
+                    }
+                }), L
+            }(F);
+            W(B, (T, L) => {
+                ({}).hasOwnProperty.call(v, L) || (v[L] = T)
+            })
+        }), w) return {
+        props: {},
+        explicitNoCapture: w
+    };
+    if (o || (m[0].$el_text = He(i, "a") || He(i, "button") ? Wn(i) : xi(i)), y) {
+        var E, x;
+        m[0].attr__href = y;
+        var M = (E = Zt(y)) == null ? void 0 : E.host,
+            A = f == null || (x = f.location) == null ? void 0 : x.host;
+        M && A && M !== A && (p = y)
+    }
+    return {
+        props: Z({
+            $event_type: r.type,
+            $ce_version: 1
+        }, l ? {} : {
+            $elements: m
+        }, {
+            $elements_chain: (g = m, R(g) ? function(F) {
+                return F.map($ => {
+                    var P, B, T = "";
+                    if ($.tag_name && (T += $.tag_name), $.attr_class)
+                        for (var L of ($.attr_class.sort(), $.attr_class)) T += "." + L.replace(/"/g, "");
+                    var z = S({}, $.text ? {
+                            text: $.text
+                        } : {}, {
+                            "nth-child": (P = $.nth_child) !== null && P !== void 0 ? P : 0,
+                            "nth-of-type": (B = $.nth_of_type) !== null && B !== void 0 ? B : 0
+                        }, $.href ? {
+                            href: $.href
+                        } : {}, $.attr_id ? {
+                            attr_id: $.attr_id
+                        } : {}, $.attributes),
+                        J = {};
+                    return Gi(z).sort((V, ee) => {
+                        return (_e = ee[0]) > (ie = V[0]) ? -1 : ie > _e ? 1 : 0;
+                        var ie, _e
+                    }).forEach(V => {
+                        var ee = V[1];
+                        return J[Gn(V[0].toString())] = Gn(ee.toString())
+                    }), (T += ":") + Gi(J).map(V => V[0] + '="' + V[1] + '"').join("")
+                }).join(";")
+            }(function(F) {
+                return F.map($ => {
+                    var P, B, T = {
+                        text: (P = $.$el_text) == null ? void 0 : P.slice(0, 400),
+                        tag_name: $.tag_name,
+                        href: (B = $.attr__href) == null ? void 0 : B.slice(0, 2048),
+                        attr_class: Gu($),
+                        attr_id: $.attr__id,
+                        nth_child: $.nth_child,
+                        nth_of_type: $.nth_of_type,
+                        attributes: {}
+                    };
+                    return Gi($).filter(L => L[0].indexOf("attr__") === 0).forEach(L => T.attributes[L[0]] = L[1]), T
+                })
+            }(g)) : "")
+        }, (t = m[0]) != null && t.$el_text ? {
+            $el_text: (s = m[0]) == null ? void 0 : s.$el_text
+        } : {}, p && r.type === "click" ? {
+            $external_click_url: p
+        } : {}, v)
+    }
+}
+class Dc {
+    constructor(e) {
+        this.name = "autocapture", this._initialized = !1, this._isDisabledServerSide = null, this._hasReceivedConfigResponse = !1, this._elementsChainAsString = !1, this._config = {
+            enabled: !1,
+            rageclick: !1,
+            maskAllElementAttributes: !1,
+            maskAllText: !1,
+            disableCaptureUrlHashes: !1,
+            remoteRequestsDisabled: !1
+        }, this._disposed = !1, this._configSource = e, this._configSource.refresh(this._config), this.rageclicks = new wl(this._config.rageclick), this._elementSelectors = null
+    }
+    setup(e) {
+        this._compileUrlPatterns(), this._client = e;
+        var t = e.onRemoteConfig(this.onRemoteConfig.bind(this));
+        this._disposed ? t.dispose() : (this._remoteConfigSubscription = t, this.startIfEnabled())
+    }
+    dispose() {
+        var e;
+        this._disposed || (this._disposed = !0, this._client = void 0, (e = this._remoteConfigSubscription) == null || e.dispose(), this._remoteConfigSubscription = void 0, this._removeDomEventHandlers())
+    }
+    _refreshConfig() {
+        return this._configSource.refresh(this._config), this._config
+    }
+    _compileUrlPatterns() {
+        var e, t;
+        return this._refreshConfig(), this._config.url_allowlist = (e = this._config.url_allowlist) == null ? void 0 : e.map(s => new RegExp(s)), this._config.url_ignorelist = (t = this._config.url_ignorelist) == null ? void 0 : t.map(s => new RegExp(s)), this._config
+    }
+    _addDomEventHandlers() {
+        if (this.isBrowserSupported()) {
+            if (f && k) {
+                var e = this._domEventHandler = s => {
+                    s = s || (f == null ? void 0 : f.event);
+                    try {
+                        this._captureEvent(s)
+                    } catch (r) {
+                        Ni.error("Failed to capture event", r)
+                    }
+                };
+                if (K(k, "submit", e, {
+                        capture: !0
+                    }), K(k, "change", e, {
+                        capture: !0
+                    }), K(k, "click", e, {
+                        capture: !0
+                    }), this._refreshConfig().capture_copied_text) {
+                    var t = this._copiedTextHandler = s => {
+                        s = s || (f == null ? void 0 : f.event);
+                        try {
+                            this._captureEvent(s, Js)
+                        } catch (r) {
+                            Ni.error("Failed to capture clipboard event", r)
+                        }
+                    };
+                    K(k, "copy", t, {
+                        capture: !0
+                    }), K(k, "cut", t, {
+                        capture: !0
+                    }), K(k, "paste", t, {
+                        capture: !0
+                    })
+                }
+            }
+        } else Ni.info("Disabling Automatic Event Collection because this browser is not supported")
+    }
+    _removeDomEventHandlers() {
+        this._domEventHandler && (k == null || k.removeEventListener("submit", this._domEventHandler, !0), k == null || k.removeEventListener("change", this._domEventHandler, !0), k == null || k.removeEventListener("click", this._domEventHandler, !0), this._domEventHandler = void 0), this._copiedTextHandler && (k == null || k.removeEventListener("copy", this._copiedTextHandler, !0), k == null || k.removeEventListener("cut", this._copiedTextHandler, !0), k == null || k.removeEventListener("paste", this._copiedTextHandler, !0), this._copiedTextHandler = void 0), this._initialized = !1
+    }
+    startIfEnabled() {
+        !this._disposed && this._client && this.isEnabled && !this._initialized && (this._addDomEventHandlers(), this._initialized = !0)
+    }
+    onRemoteConfig(e) {
+        if (!this._disposed)
+            if (this._hasReceivedConfigResponse = !0, e.ok) {
+                var t = e.config;
+                t.elementsChainAsString && (this._elementsChainAsString = t.elementsChainAsString);
+                var s, r = t.autocapture_opt_out;
+                Ie(r) && ((s = this._client) == null || s.kv.set(tr, r), this._isDisabledServerSide = r), this.startIfEnabled()
+            } else this.startIfEnabled()
+    }
+    setElementSelectors(e) {
+        this._elementSelectors = e
+    }
+    getElementSelectors(e) {
+        var t, s = [];
+        return (t = this._elementSelectors) == null || t.forEach(r => {
+            var n = k == null ? void 0 : k.querySelectorAll(r);
+            n == null || n.forEach(o => {
+                e === o && s.push(r)
+            })
+        }), s
+    }
+    get isEnabled() {
+        var e, t;
+        if (this._disposed) return !1;
+        var s = (e = this._client) == null ? void 0 : e.kv.get(tr),
+            r = this._isDisabledServerSide,
+            n = this._refreshConfig(),
+            o = n.remoteRequestsDisabled && !this._hasReceivedConfigResponse;
+        if (ce(r) && !Ie(s) && !o) return !1;
+        var a = (t = this._isDisabledServerSide) !== null && t !== void 0 ? t : !!s;
+        return !!n.enabled && !a
+    }
+    _captureEvent(e, t) {
+        if (t === void 0 && (t = "$autocapture"), this.isEnabled) {
+            var s = Ar(e);
+            Ma(s) && (s = s.parentNode || null);
+            var r, n = this._compileUrlPatterns();
+            t === "$autocapture" && e.type === "click" && e instanceof MouseEvent && n.rageclick && (r = this.rageclicks) != null && r.isRageClick(e.clientX, e.clientY, e.timeStamp || new Date().getTime()) && Na(s, n.rageclick) && this._captureEvent(e, "$rageclick");
+            var o = t === Js,
+                a = o ? S({}, n, {
+                    dom_event_allowlist: void 0
+                }) : n;
+            if (s && function(v, y, w, E, x, M) {
+                    var A;
+                    if (!f || an(v) || w != null && w.url_allowlist && !Hn(w.url_allowlist, M) || w != null && w.url_ignorelist && Hn(w.url_ignorelist, M)) return !1;
+                    if (w != null && w.dom_event_allowlist) {
+                        var F = w.dom_event_allowlist;
+                        if (F && !F.some(z => y.type === z)) return !1
+                    }
+                    var $ = qa(v, E),
+                        P = $.parentIsUsefulElement,
+                        B = $.targetElementList;
+                    if (! function(z, J) {
+                            var V = J == null ? void 0 : J.element_allowlist;
+                            if (b(V)) return !0;
+                            var ee, ie = function(Ee) {
+                                if (V.some(pe => Ee.tagName.toLowerCase() === pe)) return {
+                                    v: !0
+                                }
+                            };
+                            for (var _e of z)
+                                if (ee = ie(_e)) return ee.v;
+                            return !1
+                        }(B, w) || !Lr(B, w == null ? void 0 : w.css_selector_allowlist) || Lr(B, (A = w == null ? void 0 : w.css_selector_ignorelist) !== null && A !== void 0 ? A : qu)) return !1;
+                    try {
+                        var T = f.getComputedStyle(v);
+                        if (T && T.getPropertyValue("cursor") === "pointer" && y.type === "click") return !0
+                    } catch {}
+                    var L = v.tagName.toLowerCase();
+                    switch (L) {
+                        case "html":
+                            return !1;
+                        case "form":
+                            return (x || ["submit"]).indexOf(y.type) >= 0;
+                        case "input":
+                        case "select":
+                        case "textarea":
+                            return (x || ["change", "click"]).indexOf(y.type) >= 0;
+                        default:
+                            return P ? (x || ["click"]).indexOf(y.type) >= 0 : (x || ["click"]).indexOf(y.type) >= 0 && (on.indexOf(L) > -1 || v.getAttribute("contenteditable") === "true")
+                    }
+                }(s, e, a, o, o ? ["copy", "cut", "paste"] : void 0, {
+                    config: {
+                        get_current_url: n.getCurrentUrl
+                    }
+                })) {
+                var l, c = $c(s, {
+                        e,
+                        maskAllElementAttributes: n.maskAllElementAttributes,
+                        maskAllText: n.maskAllText,
+                        elementAttributeIgnoreList: n.element_attribute_ignorelist,
+                        elementsChainAsString: this._elementsChainAsString,
+                        disableCaptureUrlHashes: n.disableCaptureUrlHashes
+                    }),
+                    u = c.props;
+                if (c.explicitNoCapture) return !1;
+                var d = this.getElementSelectors(s);
+                if (d && d.length > 0 && (u.$element_selectors = d), t === Js) {
+                    var h = e.type || "clipboard";
+                    if (h !== "paste") {
+                        var _, p, g = f == null || (_ = f.getSelection()) == null ? void 0 : _.toString(),
+                            m = Da(g);
+                        if (!m) return !1;
+                        u.$selected_content = m, u.$clipboard_text_length = (p = g == null ? void 0 : g.length) !== null && p !== void 0 ? p : 0
+                    }
+                    u.$copy_type = h
+                }
+                return (l = this._client) == null || l.capture(t, u).catch(v => Ni.error("Failed to capture event", v)), !0
+            }
+        }
+    }
+    isBrowserSupported() {
+        return Pe(k == null ? void 0 : k.querySelectorAll)
+    }
+}
+class Bc {
+    constructor(e) {
+        this._instance = e
+    }
+    refresh(e) {
+        var t = this._instance.config,
+            s = N(t.autocapture) ? t.autocapture : void 0;
+        e.enabled = !!t.autocapture, e.rageclick = t.rageclick, e.maskAllElementAttributes = t.mask_all_element_attributes, e.maskAllText = t.mask_all_text, e.disableCaptureUrlHashes = t.disable_capture_url_hashes, e.getCurrentUrl = t.get_current_url, e.remoteRequestsDisabled = this._instance._shouldDisableFlags(), e.url_allowlist = s == null ? void 0 : s.url_allowlist, e.url_ignorelist = s == null ? void 0 : s.url_ignorelist, e.dom_event_allowlist = s == null ? void 0 : s.dom_event_allowlist, e.element_allowlist = s == null ? void 0 : s.element_allowlist, e.css_selector_allowlist = s == null ? void 0 : s.css_selector_allowlist, e.css_selector_ignorelist = s == null ? void 0 : s.css_selector_ignorelist, e.element_attribute_ignorelist = s == null ? void 0 : s.element_attribute_ignorelist, e.capture_copied_text = s == null ? void 0 : s.capture_copied_text
+    }
+}
+var ci = ae("[ExceptionAutocapture]"),
+    go = () => {},
+    vo = i => {
+        var e;
+        if (Pe(i)) return (e = i.__posthog_layer__) !== null && e !== void 0 ? e : i.__rrweb_layer__
+    };
+
+function El(i, e, t) {
+    try {
+        if (!(e in i)) return go;
+        var s = {
+                next: i[e]
+            },
+            r = t(function() {
+                for (var n = arguments.length, o = new Array(n), a = 0; n > a; a++) o[a] = arguments[a];
+                return s.next.apply(this, o)
+            });
+        return Pe(r) && (r.prototype = r.prototype || {}, Object.defineProperties(r, {
+            __posthog_wrapped__: {
+                enumerable: !1,
+                value: !0
+            },
+            __posthog_layer__: {
+                enumerable: !1,
+                value: s
+            }
+        })), i[e] = r, () => {
+            if (i[e] !== r)
+                for (var n = i[e], o = vo(n); o;) {
+                    if (o.next === r) return void(o.next = s.next);
+                    o = vo(n = o.next)
+                } else i[e] = s.next
+        }
+    } catch {
+        return go
+    }
+}
+var Hc = ae("[TracingHeaders]"),
+    St = ae("[Web Vitals]"),
+    fo = 9e5,
+    mo = ["CLS", "FCP", "INP", "LCP"],
+    Nc = ["INP", "LCP"],
+    qc = ["interactionTarget", "interactionType", "inputDelay", "processingDuration", "presentationDelay", "loadState", "target", "url", "timeToFirstByte", "resourceLoadDelay", "resourceLoadDuration", "elementRenderDelay", "largestShiftTarget", "largestShiftTime", "largestShiftValue", "firstByteToFCP"],
+    qi = "disabled",
+    yo = "lazy_loading",
+    di = "awaiting_config",
+    zi = "missing_config";
+ae("[SessionRecording]"), ae("[SessionRecording]");
+var zr = "[SessionRecording]",
+    rt = ae(zr),
+    zc = ae("[Heatmaps]");
+
+function Ys(i) {
+    return N(i) && "clientX" in i && "clientY" in i && de(i.clientX) && de(i.clientY)
+}
+var ji = ae("[Product Tours]"),
+    Zs = i => {
+        var e;
+        return !i.config.disable_product_tours && !((e = i.persistence) == null || !e.get_property(Ur))
+    },
+    jc = ["$set_once", "$set"],
+    Ye = ae("[SiteApps]"),
+    bo = "Error while initializing PostHog app with config id ",
+    kl = (i, e) => i != null && i.then ? i.then(e) : e(i),
+    Ot = "SDK is not enabled or survey functionality is not yet loaded",
+    So = "Disabled. Not loading surveys.";
+class Vc {
+    constructor(e, t) {
+        this.name = "surveys", this._surveyEventReceiver = null, this._surveyManager = null, this._isInitializingSurveys = !1, this._surveyCallbacks = [], this._getSurveysInFlightPromise = null, this._lastSurveyRefreshFailedAt = null, this._disposed = !1, this._renderTimeouts = new Set, this.onRemoteConfig = s => {
+            if (!this._disposed && !this._config.disableSurveys) {
+                if (!s.ok) return U.warn("Remote config unavailable. Not loading surveys.");
+                var r = s.config.surveys;
+                if (D(r)) return U.warn("Flags not loaded yet. Not loading surveys.");
+                this._isSurveysEnabled = Ie(r) ? r : r.length > 0, U.info("flags response received, isSurveysEnabled: " + this._isSurveysEnabled), this.loadIfEnabled()
+            }
+        }, this._configSource = e, this._initialClientState = t
+    }
+    setup(e) {
+        if (!this._disposed) return this._initializingClient = e, kl(e.kv.initialize(), () => {
+            if (this._initializingClient === e && !this._disposed) {
+                this._initializingClient = void 0, this._client = e;
+                var t = e.onRemoteConfig(this.onRemoteConfig);
+                this._disposed ? t.dispose() : (this._remoteConfigSubscription = t, this.loadIfEnabled())
+            }
+        })
+    }
+    dispose() {
+        var e, t, s;
+        this._disposed || (this._disposed = !0, this._initializingClient = void 0, this._client = void 0, (e = this._remoteConfigSubscription) == null || e.dispose(), this._remoteConfigSubscription = void 0, (t = this._surveyEventReceiver) == null || t.dispose(), this._surveyEventReceiver = null, (s = this._surveyManager) == null || s.dispose == null || s.dispose(), this._surveyManager = null, this._surveyCallbacks = [], this._getSurveysInFlightPromise = null, this._renderTimeouts.forEach(r => clearTimeout(r)), this._renderTimeouts.clear())
+    }
+    get _config() {
+        return this._configSource.get()
+    }
+    initialize() {
+        this.loadIfEnabled()
+    }
+    reset() {
+        try {
+            var e;
+            (e = this._surveyEventReceiver) == null || e.reset(), localStorage.removeItem("lastSeenSurveyDate");
+            for (var t = [], s = 0; s < localStorage.length; s++) {
+                var r = localStorage.key(s);
+                (r != null && r.startsWith(ml) || r != null && r.startsWith("inProgressSurvey_")) && t.push(r)
+            }
+            t.forEach(n => localStorage.removeItem(n))
+        } catch {}
+    }
+    loadIfEnabled() {
+        if (!this._disposed && this._client) {
+            var e = this._config;
+            if (!this._surveyManager)
+                if (this._isInitializingSurveys) U.info("Already initializing surveys, skipping...");
+                else if (e.disableSurveys) U.info(So);
+            else if (e.cookielessMode && this._configSource.isOptedOut()) U.info("Not loading surveys in cookieless mode without consent.");
+            else {
+                var t = this._configSource.getExtensions();
+                if (t) {
+                    if (!b(this._isSurveysEnabled) || e.advancedEnableSurveys) {
+                        var s = this._isSurveysEnabled || e.advancedEnableSurveys;
+                        this._isInitializingSurveys = !0;
+                        try {
+                            var r = t.generateSurveys;
+                            if (r) return this._completeSurveyInitialization(r, s), void(this._isInitializingSurveys = !1);
+                            var n = t.loadExternalDependency;
+                            if (!n) return this._handleSurveyLoadError(Gr), void(this._isInitializingSurveys = !1);
+                            n(o => {
+                                try {
+                                    if (this._disposed) return;
+                                    var a = this._configSource.getExtensions();
+                                    o || a == null || !a.generateSurveys ? this._handleSurveyLoadError("Could not load surveys script", o) : this._completeSurveyInitialization(a.generateSurveys, s)
+                                } finally {
+                                    this._isInitializingSurveys = !1
+                                }
+                            })
+                        } catch (o) {
+                            throw this._isInitializingSurveys = !1, this._handleSurveyLoadError("Error initializing surveys", o), o
+                        }
+                    }
+                } else U.error("PostHog Extensions not found.")
+            }
+        }
+    }
+    _completeSurveyInitialization(e, t) {
+        this._disposed || (this._surveyManager = e(t), this._surveyEventReceiver = this._configSource.createEventReceiver(), U.info("Surveys loaded successfully"), this._notifySurveyCallbacks({
+            isLoaded: !0
+        }))
+    }
+    _handleSurveyLoadError(e, t) {
+        U.error(e, t), this._notifySurveyCallbacks({
+            isLoaded: !1,
+            error: e
+        })
+    }
+    onSurveysLoaded(e) {
+        return this._surveyCallbacks.push(e), this._surveyManager && this._notifySurveyCallbacks({
+            isLoaded: !0
+        }), () => {
+            this._surveyCallbacks = this._surveyCallbacks.filter(t => t !== e)
+        }
+    }
+    getSurveys(e, t) {
+        var s;
+        t === void 0 && (t = !1);
+        var r = (s = this._client) !== null && s !== void 0 ? s : this._initialClientState;
+        if (r && !this._disposed) {
+            if (this._config.disableSurveys) return U.info(So), e([]);
+            var n = r.kv.get(ur);
+            if (n && !t) return e(n, {
+                isLoaded: !0
+            }), void(this._shouldBackgroundRefreshSurveys() && this.getSurveys(() => {}, !0));
+            if (this._getSurveysInFlightPromise) this._getSurveysInFlightPromise.then(l => {
+                this._disposed || e(l.surveys, l.context)
+            }).catch(l => U.error("Error in survey callback", l));
+            else {
+                var o = this._sendSurveysRequest("/api/surveys/", {
+                    method: "GET",
+                    query: {
+                        token: r.projectToken
+                    },
+                    sentAt: "query",
+                    timeoutMs: this._config.requestTimeoutMs
+                }).then(l => {
+                    try {
+                        return this._handleSurveyResponse(r, l)
+                    } catch (c) {
+                        return U.error("Error processing surveys response", c), this._handleSurveyResponse(r, {
+                            statusCode: 0,
+                            error: c
+                        })
+                    }
+                }, l => this._handleSurveyResponse(r, {
+                    statusCode: 0,
+                    error: l
+                }));
+                this._getSurveysInFlightPromise = o;
+                var a = () => {
+                    this._getSurveysInFlightPromise === o && (this._getSurveysInFlightPromise = null)
+                };
+                o.then(l => {
+                    a(), this._disposed || e(l.surveys, l.context)
+                }, a).catch(l => U.error("Error in survey callback", l))
+            }
+        }
+    }
+    _sendSurveysRequest(e, t) {
+        var s = this._client;
+        return s ? s.sendRequest(e, t) : new Promise(r => r({
+            statusCode: 0,
+            error: new Error(Ot)
+        }))
+    }
+    _handleSurveyResponse(e, t) {
+        if (this._disposed) return {
+            surveys: [],
+            context: {
+                isLoaded: !1,
+                error: Ot
+            }
+        };
+        var s = t.statusCode;
+        if (s !== 200 || !t.json) {
+            var r = "Surveys API could not be loaded, status: " + s;
+            return s !== 0 ? U.error(r) : t.error || U.warn(r), this._lastSurveyRefreshFailedAt = Date.now(), {
+                surveys: [],
+                context: {
+                    isLoaded: !1,
+                    error: r
+                }
+            }
+        }
+        this._lastSurveyRefreshFailedAt = null;
+        var n, o = t.json.surveys || [],
+            a = o.filter(l => function(c) {
+                return !(!c.start_date || c.end_date)
+            }(l) && (gl(l) || function(c) {
+                var u;
+                return !((u = c.conditions) == null || (u = u.actions) == null || (u = u.values) == null || !u.length)
+            }(l)));
+        return a.length > 0 && ((n = this._surveyEventReceiver) == null || n.register(a)), e.kv.set({
+            [ur]: o,
+            [Qi]: Date.now()
+        }), {
+            surveys: o,
+            context: {
+                isLoaded: !0
+            }
+        }
+    }
+    _shouldBackgroundRefreshSurveys() {
+        return this._isSurveyCacheStale() && !this._getSurveysInFlightPromise && !this._isSurveyRefreshBackingOff()
+    }
+    _isSurveyCacheStale() {
+        var e, t, s = (e = (t = this._client) !== null && t !== void 0 ? t : this._initialClientState) == null ? void 0 : e.kv.get(Qi);
+        return de(s) && Date.now() - s > 3e5
+    }
+    _isSurveyRefreshBackingOff() {
+        return de(this._lastSurveyRefreshFailedAt) && 3e5 > Date.now() - this._lastSurveyRefreshFailedAt
+    }
+    markSurveyAsSeen(e, t) {
+        var s, r = {
+            id: e,
+            current_iteration: (s = t == null ? void 0 : t.iteration) !== null && s !== void 0 ? s : null
+        };
+        yl(r);
+        try {
+            localStorage.setItem("lastSeenSurveyDate", new Date().toISOString())
+        } catch {}
+    }
+    _notifySurveyCallbacks(e) {
+        for (var t of this._surveyCallbacks) try {
+            if (!e.isLoaded) return t([], e);
+            this.getSurveys(t)
+        } catch (s) {
+            U.error("Error in survey callback", s)
+        }
+    }
+    getActiveMatchingSurveys(e, t) {
+        if (t === void 0 && (t = !1), !D(this._surveyManager)) return this._surveyManager.getActiveMatchingSurveys(e, t);
+        U.warn("init was not called")
+    }
+    _getSurveyById(e) {
+        var t = null;
+        return this.getSurveys(s => {
+            var r;
+            t = (r = s.find(n => n.id === e)) !== null && r !== void 0 ? r : null
+        }), t
+    }
+    _checkSurveyEligibility(e) {
+        if (D(this._surveyManager)) return {
+            eligible: !1,
+            reason: Ot
+        };
+        var t = typeof e == "string" ? this._getSurveyById(e) : e;
+        return t ? this._surveyManager.checkSurveyEligibility(t) : {
+            eligible: !1,
+            reason: "Survey not found"
+        }
+    }
+    _checkSurveyRenderability(e) {
+        if (D(this._surveyManager)) return {
+            eligible: !1,
+            reason: Ot
+        };
+        var t = typeof e == "string" ? this._getSurveyById(e) : e;
+        return t ? this._surveyManager.checkSurveyRenderability(t) : {
+            eligible: !1,
+            reason: "Survey not found"
+        }
+    }
+    canRenderSurvey(e) {
+        if (D(this._surveyManager)) return U.warn("init was not called"), {
+            visible: !1,
+            disabledReason: Ot
+        };
+        var t = this._checkSurveyRenderability(e);
+        return {
+            visible: t.eligible,
+            disabledReason: t.reason
+        }
+    }
+    canRenderSurveyAsync(e, t) {
+        return D(this._surveyManager) ? (U.warn("init was not called"), Promise.resolve({
+            visible: !1,
+            disabledReason: Ot
+        })) : new Promise(s => {
+            this.getSurveys(r => {
+                var n, o = (n = r.find(l => l.id === e)) !== null && n !== void 0 ? n : null;
+                if (o) {
+                    var a = this._checkSurveyRenderability(o);
+                    s({
+                        visible: a.eligible,
+                        disabledReason: a.reason
+                    })
+                } else s({
+                    visible: !1,
+                    disabledReason: "Survey not found"
+                })
+            }, t)
+        })
+    }
+    renderSurvey(e, t, s) {
+        var r;
+        if (D(this._surveyManager)) U.warn("init was not called");
+        else {
+            var n = typeof e == "string" ? this._getSurveyById(e) : e;
+            if (n != null && n.id)
+                if (wc.includes(n.type)) {
+                    var o = k == null ? void 0 : k.querySelector(t);
+                    if (o)
+                        if ((r = n.appearance) != null && r.surveyPopupDelaySeconds) {
+                            U.info("Rendering survey " + n.id + " with delay of " + n.appearance.surveyPopupDelaySeconds + " seconds");
+                            var a = setTimeout(() => {
+                                var l, c;
+                                this._renderTimeouts.delete(a), this._disposed || (U.info("Rendering survey " + n.id + " with delay of " + ((l = n.appearance) == null ? void 0 : l.surveyPopupDelaySeconds) + " seconds"), (c = this._surveyManager) == null || c.renderSurvey(n, o, s), U.info("Survey " + n.id + " rendered"))
+                            }, 1e3 * n.appearance.surveyPopupDelaySeconds);
+                            this._renderTimeouts.add(a)
+                        } else this._surveyManager.renderSurvey(n, o, s);
+                    else U.warn("Survey element not found")
+                } else U.warn("Surveys of type " + n.type + " cannot be rendered in the app");
+            else U.warn("Survey not found")
+        }
+    }
+    displaySurvey(e, t) {
+        var s;
+        if (D(this._surveyManager)) U.warn("init was not called");
+        else {
+            var r = this._getSurveyById(e);
+            if (r) {
+                var n = r;
+                if ((s = r.appearance) != null && s.surveyPopupDelaySeconds && t.ignoreDelay && (n = S({}, r, {
+                        appearance: S({}, r.appearance, {
+                            surveyPopupDelaySeconds: 0
+                        })
+                    })), t.displayType !== Or.Popover && t.initialResponses && U.warn("initialResponses is only supported for popover surveys. prefill will not be applied."), t.ignoreConditions === !1) {
+                    var o = this._checkSurveyEligibility(r);
+                    if (!o.eligible) return void U.warn("Survey is not eligible to be displayed: ", o.reason)
+                }
+                t.displayType !== Or.Inline ? this._surveyManager.handlePopoverSurvey(n, t) : this.renderSurvey(n, t.selector, t.properties)
+            } else U.warn("Survey not found")
+        }
+    }
+    cancelPendingSurvey(e) {
+        D(this._surveyManager) ? U.warn("init was not called") : this._surveyManager.cancelSurvey(e)
+    }
+    handlePageUnload() {
+        var e;
+        (e = this._surveyManager) == null || e.handlePageUnload == null || e.handlePageUnload()
+    }
+}
+
+function $t(i, e, t) {
+    if (D(i)) return !1;
+    switch (t) {
+        case "exact":
+            return i === e;
+        case "contains":
+            var s = e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/_/g, ".").replace(/%/g, ".*");
+            return new RegExp(s, "i").test(i);
+        case "regex":
+            try {
+                return new RegExp(e).test(i)
+            } catch {
+                return !1
+            }
+        default:
+            return !1
+    }
+}
+class Uc {
+    constructor(e) {
+        this._actionRegistry = new Set, this._actionEvents = new Set, this._debugEventEmitter = new fs, this._checkStep = (t, s) => this._checkStepEvent(t, s) && this._checkStepUrl(t, s) && this._checkStepElement(t, s) && this._checkStepProperties(t, s), this._checkStepEvent = (t, s) => s == null || !s.event || (t == null ? void 0 : t.event) === (s == null ? void 0 : s.event), this._instance = e
+    }
+    init() {
+        var e, t;
+        b((e = this._instance) == null ? void 0 : e._addCaptureHook) || (this._captureHookUnsubscribe = (t = this._instance) == null ? void 0 : t._addCaptureHook((s, r) => {
+            this.on(s, r)
+        }))
+    }
+    dispose() {
+        var e;
+        (e = this._captureHookUnsubscribe) == null || e.call(this), this._captureHookUnsubscribe = void 0, this._debugEventEmitter = new fs
+    }
+    register(e) {
+        var t, s;
+        if (!b((t = this._instance) == null ? void 0 : t._addCaptureHook) && (e.forEach(n => {
+                var o;
+                this._actionRegistry.add(n), (o = n.steps) == null || o.forEach(a => {
+                    this._actionEvents.add((a == null ? void 0 : a.event) || "")
+                })
+            }), (s = this._instance) != null && s.autocapture)) {
+            var r = new Set;
+            this._actionRegistry.forEach(n => {
+                var o;
+                (o = n.steps) == null || o.forEach(a => {
+                    a != null && a.selector && r.add(a.selector)
+                })
+            }), this._instance.autocapture.setElementSelectors(r)
+        }
+    }
+    replace(e) {
+        this._actionRegistry.clear(), this._actionEvents.clear(), this.register(e)
+    }
+    on(e, t) {
+        t != null && e.length != 0 && (this._actionEvents.has(e) || this._actionEvents.has(t.event)) && this._actionRegistry.forEach(s => {
+            this._checkAction(t, s) && this._debugEventEmitter.emit("actionCaptured", s.name)
+        })
+    }
+    _addActionHook(e) {
+        this.onAction("actionCaptured", t => e(t))
+    }
+    _checkAction(e, t) {
+        if ((t == null ? void 0 : t.steps) == null) return !1;
+        for (var s of t.steps)
+            if (this._checkStep(e, s)) return !0;
+        return !1
+    }
+    onAction(e, t) {
+        return this._debugEventEmitter.on(e, t)
+    }
+    _checkStepUrl(e, t) {
+        if (t != null && t.url) {
+            var s, r = e == null || (s = e.properties) == null ? void 0 : s.$current_url;
+            if (!r || typeof r != "string" || !$t(r, t.url, t.url_matching || "contains")) return !1
+        }
+        return !0
+    }
+    _checkStepElement(e, t) {
+        return !!this._checkStepHref(e, t) && !!this._checkStepText(e, t) && !!this._checkStepSelector(e, t)
+    }
+    _checkStepHref(e, t) {
+        var s;
+        if (t == null || !t.href) return !0;
+        var r = this._getElementsList(e);
+        if (r.length > 0) return r.some(a => $t(a.href, t.href, t.href_matching || "exact"));
+        var n, o = (e == null || (s = e.properties) == null ? void 0 : s.$elements_chain) || "";
+        return !!o && $t((n = o.match(/(?::|")href="(.*?)"/)) ? n[1] : "", t.href, t.href_matching || "exact")
+    }
+    _checkStepText(e, t) {
+        var s;
+        if (t == null || !t.text) return !0;
+        var r = this._getElementsList(e);
+        if (r.length > 0) return r.some(c => $t(c.text, t.text, t.text_matching || "exact") || $t(c.$el_text, t.text, t.text_matching || "exact"));
+        var n, o, a, l = (e == null || (s = e.properties) == null ? void 0 : s.$elements_chain) || "";
+        return !!l && (n = function(c) {
+            for (var u, d = [], h = /(?::|")text="(.*?)"/g; !D(u = h.exec(c));) d.includes(u[1]) || d.push(u[1]);
+            return d
+        }(l), o = t.text, a = t.text_matching || "exact", n.some(c => $t(c, o, a)))
+    }
+    _checkStepSelector(e, t) {
+        var s, r;
+        if (t == null || !t.selector) return !0;
+        var n = e == null || (s = e.properties) == null ? void 0 : s.$element_selectors;
+        if (n != null && n.includes(t.selector)) return !0;
+        var o = (e == null || (r = e.properties) == null ? void 0 : r.$elements_chain) || "";
+        if (t.selector_regex && o) try {
+            return new RegExp(t.selector_regex).test(o)
+        } catch {
+            return !1
+        }
+        return !1
+    }
+    _getElementsList(e) {
+        var t;
+        return (e == null || (t = e.properties) == null ? void 0 : t.$elements) == null ? [] : e == null ? void 0 : e.properties.$elements
+    }
+    _checkStepProperties(e, t) {
+        return t == null || !t.properties || t.properties.length === 0 || fl(t.properties.reduce((s, r) => {
+            var n = R(r.value) ? r.value.map(String) : r.value != null ? [String(r.value)] : [];
+            return s[r.key] = {
+                values: n,
+                operator: r.operator || "exact"
+            }, s
+        }, {}), e == null ? void 0 : e.properties)
+    }
+}
+class Wc {
+    constructor(e) {
+        var t;
+        this._pendingActivatedItems = [], this._instance = e, this._eventToItems = new Map, this._cancelEventToItems = new Map, this._actionToItems = new Map, this._sessionIdUnsubscribe = (t = this._instance) == null || t.onSessionId == null ? void 0 : t.onSessionId(s => this._onSessionIdChanged(s))
+    }
+    _shouldPersistArmedActivation(e) {
+        return !1
+    }
+    _getActivationTimestampsKey() {
+        return null
+    }
+    _writeActivationTimestamps(e) {}
+    _clearActivationTimestampsStore() {}
+    _doesEventMatchFilter(e, t) {
+        return !!e && fl(e.propertyFilters, t == null ? void 0 : t.properties)
+    }
+    _buildEventToItemMap(e, t) {
+        var s = new Map;
+        return e.forEach(r => {
+            var n;
+            (n = r.conditions) == null || (n = n[t]) == null || (n = n.values) == null || n.forEach(o => {
+                if (o != null && o.name) {
+                    var a = s.get(o.name) || [];
+                    a.push(r.id), s.set(o.name, a)
+                }
+            })
+        }), s
+    }
+    _getMatchingItems(e, t, s) {
+        var r = (s === oi.Activation ? this._eventToItems : this._cancelEventToItems).get(e),
+            n = [];
+        return this._getItems(o => {
+            n = o.filter(a => r == null ? void 0 : r.includes(a.id))
+        }), n.filter(o => {
+            var a, l = (a = o.conditions) == null || (a = a[s]) == null || (a = a.values) == null ? void 0 : a.find(c => c.name === e);
+            return this._doesEventMatchFilter(l, t)
+        })
+    }
+    register(e) {
+        this._register(e, !1)
+    }
+    replace(e) {
+        this._register(e, !0)
+    }
+    _register(e, t) {
+        var s;
+        b((s = this._instance) == null ? void 0 : s._addCaptureHook) || (this._setupEventBasedItems(e, t), this._setupActionBasedItems(e, t))
+    }
+    _setupActionBasedItems(e, t) {
+        var s = e.filter(o => {
+            var a;
+            return (a = o.conditions) == null || (a = a.actions) == null || (a = a.values) == null ? void 0 : a.length
+        });
+        if (t && this._actionToItems.clear(), s.length !== 0) {
+            this._actionMatcher || (this._actionMatcher = new Uc(this._instance), this._actionMatcher.init(), this._actionMatcher._addActionHook(o => this.onAction(o)));
+            var r = [];
+            s.forEach(o => {
+                var a;
+                (a = o.conditions) == null || (a = a.actions) == null || a.values.forEach(l => {
+                    if (r.push(l), l.name) {
+                        var c, u = (c = this._actionToItems.get(l.name)) !== null && c !== void 0 ? c : [];
+                        u.includes(o.id) || u.push(o.id), this._actionToItems.set(l.name, u)
+                    }
+                })
+            }), t ? this._actionMatcher.replace(r) : this._actionMatcher.register(r)
+        } else {
+            var n;
+            t && ((n = this._actionMatcher) == null || n.replace([]))
+        }
+    }
+    _mergeItemMaps(e, t) {
+        t.forEach((s, r) => {
+            var n, o = (n = e.get(r)) !== null && n !== void 0 ? n : [];
+            s.forEach(a => {
+                o.includes(a) || o.push(a)
+            }), e.set(r, o)
+        })
+    }
+    _setupEventBasedItems(e, t) {
+        var s, r, n = e.filter(c => {
+                var u, d;
+                return ((u = c.conditions) == null ? void 0 : u.events) && ((d = c.conditions) == null || (d = d.events) == null || (d = d.values) == null ? void 0 : d.length) > 0
+            }),
+            o = e.filter(c => {
+                var u, d;
+                return ((u = c.conditions) == null ? void 0 : u.cancelEvents) && ((d = c.conditions) == null || (d = d.cancelEvents) == null || (d = d.values) == null ? void 0 : d.length) > 0
+            }),
+            a = this._buildEventToItemMap(e, oi.Activation),
+            l = this._buildEventToItemMap(e, oi.Cancellation);
+        t ? (this._eventToItems = a, this._cancelEventToItems = l) : (this._mergeItemMaps(this._eventToItems, a), this._mergeItemMaps(this._cancelEventToItems, l)), (n.length !== 0 || o.length !== 0) && ((s = this._captureHookUnsubscribe) !== null && s !== void 0 || (this._captureHookUnsubscribe = (r = this._instance) == null ? void 0 : r._addCaptureHook((c, u) => {
+            this.onEvent(c, u)
+        })))
+    }
+    onEvent(e, t) {
+        var s, r, n = this._getLogger(),
+            o = (t == null || (s = t.properties) == null ? void 0 : s.$survey_id) || (t == null || (r = t.properties) == null ? void 0 : r.$product_tour_id);
+        if (o && this.getActivatedIds().includes(o)) {
+            var a = this._activationOutcome(e, o);
+            if (a === "consume") return n.info("event consumed activated item, removing it", {
+                event: e,
+                itemId: o
+            }), void this._deactivateItems([o]);
+            if (a === "persist") return n.info("shown item promoted to persisted activation", {
+                event: e,
+                itemId: o
+            }), this._persistActivation(o), void this._clearActivationTimestamps([o])
+        }
+        if (this._cancelEventToItems.has(e)) {
+            var l = this._getMatchingItems(e, t, oi.Cancellation);
+            l.length > 0 && (n.info("cancel event matched, cancelling items", {
+                event: e,
+                itemsToCancel: l.map(u => u.id)
+            }), this._deactivateItems(l.map(u => u.id)), l.forEach(u => this._cancelPendingItem(u.id)))
+        }
+        if (this._eventToItems.has(e)) {
+            n.info("event name matched", {
+                event: e,
+                eventPayload: t,
+                items: this._eventToItems.get(e)
+            });
+            var c = this._getMatchingItems(e, t, oi.Activation);
+            this._activateItems(c.map(u => u.id))
+        }
+    }
+    onAction(e) {
+        this._actionToItems.has(e) && this._activateItems(this._actionToItems.get(e) || [])
+    }
+    _activateItems(e) {
+        var t;
+        if (e.length !== 0) {
+            var s = !((t = this._instance) == null || t.get_session_id == null || !t.get_session_id()),
+                r = [];
+            for (var n of e) s && this._shouldPersistArmedActivation(n) ? this._persistActivation(n) && this._recordActivationTimestamp(n) : r.push(n);
+            r.length > 0 && (this._pendingActivatedItems = [...new Set([...this._pendingActivatedItems, ...r])]), this._getLogger().info("updating activated items", {
+                activatedItems: this.getActivatedIds()
+            })
+        }
+    }
+    _persistActivation(e) {
+        this._pendingActivatedItems = this._pendingActivatedItems.filter(s => s !== e);
+        var t = this._getPersistedActivatedIds();
+        return !t.includes(e) && (this._setActivatedItems([...t, e]), this._stampActivationSession(), !0)
+    }
+    _deactivateItems(e) {
+        var t = new Set(e);
+        this._pendingActivatedItems = this._pendingActivatedItems.filter(n => !t.has(n));
+        var s = this._getRawPersistedActivatedIds(),
+            r = s.filter(n => !t.has(n));
+        r.length !== s.length && (this._setActivatedItems(r), r.length === 0 && this._clearActivationSession()), this._clearActivationTimestamps(e)
+    }
+    _getRawActivationTimestamps() {
+        var e, t = this._getActivationTimestampsKey();
+        if (!t) return {};
+        var s = (e = this._instance) == null || (e = e.persistence) == null ? void 0 : e.props[t];
+        return s && typeof s == "object" ? s : {}
+    }
+    _recordActivationTimestamp(e) {
+        if (this._getActivationTimestampsKey()) {
+            var t = this._getRawActivationTimestamps();
+            this._writeActivationTimestamps(S({}, t, {
+                [e]: Date.now()
+            }))
+        }
+    }
+    _clearActivationTimestamps(e) {
+        if (this._getActivationTimestampsKey()) {
+            var t = this._getRawActivationTimestamps(),
+                s = {},
+                r = !1;
+            for (var n of Object.entries(t)) {
+                var o = n[0],
+                    a = n[1];
+                e.includes(o) ? r = !0 : s[o] = a
+            }
+            r && (Be(s) ? this._clearActivationTimestampsStore() : this._writeActivationTimestamps(s))
+        }
+    }
+    _clearAllActivationTimestamps() {
+        this._getActivationTimestampsKey() && this._clearActivationTimestampsStore()
+    }
+    getActivationTimestamp(e) {
+        if (this._getPersistedActivatedIds().includes(e)) {
+            var t = this._getRawActivationTimestamps()[e];
+            return de(t) ? t : void 0
+        }
+    }
+    _getRawPersistedActivatedIds() {
+        var e, t = this._getActivatedKey();
+        return ((e = this._instance) == null || (e = e.persistence) == null ? void 0 : e.props[t]) || []
+    }
+    _getPersistedActivatedIds() {
+        var e, t, s = this._getRawPersistedActivatedIds();
+        if (s.length === 0) return [];
+        var r = (e = this._instance) == null || (e = e.persistence) == null ? void 0 : e.props[this._getActivatedSessionKey()],
+            n = (t = this._instance) == null || t.get_session_id == null ? void 0 : t.get_session_id();
+        return n && r === n ? s : []
+    }
+    _stampActivationSession() {
+        var e, t = (e = this._instance) == null || e.get_session_id == null ? void 0 : e.get_session_id();
+        t && this._setActivatedSession(t)
+    }
+    _clearActivationSession() {
+        this._clearActivatedSession()
+    }
+    _onSessionIdChanged(e) {
+        var t, s = (t = this._instance) == null || (t = t.persistence) == null ? void 0 : t.props[this._getActivatedSessionKey()];
+        if (s && s !== e) {
+            var r = this._getRawPersistedActivatedIds(),
+                n = this._getRawActivationTimestamps();
+            r.length > 0 && (this._setActivatedItems([]), r.filter(o => de(n[o])).forEach(o => this._cancelPendingItem(o))), this._clearActivationSession(), this._clearAllActivationTimestamps()
+        }
+    }
+    getActivatedIds() {
+        return [...new Set([...this._getPersistedActivatedIds(), ...this._pendingActivatedItems])].filter(e => !this._isItemPermanentlyIneligible(e))
+    }
+    dispose() {
+        var e, t, s;
+        (e = this._sessionIdUnsubscribe) == null || e.call(this), this._sessionIdUnsubscribe = void 0, (t = this._captureHookUnsubscribe) == null || t.call(this), this._captureHookUnsubscribe = void 0, (s = this._actionMatcher) == null || s.dispose(), this._actionMatcher = void 0
+    }
+    reset() {
+        this._pendingActivatedItems = [], this._getRawPersistedActivatedIds().length > 0 && this._setActivatedItems([]), this._clearActivationSession(), this._clearAllActivationTimestamps()
+    }
+    getEventToItemsMap() {
+        return this._eventToItems
+    }
+    _getActionMatcher() {
+        return this._actionMatcher
+    }
+}
+class Gc extends Wc {
+    constructor(e) {
+        super(e)
+    }
+    _getActivatedKey() {
+        return cr
+    }
+    _getActivatedSessionKey() {
+        return Ui
+    }
+    _getActivationTimestampsKey() {
+        return Wi
+    }
+    _writeActivationTimestamps(e) {
+        var t;
+        (t = this._instance) == null || (t = t.persistence) == null || t.register({
+            [Wi]: e
+        })
+    }
+    _clearActivationTimestampsStore() {
+        var e;
+        (e = this._instance) == null || (e = e.persistence) == null || e.unregister(Wi)
+    }
+    _shouldPersistArmedActivation(e) {
+        var t, s;
+        this._getItems(n => {
+            s = n.find(o => o.id === e)
+        });
+        var r = (t = s) == null || (t = t.appearance) == null ? void 0 : t.surveyPopupDelaySeconds;
+        return de(r) && r > 0
+    }
+    _getShownEventName() {
+        return ut.SHOWN
+    }
+    _getItems(e) {
+        var t;
+        (t = this._instance) == null || t.getSurveys(e)
+    }
+    _cancelPendingItem(e) {
+        var t;
+        (t = this._instance) == null || t.cancelPendingSurvey(e)
+    }
+    _getLogger() {
+        return U
+    }
+    _setActivatedItems(e) {
+        var t;
+        (t = this._instance) == null || (t = t.persistence) == null || t.register({
+            [cr]: e
+        })
+    }
+    _setActivatedSession(e) {
+        var t;
+        (t = this._instance) == null || (t = t.persistence) == null || t.register({
+            [Ui]: e
+        })
+    }
+    _clearActivatedSession() {
+        var e;
+        (e = this._instance) == null || (e = e.persistence) == null || e.unregister(Ui)
+    }
+    _isItemPermanentlyIneligible() {
+        return !1
+    }
+    _activationOutcome(e, t) {
+        var s;
+        this._getItems(n => {
+            s = n.find(o => o.id === t)
+        });
+        var r = !s || function(n) {
+            var o;
+            return gl(n) && !((o = n.conditions) == null || (o = o.events) == null || !o.repeatedActivation) || n.schedule === "always"
+        }(s);
+        return r ? e === ut.SHOWN ? "consume" : "ignore" : e === ut.SHOWN ? "persist" : e === ut.DISMISSED || e === ut.SENT ? "consume" : "ignore"
+    }
+    getSurveys() {
+        return this.getActivatedIds()
+    }
+    getEventToSurveys() {
+        return this.getEventToItemsMap()
+    }
+}
+class Kc {
+    constructor(e) {
+        this._instance = e
+    }
+    initialize() {}
+    get(e) {
+        if (typeof e == "string") return this._instance.get_property(e);
+        var t = {};
+        for (var s of e) {
+            var r = this._instance.get_property(s);
+            b(r) || (t[s] = r)
+        }
+        return t
+    }
+    set(e, t) {
+        this._instance.register(typeof e == "string" ? {
+            [e]: t
+        } : e)
+    }
+    remove(e) {
+        typeof e != "string" ? e.forEach(t => this._instance.unregister(t)) : this._instance.unregister(e)
+    }
+}
+class Jc {
+    constructor(e) {
+        this._instance = e
+    }
+    get() {
+        var e = this._instance.config;
+        return {
+            disableSurveys: e.disable_surveys,
+            cookielessMode: !!e.cookieless_mode,
+            advancedEnableSurveys: e.advanced_enable_surveys,
+            requestTimeoutMs: e.surveys_request_timeout_ms
+        }
+    }
+    isOptedOut() {
+        return this._instance.consent.isOptedOut()
+    }
+    getExtensions() {
+        var e = I == null ? void 0 : I.__PosthogExtensions__;
+        if (e) {
+            var t = e.generateSurveys,
+                s = e.loadExternalDependency;
+            return {
+                generateSurveys: t ? r => t(this._instance, r) : void 0,
+                loadExternalDependency: s ? r => s(this._instance, "surveys", r) : void 0
+            }
+        }
+    }
+    createEventReceiver() {
+        return new Gc(this._instance)
+    }
+}
+var Qc = f != null && f.location ? ps(f.location.hash, "__posthog") || ps(location.hash, "state") : null,
+    wo = "_postHogToolbarParams",
+    Eo = ae("[Toolbar]"),
+    ko = ae("[FeatureFlags]");
+class Yc {
+    constructor(e, t) {
+        t === void 0 && (t = !1), this._loggedEvaluationEnvironmentsDeprecation = !1, this.update(e, t)
+    }
+    update(e, t) {
+        this._snapshot = ((s, r) => {
+            var n, o, a, l, c;
+            return {
+                bootstrap: {
+                    featureFlags: (n = s.bootstrap) == null ? void 0 : n.featureFlags,
+                    featureFlagPayloads: (o = s.bootstrap) == null ? void 0 : o.featureFlagPayloads
+                },
+                remoteRequestsDisabled: r,
+                featureFlagsDisabled: !!s.advanced_disable_feature_flags,
+                onlyEvaluateSurveyFeatureFlags: !!s.advanced_only_evaluate_survey_feature_flags,
+                deduplicateCallsPerSession: !!s.advanced_feature_flags_dedup_per_session,
+                cacheTtlMs: s.feature_flag_cache_ttl_ms,
+                refreshIntervalMs: (a = s.remote_config_refresh_interval_ms) !== null && a !== void 0 ? a : 3e5,
+                requestTimeoutMs: s.feature_flag_request_timeout_ms,
+                compression: s.disable_compression ? void 0 : "best-available",
+                evaluationContexts: (l = (c = s.evaluation_contexts) !== null && c !== void 0 ? c : s.evaluation_environments) !== null && l !== void 0 ? l : [],
+                flagKeys: R(s.flag_keys) ? s.flag_keys : void 0
+            }
+        })(e, t), !e.evaluation_environments || e.evaluation_contexts || this._loggedEvaluationEnvironmentsDeprecation || (ko.warn("evaluation_environments is deprecated. Use evaluation_contexts instead. evaluation_environments will be removed in a future version."), this._loggedEvaluationEnvironmentsDeprecation = !0), b(e.flag_keys) || R(e.flag_keys) || ko.error("Invalid flag_keys found:", e.flag_keys, "Expected array of non-empty strings")
+    }
+    get() {
+        return this._snapshot
+    }
+}
+var Co = ae("[FeatureFlags]"),
+    wt = ae("[FeatureFlags]", {
+        debugEnabled: !0
+    }),
+    Xs = `" failed. Feature flags didn't load in time.`,
+    xo = "connection_error",
+    Po = i => {
+        for (var e = {}, t = 0; i.length > t; t++) e[i[t]] = !0;
+        return e
+    },
+    Fo = i => {
+        var e = {};
+        for (var t of Gi(i || {})) {
+            var s = t[1];
+            s && (e[t[0]] = s)
+        }
+        return e
+    },
+    Io = i => Jr(i) && (i.name === "RangeError" && i.message.indexOf("Maximum call stack size exceeded") === 0 || i.name === "InternalError" && i.message === "too much recursion"),
+    We = ae("[Error tracking]"),
+    jr = "webkit-masked-url:",
+    Zc = ["chrome-extension://", "moz-extension://", "safari-extension:", "safari-web-extension:", jr],
+    Xc = ["__firefox__", "__gCrWeb"],
+    To = "Refusing to render web experiment since the viewer is a likely bot",
+    ed = {
+        icontains: (i, e) => e.toLowerCase().indexOf(i.toLowerCase()) > -1,
+        not_icontains: (i, e) => e.toLowerCase().indexOf(i.toLowerCase()) === -1,
+        regex: (i, e) => ms(e, i),
+        not_regex: (i, e) => !ms(e, i),
+        exact: (i, e) => e === i,
+        is_not: (i, e) => e !== i
+    };
+class xe {
+    get _config() {
+        return this._instance.config
+    }
+    constructor(e) {
+        var t = this;
+        this.getWebExperimentsAndEvaluateDisplayLogic = function(s) {
+            s === void 0 && (s = !1), t.getWebExperiments(r => {
+                xe._logInfo("retrieved web experiments from the server"), t._flagToExperiments = new Map, r.forEach(n => {
+                    if (n.feature_flag_key) {
+                        var o;
+                        t._flagToExperiments && (xe._logInfo("setting flag key ", n.feature_flag_key, " to web experiment ", n), (o = t._flagToExperiments) == null || o.set(n.feature_flag_key, n));
+                        var a = t._instance.getFeatureFlag(n.feature_flag_key);
+                        q(a) && n.variants[a] && t._applyTransforms(n.name, a, n.variants[a].transforms)
+                    } else if (n.variants)
+                        for (var l in n.variants) {
+                            var c = n.variants[l];
+                            xe._matchesTestVariant(c, t._instance) && t._applyTransforms(n.name, l, c.transforms)
+                        }
+                })
+            }, s)
+        }, this._instance = e, this._instance.onFeatureFlags(s => {
+            this.onFeatureFlags(s)
+        })
+    }
+    initialize() {}
+    onFeatureFlags(e) {
+        if (this._is_bot()) xe._logInfo(To);
+        else if (!this._config.disable_web_experiments) {
+            if (D(this._flagToExperiments)) return this._flagToExperiments = new Map, this.loadIfEnabled(), void this.previewWebExperiment();
+            xe._logInfo("applying feature flags", e), e.forEach(t => {
+                var s;
+                if (this._flagToExperiments && (s = this._flagToExperiments) != null && s.has(t)) {
+                    var r, n = this._instance.getFeatureFlag(t),
+                        o = (r = this._flagToExperiments) == null ? void 0 : r.get(t);
+                    n && o != null && o.variants[n] && this._applyTransforms(o.name, n, o.variants[n].transforms)
+                }
+            })
+        }
+    }
+    previewWebExperiment() {
+        var e = xe.getWindowLocation();
+        if (e != null && e.search) {
+            var t = Xt(e == null ? void 0 : e.search, "__experiment_id"),
+                s = Xt(e == null ? void 0 : e.search, "__experiment_variant");
+            t && s && (xe._logInfo("previewing web experiments " + t + " && " + s), this.getWebExperiments(r => {
+                this._showPreviewWebExperiment(parseInt(t), s, r)
+            }, !1, !0))
+        }
+    }
+    loadIfEnabled() {
+        this._config.disable_web_experiments || this.getWebExperimentsAndEvaluateDisplayLogic()
+    }
+    getWebExperiments(e, t, s) {
+        if (this._config.disable_web_experiments && !s) return e([]);
+        var r = this._instance.get_property("$web_experiments");
+        if (r && !t) return e(r);
+        this._instance._send_request({
+            url: this._instance.requestRouter.endpointFor("api", "/api/web_experiments/?token=" + this._config.token),
+            method: "GET",
+            timestampMode: "query",
+            callback: n => e(n.statusCode === 200 && n.json && n.json.experiments || [])
+        })
+    }
+    _showPreviewWebExperiment(e, t, s) {
+        var r = s.filter(n => n.id === e);
+        r && r.length > 0 && (xe._logInfo("Previewing web experiment [" + r[0].name + "] with variant [" + t + "]"), this._applyTransforms(r[0].name, t, r[0].variants[t].transforms))
+    }
+    static _matchesTestVariant(e, t) {
+        return !D(e.conditions) && xe._matchUrlConditions(e, t) && xe._matchUTMConditions(e)
+    }
+    static _matchUrlConditions(e, t) {
+        var s;
+        if (D(e.conditions) || D((s = e.conditions) == null ? void 0 : s.url)) return !0;
+        var r = xe.getWindowLocation();
+        if (r) {
+            var n, o, a, l = Aa(t, r.href);
+            return (n = e.conditions) == null || !n.url || ed[(o = (a = e.conditions) == null ? void 0 : a.urlMatchType) !== null && o !== void 0 ? o : "icontains"](e.conditions.url, l)
+        }
+        return !1
+    }
+    static getWindowLocation() {
+        return f == null ? void 0 : f.location
+    }
+    static _matchUTMConditions(e) {
+        var t;
+        if (D(e.conditions) || D((t = e.conditions) == null ? void 0 : t.utm)) return !0;
+        var s = Ka();
+        if (s.utm_source) {
+            var r, n, o, a, l, c, u, d, h = (r = e.conditions) == null || (r = r.utm) == null || !r.utm_campaign || ((n = e.conditions) == null || (n = n.utm) == null ? void 0 : n.utm_campaign) == s.utm_campaign,
+                _ = (o = e.conditions) == null || (o = o.utm) == null || !o.utm_source || ((a = e.conditions) == null || (a = a.utm) == null ? void 0 : a.utm_source) == s.utm_source,
+                p = (l = e.conditions) == null || (l = l.utm) == null || !l.utm_medium || ((c = e.conditions) == null || (c = c.utm) == null ? void 0 : c.utm_medium) == s.utm_medium,
+                g = (u = e.conditions) == null || (u = u.utm) == null || !u.utm_term || ((d = e.conditions) == null || (d = d.utm) == null ? void 0 : d.utm_term) == s.utm_term;
+            return h && p && g && _
+        }
+        return !1
+    }
+    static _logInfo(e) {
+        for (var t = arguments.length, s = new Array(t > 1 ? t - 1 : 0), r = 1; t > r; r++) s[r - 1] = arguments[r];
+        C.info("[WebExperiments] " + e, s)
+    }
+    _applyTransforms(e, t, s) {
+        this._is_bot() ? xe._logInfo(To) : t !== "control" ? s.forEach(r => {
+            if (r.selector) {
+                var n;
+                xe._logInfo("applying transform of variant " + t + " for experiment " + e + " ", r);
+                var o = (n = document) == null ? void 0 : n.querySelectorAll(r.selector);
+                o == null || o.forEach(a => {
+                    var l = a;
+                    r.html && (l.innerHTML = r.html), r.css && l.setAttribute("style", r.css)
+                })
+            }
+        }) : xe._logInfo("Control variants leave the page unmodified.")
+    }
+    _is_bot() {
+        return be && this._instance ? _l(be, this._config.custom_blocked_useragents) : void 0
+    }
+}
+var ze = ae("[Conversations]"),
+    Et = "Conversations not available yet.";
+
+function Ro(i, e) {
+    var t, s, r, n, o, a, l, c = (t = i == null ? void 0 : i.flushIntervalMs) !== null && t !== void 0 ? t : 3e3,
+        u = (s = i == null ? void 0 : i.maxBufferSize) !== null && s !== void 0 ? s : 100,
+        d = e != null && e.consoleCapture ? void 0 : (r = i == null ? void 0 : i.maxLogsPerInterval) !== null && r !== void 0 ? r : 1e3,
+        h = b(d) ? Math.max(u, 2048) : Math.max(u, d),
+        _ = S({}, function() {
+            var p = "",
+                g = "";
+            try {
+                var m = be == null ? void 0 : be.userAgent;
+                if (m) {
+                    var v = fa(m);
+                    p = v[0], g = v[1]
+                }
+            } catch {}
+            return function(y, w) {
+                var E = function(x) {
+                    if (x) return {}.hasOwnProperty.call(Rn, x) ? Rn[x] : x
+                }(y);
+                return S({}, E ? {
+                    "os.name": E
+                } : {}, w ? {
+                    "os.version": w
+                } : {})
+            }(p, g)
+        }(), i == null ? void 0 : i.resourceAttributes);
+    return {
+        serviceName: (n = (o = _ == null ? void 0 : _["service.name"]) !== null && o !== void 0 ? o : i == null ? void 0 : i.serviceName) !== null && n !== void 0 ? n : e == null ? void 0 : e.serviceNameDefault,
+        serviceVersion: (a = _ == null ? void 0 : _["service.version"]) !== null && a !== void 0 ? a : i == null ? void 0 : i.serviceVersion,
+        environment: (l = _ == null ? void 0 : _["deployment.environment"]) !== null && l !== void 0 ? l : i == null ? void 0 : i.environment,
+        resourceAttributes: _,
+        beforeSend: i == null ? void 0 : i.beforeSend,
+        flushIntervalMs: c,
+        maxBufferSize: u,
+        maxQueueSize: h,
+        maxBatchRecordsPerPost: 100,
+        rateCapWindowMs: c,
+        maxLogsPerInterval: d,
+        backgroundFlushBudgetMs: 0,
+        terminationFlushBudgetMs: 0
+    }
+}
+var td = ["debug", "log", "warn", "error", "info"],
+    Ao = "console",
+    Cl = "__posthogHandledLogsRequestError",
+    er = (i, e) => {
+        var t = i instanceof Error ? i : new Error(e);
+        return t[Cl] = !0, t
+    },
+    Lo = i => !!i && typeof i == "object" && i[Cl] === !0,
+    ws = {
+        featureFlags: class {
+            constructor(i) {
+                this.name = "featureFlags", this._override_warning = !1, this.featureFlagEventHandlers = [], this._logger = Co, this._baseEventProperties = {}, this._eventPropertiesWithFlagValues = {}, this._reloadingHandlers = [], this._hasLoadedFlags = !1, this._requestInFlight = !1, this._requestGeneration = 0, this._reloadingDisabled = !1, this._additionalReloadRequested = !1, this._flagsLoadedFromRemote = !1, this._staleCacheRefreshTriggered = !1, this._consecutiveStatusZeroFailures = 0, this._onOnline = () => {
+                    var e = this._hasStatusZeroCircuitBreakerTripped();
+                    this._consecutiveStatusZeroFailures = 0, e && this.reloadFeatureFlags()
+                }, this._refreshIfDue = () => {
+                    var e, t = this._refreshIntervalMs;
+                    b(t) || this._config.remoteRequestsDisabled || !k || k.visibilityState === "hidden" || Date.now() - ((e = this._lastRefreshAt) !== null && e !== void 0 ? e : 0) < t || (this.reloadFeatureFlags(), this._scheduleNextRefresh())
+                }, this._onVisibilityChange = () => {
+                    (k == null ? void 0 : k.visibilityState) === "visible" && this._refreshIfDue()
+                }, "get" in i ? this._configSource = i : (this._instance = i, this._mutableConfigSource = new Yc(i.config, i._shouldDisableFlags()), this._configSource = this._mutableConfigSource)
+            }
+            updateConfig(i, e) {
+                var t;
+                (t = this._mutableConfigSource) == null || t.update(i, e), this._client && this._syncAutomaticRefresh()
+            }
+            setup(i) {
+                return this._initializingClient = i, this._logger = i.logger.createLogger("[FeatureFlags]"), kl(i.kv.initialize(), () => {
+                    this._initializingClient === i && (this._initializingClient = void 0, this._client = i, this._finishSetup(i))
+                })
+            }
+            _finishSetup(i) {
+                var e;
+                if (this._client === i) return f && K(f, "online", this._onOnline), this._syncAutomaticRefresh(), this._dynamicProperties = i.registerDynamicEventProperties(() => this._isCacheStale() ? this._baseEventProperties : this._eventPropertiesWithFlagValues), this._crossTabPersistenceUnsubscribe = (e = this._instance) == null || (e = e.persistence) == null ? void 0 : e.onCrossTabFeatureFlagChange(() => {
+                    this._clearBootstrapState(), this._rebuildEventProperties(), this._fireFeatureFlagsCallbacks()
+                }), this._rebuildEventProperties(), this.initialize()
+            }
+            _syncAutomaticRefresh() {
+                var i = this._config.refreshIntervalMs,
+                    e = !this._config.remoteRequestsDisabled && k && !b(i) && i > 0 ? i : void 0;
+                e !== this._refreshIntervalMs && (this._stopAutomaticRefresh(), b(e) || (this._refreshIntervalMs = e, this._scheduleNextRefresh(), k != null && k.addEventListener && K(k, Kt, this._onVisibilityChange)))
+            }
+            _scheduleNextRefresh() {
+                b(this._refreshIntervalMs) || (b(this._refreshInterval) || clearInterval(this._refreshInterval), this._lastRefreshAt = Date.now(), this._refreshInterval = setInterval(this._refreshIfDue, this._refreshIntervalMs))
+            }
+            _stopAutomaticRefresh() {
+                b(this._refreshInterval) || (clearInterval(this._refreshInterval), this._refreshInterval = void 0, k == null || k.removeEventListener == null || k.removeEventListener(Kt, this._onVisibilityChange)), this._refreshIntervalMs = void 0, this._lastRefreshAt = void 0
+            }
+            destroy() {
+                this._dispose()
+            }
+            dispose() {
+                this._dispose()
+            }
+            _dispose() {
+                var i, e;
+                this._stopAutomaticRefresh(), this._requestGeneration++, this._additionalReloadRequested = !1, this._initializingClient = void 0, this._client && (this._clearDebouncer(), (i = this._dynamicProperties) == null || i.dispose(), this._dynamicProperties = void 0, (e = this._crossTabPersistenceUnsubscribe) == null || e.call(this), this._crossTabPersistenceUnsubscribe = void 0, this._reloadingHandlers = [], f == null || f.removeEventListener("online", this._onOnline), this._client = void 0)
+            }
+            get _config() {
+                return this._configSource.get()
+            }
+            _prop(i) {
+                var e;
+                return this._bootstrapState && i in this._bootstrapState ? this._bootstrapState[i] : (e = this._client) == null ? void 0 : e.kv.get(i)
+            }
+            _clearBootstrapState() {
+                return !!this._bootstrapState && (this._bootstrapState = void 0, !0)
+            }
+            _fallBackToPersistedFlags() {
+                var i;
+                return !b((i = this._client) == null ? void 0 : i.kv.get(ke)) && this._clearBootstrapState()
+            }
+            _set(i) {
+                this._persist(() => {
+                    var e;
+                    return (e = this._client) == null ? void 0 : e.kv.set(i)
+                })
+            }
+            _markCrossTabFeatureFlagSnapshot(i, e, t) {
+                var s;
+                if ((s = this._instance) != null && s.persistence && i[ke]) {
+                    var r = this._prop(ke) || {},
+                        n = i[ke] || {},
+                        o = e.flags || e.featureFlags,
+                        a = e.flags ? Object.entries(e.flags).filter(v => {
+                            var y = v[1];
+                            return !(y != null && y.failed)
+                        }).map(v => v[0]) : [],
+                        l = !!e.errorsWhileComputingFlags && !!e.flags,
+                        c = l ? a : t && !R(o) ? Object.keys(o || {}) : Array.from(new Set([...Object.keys(r), ...Object.keys(n)])),
+                        u = this._prop(Ge) || {},
+                        d = i[Ge] || {},
+                        h = l || t ? c : Array.from(new Set([...Object.keys(u), ...Object.keys(d)])),
+                        _ = !l && !t,
+                        p = !!_ || c,
+                        g = {
+                            [je]: p,
+                            [ke]: p,
+                            [Ge]: !!_ || h
+                        };
+                    for (var m of (i[gt] && (g[gt] = p), [vt, ct, jt])) b(i[m]) || (g[m] = !0);
+                    this._instance.persistence.markCrossTabFeatureFlagChanges(g)
+                }
+            }
+            _remove(i) {
+                this._persist(() => {
+                    var e;
+                    return (e = this._client) == null ? void 0 : e.kv.remove(i)
+                })
+            }
+            _persist(i) {
+                try {
+                    i()
+                } catch (e) {
+                    this._logger.error("Failed to update feature flag persistence", e)
+                }
+            }
+            _rebuildEventProperties() {
+                var i = {};
+                for (var e of [je, Ge, vt, Ze]) {
+                    var t = this._prop(e);
+                    b(t) || (i[e] = t)
+                }
+                this._baseEventProperties = i;
+                var s = S({}, i),
+                    r = this._prop(ke);
+                if (r)
+                    for (var n of Object.entries(r)) s["$feature/" + n[0]] = n[1];
+                this._eventPropertiesWithFlagValues = s
+            }
+            _isCacheStale() {
+                var i = this._config.cacheTtlMs;
+                if (!i || 0 >= i) return !1;
+                var e = this._prop(ct);
+                return typeof e != "number" || Date.now() - e > i
+            }
+            _checkAndTriggerStaleRefresh() {
+                return !!this._isCacheStale() && (this._staleCacheRefreshTriggered || this._requestInFlight || (this._staleCacheRefreshTriggered = !0, this._logger.warn("Feature flag cache is stale, triggering refresh..."), this.reloadFeatureFlags()), !0)
+            }
+            _getValidEvaluationEnvironments() {
+                var i = this._config.evaluationContexts;
+                return i != null && i.length ? i.filter(e => {
+                    var t = e && typeof e == "string" && e.trim().length > 0;
+                    return t || this._logger.error("Invalid evaluation context found:", e, "Expected non-empty string"), t
+                }) : []
+            }
+            _getValidFlagKeys() {
+                var i = this._config.flagKeys;
+                if (!b(i)) return i.filter(e => {
+                    var t = e && typeof e == "string" && e.trim().length > 0;
+                    return t || this._logger.error("Invalid flag key found:", e, "Expected non-empty string"), t
+                })
+            }
+            initialize() {
+                var i, e, t = this._config,
+                    s = (i = (e = t.bootstrap) == null ? void 0 : e.featureFlags) !== null && i !== void 0 ? i : {};
+                if (Object.keys(s).length) {
+                    var r, n, o = (r = (n = t.bootstrap) == null ? void 0 : n.featureFlagPayloads) !== null && r !== void 0 ? r : {},
+                        a = Object.keys(s).filter(c => !b(s[c])).reduce((c, u) => (c[u] = s[u], c), {}),
+                        l = Object.keys(o).filter(c => a[c]).reduce((c, u) => (c[u] = o[u], c), {});
+                    return this._receivedFeatureFlags({
+                        featureFlags: a,
+                        featureFlagPayloads: l
+                    }, void 0, {
+                        persist: !1
+                    })
+                }
+            }
+            updateFlags(i, e, t) {
+                var s, r, n = t != null && t.merge && (s = this._prop(ke)) !== null && s !== void 0 ? s : {},
+                    o = t != null && t.merge && (r = this._prop(Ge)) !== null && r !== void 0 ? r : {},
+                    a = S({}, n, i),
+                    l = S({}, o, e),
+                    c = {};
+                for (var u of Object.entries(a)) {
+                    var d = u[0],
+                        h = u[1];
+                    c[d] = {
+                        key: d,
+                        enabled: xn(h),
+                        variant: Pn(h),
+                        reason: void 0,
+                        metadata: b(l == null ? void 0 : l[d]) ? void 0 : {
+                            id: 0,
+                            version: void 0,
+                            description: void 0,
+                            payload: l[d]
+                        }
+                    }
+                }
+                this._receivedFeatureFlags({
+                    flags: c
+                })
+            }
+            get hasLoadedFlags() {
+                return this._hasLoadedFlags
+            }
+            getFlags() {
+                return Object.keys(this.getFlagVariants())
+            }
+            getFlagsWithDetails() {
+                var i = this._prop(gt),
+                    e = this._prop(Ze),
+                    t = this._prop(kt);
+                if (!t && !e) return i || {};
+                var s = Z({}, i || {}),
+                    r = [...new Set([...Object.keys(t || {}), ...Object.keys(e || {})])];
+                for (var n of r) {
+                    var o, a, l = s[n],
+                        c = e == null ? void 0 : e[n],
+                        u = b(c) ? (o = l == null ? void 0 : l.enabled) !== null && o !== void 0 && o : !!c,
+                        d = b(c) ? l == null ? void 0 : l.variant : typeof c == "string" ? c : void 0,
+                        h = t == null ? void 0 : t[n],
+                        _ = S({}, l, {
+                            enabled: u,
+                            variant: u ? d ?? (l == null ? void 0 : l.variant) : void 0
+                        });
+                    u !== (l == null ? void 0 : l.enabled) && (_.original_enabled = l == null ? void 0 : l.enabled), d !== (l == null ? void 0 : l.variant) && (_.original_variant = l == null ? void 0 : l.variant), h && (_.metadata = S({}, l == null ? void 0 : l.metadata, {
+                        payload: h,
+                        original_payload: l == null || (a = l.metadata) == null ? void 0 : a.payload
+                    })), s[n] = _
+                }
+                return this._override_warning || (this._logger.warn(" Overriding feature flag details!", {
+                    flagDetails: i,
+                    overriddenPayloads: t,
+                    finalDetails: s
+                }), this._override_warning = !0), s
+            }
+            getAllFeatureFlags() {
+                var i = this.getFlagVariants(),
+                    e = this.getFlagPayloads();
+                return Object.keys(i).map(t => {
+                    var s = i[t];
+                    return {
+                        key: t,
+                        enabled: xn(s),
+                        variant: Pn(s),
+                        payload: Cn(e[t])
+                    }
+                })
+            }
+            getFlagVariants() {
+                var i = this._prop(ke),
+                    e = this._prop(Ze);
+                if (!e) return i || {};
+                for (var t = Z({}, i || {}), s = Object.keys(e), r = 0; s.length > r; r++) t[s[r]] = e[s[r]];
+                return this._override_warning || (this._logger.warn(" Overriding feature flags!", {
+                    enabledFlags: i,
+                    overriddenFlags: e,
+                    finalFlags: t
+                }), this._override_warning = !0), t
+            }
+            getFlagPayloads() {
+                var i = this._prop(Ge),
+                    e = this._prop(kt);
+                if (!e) return i || {};
+                for (var t = Z({}, i || {}), s = Object.keys(e), r = 0; s.length > r; r++) t[s[r]] = e[s[r]];
+                return this._override_warning || (this._logger.warn(" Overriding feature flag payloads!", {
+                    flagPayloads: i,
+                    overriddenPayloads: e,
+                    finalPayloads: t
+                }), this._override_warning = !0), t
+            }
+            reloadFeatureFlags() {
+                this._reloadingDisabled || this._config.featureFlagsDisabled || this._hasStatusZeroCircuitBreakerTripped() || (this._requestInFlight && (this._additionalReloadRequested = !0), this._reloadDebouncer || (this._reloadingHandlers.slice().forEach(i => {
+                    try {
+                        i()
+                    } catch (e) {
+                        this._logger.error("Error while running feature flags reloading callback", e)
+                    }
+                }), this._reloadDebouncer = setTimeout(() => {
+                    this._callFlagsEndpoint()
+                }, 5)))
+            }
+            _clearDebouncer() {
+                clearTimeout(this._reloadDebouncer), this._reloadDebouncer = void 0
+            }
+            onReloading(i) {
+                return this._reloadingHandlers.push(i), () => {
+                    this._reloadingHandlers = this._reloadingHandlers.filter(e => e !== i)
+                }
+            }
+            ensureFlagsLoaded() {
+                this._hasLoadedFlags || this._requestInFlight || this._reloadDebouncer || this.reloadFeatureFlags()
+            }
+            setAnonymousDistinctId(i) {
+                this.$anon_distinct_id = i
+            }
+            setReloadingPaused(i) {
+                this._reloadingDisabled = i
+            }
+            resetFlagCallReported() {
+                this._remove(at)
+            }
+            _callFlagsEndpoint(i) {
+                this._clearDebouncer();
+                var e = this._client;
+                if (e && !this._config.remoteRequestsDisabled && !this._hasStatusZeroCircuitBreakerTripped())
+                    if (this._requestInFlight) this._additionalReloadRequested = !0;
+                    else {
+                        var t = {
+                            token: e.projectToken,
+                            distinct_id: e.distinctId,
+                            groups: e.groups,
+                            $anon_distinct_id: this.$anon_distinct_id,
+                            person_properties: S({}, e.initialPersonProperties, this._prop(Oe) || {}, {
+                                $lib: e.library.name,
+                                $lib_version: e.library.version
+                            }),
+                            group_properties: this._prop(et),
+                            timezone: el()
+                        };
+                        b(e.deviceId) || (t.$device_id = e.deviceId), (i != null && i.disableFlags || this._config.featureFlagsDisabled) && (t.disable_flags = !0);
+                        var s = this._getValidEvaluationEnvironments();
+                        s.length && (t.evaluation_contexts = s);
+                        var r = this._getValidFlagKeys();
+                        b(r) || (t.flag_keys = r);
+                        var n = this._config.onlyEvaluateSurveyFeatureFlags,
+                            o = "/flags/?v=2" + (n ? "&only_evaluate_survey_feature_flags=true" : ""),
+                            a = this._requestGeneration;
+                        this._requestInFlight = !0;
+                        var l = () => {
+                                this._additionalReloadRequested && (this._additionalReloadRequested = !1, this._callFlagsEndpoint())
+                            },
+                            c = u => {
+                                this._requestInFlight = !1, a === this._requestGeneration && (this._set({
+                                    [Vt]: [xo]
+                                }), this._logger.error("Feature flag request failed", u), this._fallBackToPersistedFlags() && this._fireFeatureFlagsCallbacks(!0)), l()
+                            };
+                        try {
+                            e.sendRequest(o, {
+                                target: "flags",
+                                method: "POST",
+                                body: t,
+                                compression: this._config.compression,
+                                sentAt: "body",
+                                timeoutMs: this._config.requestTimeoutMs
+                            }).then(u => {
+                                var d, h, _ = (d = u.json) !== null && d !== void 0 ? d : {},
+                                    p = u.statusCode !== 200;
+                                if (this._requestInFlight = !1, a === this._requestGeneration) {
+                                    if (this._trackStatusZeroReachability(u.statusCode), p || this._additionalReloadRequested || (this.$anon_distinct_id = void 0), !t.disable_flags || this._additionalReloadRequested) {
+                                        this._flagsLoadedFromRemote = !p;
+                                        var g = [];
+                                        u.error ? g.push(u.error instanceof Error && u.error.name === "AbortError" ? "timeout" : u.error instanceof Error ? xo : "unknown_error") : u.statusCode !== 200 && g.push("api_error_" + u.statusCode), _.errorsWhileComputingFlags && g.push("errors_while_computing_flags");
+                                        var m = !((h = _.quotaLimited) == null || !h.includes("feature_flags"));
+                                        m && g.push("quota_limited"), this._set({
+                                            [Vt]: g
+                                        }), m ? this._logger.warn("You have hit your feature flags quota limit, and will not be able to load feature flags until the quota is reset.  Please visit https://posthog.com/docs/billing/limits-alerts to learn more.") : t.disable_flags || this._receivedFeatureFlags(_, p, {
+                                            partialResponse: n
+                                        }), l()
+                                    }
+                                } else l()
+                            }).catch(c)
+                        } catch (u) {
+                            c(u)
+                        }
+                    }
+            }
+            _hasStatusZeroCircuitBreakerTripped() {
+                return Wa(this._consecutiveStatusZeroFailures, 3)
+            }
+            _trackStatusZeroReachability(i) {
+                this._consecutiveStatusZeroFailures = Ga(i, this._consecutiveStatusZeroFailures, 3, () => this._logger.warn("Feature flag requests are failing before receiving an HTTP response; this can happen due to network issues, CORS, browser blocking, or ad blockers. Stopped refreshing feature flags; will try again when connectivity changes."))
+            }
+            getFeatureFlag(i, e) {
+                var t;
+                if (e === void 0 && (e = {}), !e.fresh || this._flagsLoadedFromRemote)
+                    if (this._hasLoadedFlags || this.getFlags() && this.getFlags().length > 0) {
+                        if (!this._checkAndTriggerStaleRefresh()) {
+                            var s = this.getFeatureFlagResult(i, e);
+                            return (t = s == null ? void 0 : s.variant) !== null && t !== void 0 ? t : s == null ? void 0 : s.enabled
+                        }
+                    } else this._logger.warn('getFeatureFlag for key "' + i + Xs)
+            }
+            getFeatureFlagDetails(i) {
+                return this.getFlagsWithDetails()[i]
+            }
+            getFeatureFlagPayload(i) {
+                var e = this.getFeatureFlagResult(i, {
+                    send_event: !1
+                });
+                return e == null ? void 0 : e.payload
+            }
+            getFeatureFlagResult(i, e) {
+                if (e === void 0 && (e = {}), !e.fresh || this._flagsLoadedFromRemote)
+                    if (this._hasLoadedFlags || this.getFlags() && this.getFlags().length > 0) {
+                        if (!this._checkAndTriggerStaleRefresh()) {
+                            var t, s = this.getFlagVariants(),
+                                r = i in s,
+                                n = s[i],
+                                o = this.getFlagPayloads()[i],
+                                a = String(n),
+                                l = this._prop(vt) || void 0,
+                                c = this._prop(ct) || void 0,
+                                u = this._prop(at) || {};
+                            if (this._config.deduplicateCallsPerSession) {
+                                var d, h = (d = this._client) == null ? void 0 : d.session.sessionId,
+                                    _ = this._prop(pi);
+                                h && h !== _ && (u = {}, t = h)
+                            }
+                            if (e.send_event || !("send_event" in e))
+                                if (i in u && u[i].includes(a)) t && this._set({
+                                    [at]: u,
+                                    [pi]: t
+                                });
+                                else {
+                                    var p, g, m, v, y, w, E, x, M, A, F, $;
+                                    R(u[i]) ? u[i].push(a) : u[i] = [a], this._set(S({
+                                        [at]: u
+                                    }, t ? {
+                                        [pi]: t
+                                    } : {}));
+                                    var P = this.getFeatureFlagDetails(i),
+                                        B = [...(p = this._prop(Vt)) !== null && p !== void 0 ? p : []];
+                                    b(n) && B.push("flag_missing");
+                                    var T = {
+                                        $feature_flag: i,
+                                        $feature_flag_response: n,
+                                        $feature_flag_payload: o ?? null,
+                                        $feature_flag_request_id: l,
+                                        $feature_flag_evaluated_at: c,
+                                        $feature_flag_bootstrapped_response: (g = (m = this._config.bootstrap) == null || (m = m.featureFlags) == null ? void 0 : m[i]) !== null && g !== void 0 ? g : null,
+                                        $feature_flag_bootstrapped_payload: (v = (y = this._config.bootstrap) == null || (y = y.featureFlagPayloads) == null ? void 0 : y[i]) !== null && v !== void 0 ? v : null,
+                                        $used_bootstrap_value: !this._flagsLoadedFromRemote
+                                    };
+                                    b(P == null || (w = P.metadata) == null ? void 0 : w.has_experiment) || (T.$feature_flag_has_experiment = P.metadata.has_experiment), b(P == null || (E = P.metadata) == null ? void 0 : E.version) || (T.$feature_flag_version = P.metadata.version);
+                                    var L, z = (x = P == null || (M = P.reason) == null ? void 0 : M.description) !== null && x !== void 0 ? x : P == null || (A = P.reason) == null ? void 0 : A.code;
+                                    z && (T.$feature_flag_reason = z), P != null && (F = P.metadata) != null && F.id && (T.$feature_flag_id = P.metadata.id), b(P == null ? void 0 : P.original_variant) && b(P == null ? void 0 : P.original_enabled) || (T.$feature_flag_original_response = b(P.original_variant) ? P.original_enabled : P.original_variant), P != null && ($ = P.metadata) != null && $.original_payload && (T.$feature_flag_original_payload = P == null || (L = P.metadata) == null ? void 0 : L.original_payload), B.length && (T.$feature_flag_error = B.join(",")), this._captureFeatureFlagCalled(T)
+                                }
+                            else t && this._set({
+                                [at]: u,
+                                [pi]: t
+                            });
+                            if (r) return {
+                                key: i,
+                                enabled: !!n,
+                                variant: typeof n == "string" ? n : void 0,
+                                payload: Cn(o)
+                            }
+                        }
+                    } else this._logger.warn('getFeatureFlagResult for key "' + i + Xs)
+            }
+            _captureFeatureFlagCalled(i) {
+                try {
+                    var e;
+                    (e = this._client) == null || e.capture("$feature_flag_called", i).catch(t => {
+                        this._logger.error("Failed to capture feature flag call", t)
+                    })
+                } catch (t) {
+                    this._logger.error("Failed to capture feature flag call", t)
+                }
+            }
+            getRemoteConfigPayload(i, e) {
+                this._getRemoteConfigPayload(i, e)
+            }
+            _getRemoteConfigPayload(i, e) {
+                var t = this;
+                return X(function*() {
+                    var s = t._client;
+                    if (s) {
+                        var r = {
+                                distinct_id: s.distinctId,
+                                token: s.projectToken,
+                                person_properties: {
+                                    $lib: s.library.name,
+                                    $lib_version: s.library.version
+                                }
+                            },
+                            n = t._getValidEvaluationEnvironments();
+                        n.length && (r.evaluation_contexts = n);
+                        var o, a = t._getValidFlagKeys();
+                        b(a) || (r.flag_keys = a);
+                        try {
+                            var l, c = (l = (yield s.sendRequest("/flags/?v=2", {
+                                target: "flags",
+                                method: "POST",
+                                body: r,
+                                compression: t._config.compression,
+                                sentAt: "body",
+                                timeoutMs: t._config.requestTimeoutMs
+                            })).json) == null ? void 0 : l.featureFlagPayloads;
+                            o = (c == null ? void 0 : c[i]) || void 0
+                        } catch (u) {
+                            return void t._logger.error("Remote config feature flag request failed", u)
+                        }
+                        try {
+                            e(o)
+                        } catch (u) {
+                            t._logger.error("Remote config feature flag callback failed", u)
+                        }
+                    }
+                })()
+            }
+            isFeatureEnabled(i, e) {
+                if (e === void 0 && (e = {}), e.fresh && !this._flagsLoadedFromRemote) return e.defaultValue;
+                if (!(this._hasLoadedFlags || this.getFlags() && this.getFlags().length > 0)) return this._logger.warn('isFeatureEnabled for key "' + i + Xs), e.defaultValue;
+                var t = this.getFeatureFlag(i, e);
+                return b(t) ? e.defaultValue : !!t
+            }
+            addFeatureFlagsHandler(i) {
+                this.featureFlagEventHandlers.push(i)
+            }
+            removeFeatureFlagsHandler(i) {
+                this.featureFlagEventHandlers = this.featureFlagEventHandlers.filter(e => e !== i)
+            }
+            receivedFeatureFlags(i, e, t) {
+                this._receivedFeatureFlags(i, e, t)
+            }
+            _receivedFeatureFlags(i, e, t) {
+                if (this._client) {
+                    this._hasLoadedFlags = !0;
+                    var s = function(n, o, a, l, c, u) {
+                        o === void 0 && (o = {}), a === void 0 && (a = {}), l === void 0 && (l = {}), u === void 0 && (u = Co);
+                        var d = ((P, B) => {
+                                var T = P.flags;
+                                return T ? S({}, P, {
+                                    featureFlags: Object.fromEntries(Object.keys(T).map(L => {
+                                        var z;
+                                        return [L, (z = T[L].variant) !== null && z !== void 0 ? z : T[L].enabled]
+                                    })),
+                                    featureFlagPayloads: Object.fromEntries(Object.keys(T).filter(L => T[L].enabled).filter(L => {
+                                        var z;
+                                        return !b((z = T[L].metadata) == null ? void 0 : z.payload)
+                                    }).map(L => {
+                                        var z;
+                                        return [L, (z = T[L].metadata) == null ? void 0 : z.payload]
+                                    }))
+                                }) : (P.featureFlags && B.warn("Using an older version of the feature flags endpoint. Please upgrade your PostHog server to the latest version"), P)
+                            })(n, u),
+                            h = d.flags,
+                            _ = d.featureFlags,
+                            p = d.featureFlagPayloads;
+                        if (_) {
+                            var g = n.requestId,
+                                m = n.evaluatedAt;
+                            if (R(_)) {
+                                u.warn("v1 of the feature flags endpoint is deprecated. Please use the latest version.");
+                                var v = {};
+                                if (_)
+                                    for (var y = 0; _.length > y; y++) v[_[y]] = !0;
+                                return {
+                                    [je]: _,
+                                    [ke]: v,
+                                    [jt]: !1
+                                }
+                            }
+                            var w = _,
+                                E = p,
+                                x = h;
+                            if (c != null && c.partialResponse) {
+                                var M = Object.keys(w),
+                                    A = E || {};
+                                w = S({}, o, w), E = S({}, a, A), M.forEach(P => {
+                                    var B;
+                                    P in A || (B = E) == null || delete B[P]
+                                }), x = S({}, l, x)
+                            } else if (n.errorsWhileComputingFlags)
+                                if (h) {
+                                    var F = new Set(Object.keys(h).filter(P => {
+                                        var B;
+                                        return !((B = h[P]) != null && B.failed)
+                                    }));
+                                    w = S({}, o, Object.fromEntries(Object.entries(w).filter(P => F.has(P[0]))));
+                                    var $ = Object.fromEntries(Object.entries(E || {}).filter(P => F.has(P[0])));
+                                    E = S({}, a, $), F.forEach(P => {
+                                        var B;
+                                        P in $ || (B = E) == null || delete B[P]
+                                    }), x = S({}, l, Object.fromEntries(Object.entries(x || {}).filter(P => F.has(P[0]))))
+                                } else w = S({}, o, w), E = S({}, a, E), x = S({}, l, x);
+                            return S({
+                                [je]: Object.keys(Fo(w)),
+                                [ke]: w || {},
+                                [Ge]: E || {},
+                                [gt]: x || {},
+                                [jt]: n.minimalFlagCalledEvents === !0
+                            }, g ? {
+                                [vt]: g
+                            } : {}, m ? {
+                                [ct]: m
+                            } : {})
+                        }
+                    }(i, this.getFlagVariants(), this.getFlagPayloads(), this.getFlagsWithDetails(), t, this._logger);
+                    if (s)
+                        if ((t == null ? void 0 : t.persist) === !1) {
+                            var r = !b(this._client.kv.get(ke));
+                            this._bootstrapState = s, r || this._set(s)
+                        } else this._clearBootstrapState(), this._markCrossTabFeatureFlagSnapshot(s, i, !(t == null || !t.partialResponse)), this._set(s);
+                    else e && this._fallBackToPersistedFlags();
+                    e || (this._staleCacheRefreshTriggered = !1), this._fireFeatureFlagsCallbacks(e)
+                }
+            }
+            override(i, e) {
+                e === void 0 && (e = !1), this._logger.warn("override is deprecated. Please use overrideFeatureFlags instead."), this.overrideFeatureFlags({
+                    flags: i,
+                    suppressWarning: e
+                })
+            }
+            overrideFeatureFlags(i) {
+                this._overrideFeatureFlags(i)
+            }
+            _overrideFeatureFlags(i) {
+                if (this._client) {
+                    if (i === !1) return this._remove([Ze, kt]), this._fireFeatureFlagsCallbacks(), void wt.info("All overrides cleared");
+                    if (R(i)) return this._set({
+                        [Ze]: Po(i)
+                    }), this._fireFeatureFlagsCallbacks(), void wt.info("Flag overrides set", {
+                        flags: i
+                    });
+                    if (i && typeof i == "object" && ("flags" in i || "payloads" in i)) {
+                        var e, t = i;
+                        this._override_warning = !!((e = t.suppressWarning) !== null && e !== void 0 && e);
+                        var s = {},
+                            r = t.flags,
+                            n = t.payloads;
+                        return r && (s[Ze] = R(r) ? Po(r) : r), n && (s[kt] = n), Object.keys(s).length && this._set(s), r === !1 && n === !1 ? this._remove([Ze, kt]) : r === !1 ? this._remove(Ze) : n === !1 && this._remove(kt), this._fireFeatureFlagsCallbacks(), r === !1 ? wt.info("Flag overrides cleared") : r && wt.info("Flag overrides set", {
+                            flags: r
+                        }), void(n === !1 ? wt.info("Payload overrides cleared") : n && wt.info("Payload overrides set", {
+                            payloads: n
+                        }))
+                    }
+                    if (i && typeof i == "object") return this._set({
+                        [Ze]: i
+                    }), this._fireFeatureFlagsCallbacks(), void wt.info("Flag overrides set", {
+                        flags: i
+                    });
+                    this._logger.warn("Invalid overrideOptions provided to overrideFeatureFlags", {
+                        overrideOptions: i
+                    })
+                } else this._logger.warn("posthog.featureFlags.overrideFeatureFlags called before feature flags were ready")
+            }
+            onFeatureFlags(i) {
+                if (this.addFeatureFlagsHandler(i), this._hasLoadedFlags) {
+                    var e = this._prepareFeatureFlagsForCallbacks(),
+                        t = e.flags,
+                        s = e.flagVariants;
+                    try {
+                        i(t, s)
+                    } catch (r) {
+                        this._logger.error("Error while running feature flags callback", r)
+                    }
+                }
+                return () => this.removeFeatureFlagsHandler(i)
+            }
+            updateEarlyAccessFeatureEnrollment(i, e, t) {
+                var s, r = (this._prop(Vi) || []).find(c => c.flagKey === i),
+                    n = {
+                        ["$feature_enrollment/" + i]: e
+                    },
+                    o = {
+                        $feature_flag: i,
+                        $feature_enrollment: e,
+                        $set: n
+                    };
+                r && (o.$early_access_feature_name = r.name), t && (o.$feature_enrollment_stage = t);
+                var a = S({}, this.getFlagVariants(), {
+                    [i]: e
+                });
+                (s = this._instance) == null || (s = s.persistence) == null || s.markCrossTabFeatureFlagChanges({
+                    [je]: [i],
+                    [ke]: [i],
+                    [Oe]: Object.keys(n)
+                }), this._set({
+                    [je]: Object.keys(Fo(a)),
+                    [ke]: a,
+                    [Oe]: S({}, this._prop(Oe) || {}, n)
+                }), this._fireFeatureFlagsCallbacks();
+                try {
+                    var l;
+                    (l = this._client) == null || l.capture("$feature_enrollment_update", o).catch(c => {
+                        this._logger.error("Failed to capture early access feature enrollment", c)
+                    })
+                } catch (c) {
+                    this._logger.error("Failed to capture early access feature enrollment", c)
+                }
+            }
+            getEarlyAccessFeatures(i, e, t) {
+                e === void 0 && (e = !1);
+                var s = this._prop(Vi);
+                !s || e ? this._getEarlyAccessFeatures(i, t) : i(s)
+            }
+            _getEarlyAccessFeatures(i, e) {
+                var t = this;
+                return X(function*() {
+                    var s = t._client;
+                    if (s) {
+                        var r, n = e ? "&" + e.map(a => "stage=" + a).join("&") : "";
+                        try {
+                            var o = yield s.sendRequest("/api/early_access_features/?token=" + s.projectToken + n, {
+                                target: "api",
+                                method: "GET",
+                                sentAt: "query"
+                            });
+                            if (!o.json) return;
+                            t._set({
+                                [Vi]: r = o.json.earlyAccessFeatures
+                            })
+                        } catch (a) {
+                            return void t._logger.error("Early access feature request failed", a)
+                        }
+                        try {
+                            i(r)
+                        } catch (a) {
+                            t._logger.error("Early access feature callback failed", a)
+                        }
+                    }
+                })()
+            }
+            _prepareFeatureFlagsForCallbacks() {
+                var i = this.getFlags(),
+                    e = this.getFlagVariants();
+                return {
+                    flags: i.filter(t => e[t]),
+                    flagVariants: Object.keys(e).filter(t => e[t]).reduce((t, s) => (t[s] = e[s], t), {})
+                }
+            }
+            _fireFeatureFlagsCallbacks(i) {
+                this._rebuildEventProperties();
+                var e = this._prepareFeatureFlagsForCallbacks(),
+                    t = e.flags,
+                    s = e.flagVariants;
+                this.featureFlagEventHandlers.forEach(r => {
+                    try {
+                        r(t, s, {
+                            errorsLoading: i
+                        })
+                    } catch (n) {
+                        this._logger.error("Error while running feature flags callback", n)
+                    }
+                })
+            }
+            setPersonPropertiesForFlags(i, e) {
+                e === void 0 && (e = !0), this._setPersonPropertiesForFlags(i, e)
+            }
+            _setPersonPropertiesForFlags(i, e) {
+                e === void 0 && (e = !0);
+                var t = this._prop(Oe) || {},
+                    s = (i == null ? void 0 : i.$set) || (i != null && i.$set_once ? {} : i),
+                    r = i == null ? void 0 : i.$set_once,
+                    n = {};
+                if (r)
+                    for (var o in r)({}).hasOwnProperty.call(r, o) && (o in t || (n[o] = r[o]));
+                this._set({
+                    [Oe]: S({}, t, n, s)
+                }), e && this.reloadFeatureFlags()
+            }
+            unsetPersonPropertiesForFlags(i, e) {
+                e === void 0 && (e = !0);
+                var t = S({}, this._prop(Oe) || {});
+                i.forEach(s => {
+                    delete t[s]
+                }), this._set({
+                    [Oe]: t
+                }), e && this.reloadFeatureFlags()
+            }
+            resetPersonPropertiesForFlags(i) {
+                i === void 0 && (i = !0), this._remove(Oe), i && this.reloadFeatureFlags()
+            }
+            setGroupPropertiesForFlags(i, e) {
+                e === void 0 && (e = !0);
+                var t = this._prop(et) || {},
+                    s = S({}, t);
+                for (var r of Object.keys(i)) s[r] = S({}, t[r], i[r]);
+                this._set({
+                    [et]: s
+                }), e && this.reloadFeatureFlags()
+            }
+            resetGroupPropertiesForFlags(i) {
+                if (i) {
+                    var e = this._prop(et) || {};
+                    this._set({
+                        [et]: S({}, e, {
+                            [i]: {}
+                        })
+                    })
+                } else this._remove(et)
+            }
+            reset() {
+                this._requestGeneration++, this._additionalReloadRequested = !1, this._baseEventProperties = {}, this._eventPropertiesWithFlagValues = {}, this._bootstrapState = void 0, this._hasLoadedFlags = !1, this._reloadingDisabled = !1, this._flagsLoadedFromRemote = !1, this.$anon_distinct_id = void 0, this._clearDebouncer(), this._override_warning = !1, this._consecutiveStatusZeroFailures = 0
+            }
+        }
+    },
+    id = {
+        sessionRecording: class {
+            get _config() {
+                return this._instance.config
+            }
+            get _persistence() {
+                return this._instance.persistence
+            }
+            get started() {
+                var i;
+                return !((i = this._lazyLoadedSessionRecording) == null || !i.isStarted)
+            }
+            get status() {
+                var i, e;
+                return this._recordingStatus === di || this._recordingStatus === zi ? this._recordingStatus : (i = (e = this._lazyLoadedSessionRecording) == null ? void 0 : e.status) !== null && i !== void 0 ? i : this._recordingStatus
+            }
+            constructor(i) {
+                if (this._forceAllowLocalhostNetworkCapture = !1, this._recordingStatus = qi, this._persistFlagsOnSessionListener = void 0, this._sessionRecordingDisposed = !1, this._documentWasEverVisible = (() => {
+                        var e;
+                        if (k == null || !k.visibilityState || k.visibilityState === "visible") return !0;
+                        var t = f == null || (e = f.performance) == null || e.getEntriesByType == null ? void 0 : e.getEntriesByType("visibility-state");
+                        return !(t != null && t.length) || t.some(s => s.name === "visible")
+                    })(), this._onVisibilityChange = () => {
+                        var e;
+                        (k == null ? void 0 : k.visibilityState) === "visible" && (this._documentWasEverVisible = !0, (e = this._lazyLoadedSessionRecording) == null || e.setDocumentWasEverVisible == null || e.setDocumentWasEverVisible(!0))
+                    }, this._instance = i, !this._instance.sessionManager) throw rt.error("started without valid sessionManager"), new Error(zr + " started without valid sessionManager. This is a bug.");
+                if (this._config.cookieless_mode === lt) throw new Error(zr + ' cannot be used with cookieless_mode="always"');
+                k != null && k.addEventListener && K(k, "visibilitychange", this._onVisibilityChange)
+            }
+            initialize() {
+                this.startIfEnabledOrStop()
+            }
+            dispose(i) {
+                var e = (i === void 0 ? {} : i).discardBufferedEvents,
+                    t = e !== void 0 && e;
+                this._sessionRecordingDisposed = !0, k == null || k.removeEventListener == null || k.removeEventListener("visibilitychange", this._onVisibilityChange), t ? this._discardRecording(!0) : this.stopRecording()
+            }
+            get _isRecordingEnabled() {
+                var i, e = !((i = this._instance.get_property(xt)) == null || !i.enabled),
+                    t = !this._config.disable_session_recording,
+                    s = this._config.disable_session_recording || this._instance.consent.isOptedOut();
+                return f && e && t && !s
+            }
+            startIfEnabledOrStop(i) {
+                var e;
+                if (!(this._sessionRecordingDisposed || this._isRecordingEnabled && (e = this._lazyLoadedSessionRecording) != null && e.isStarted)) {
+                    var t = !b(Object.assign) && !b(Array.from);
+                    this._isRecordingEnabled && t ? (this._lazyLoadAndStart(i), rt.info("starting")) : (this._recordingStatus = qi, this.stopRecording())
+                }
+            }
+            _lazyLoadAndStart(i) {
+                var e, t;
+                if (this._isRecordingEnabled)
+                    if (this._recordingStatus !== di && this._recordingStatus !== zi && (this._recordingStatus = yo), I != null && (e = I.__PosthogExtensions__) != null && (e = e.rrweb) != null && e.record && (t = I.__PosthogExtensions__) != null && t.initSessionRecording) this._onScriptLoaded(i);
+                    else {
+                        var s, r = this._instance.sessionManager;
+                        (s = I.__PosthogExtensions__) == null || s.loadExternalDependency == null || s.loadExternalDependency(this._instance, this._scriptName, n => {
+                            if (!this._sessionRecordingDisposed && this._isRecordingEnabled && this._instance.sessionManager === r) return n ? (this._instance.register_for_session({
+                                [gr]: !0
+                            }), rt.error("could not load recorder", n)) : void this._onScriptLoaded(i);
+                            this._recordingStatus = qi
+                        })
+                    }
+            }
+            stopRecording() {
+                var i, e;
+                (i = this._persistFlagsOnSessionListener) == null || i.call(this), this._persistFlagsOnSessionListener = void 0, (e = this._lazyLoadedSessionRecording) == null || e.stop()
+            }
+            _discardRecording(i) {
+                var e, t;
+                i === void 0 && (i = !1), (e = this._persistFlagsOnSessionListener) == null || e.call(this), this._persistFlagsOnSessionListener = void 0, (t = this._lazyLoadedSessionRecording) == null || t.discard({
+                    discardProducerEvents: i
+                })
+            }
+            _resetSampling() {
+                var i, e;
+                (i = this._persistence) == null || i.unregister(Wr), (e = this._persistence) == null || e.unregister($o)
+            }
+            _validateSampleRate(i, e) {
+                if (D(i)) return null;
+                var t, s = de(i) ? i : parseFloat(i);
+                return typeof(t = s) != "number" || !Number.isFinite(t) || 0 > t || t > 1 ? (rt.warn(e + " must be between 0 and 1. Ignoring invalid value:", i), null) : s
+            }
+            _persistRemoteConfig(i) {
+                if (this._persistence) {
+                    var e, t, s = this._persistence,
+                        r = () => {
+                            var n, o = i.sessionRecording === !1 ? void 0 : i.sessionRecording,
+                                a = this._validateSampleRate((n = this._config.session_recording) == null ? void 0 : n.sampleRate, "session_recording.sampleRate"),
+                                l = this._validateSampleRate(o == null ? void 0 : o.sampleRate, "remote config sampleRate"),
+                                c = a ?? l;
+                            D(c) && this._resetSampling();
+                            var u = o == null ? void 0 : o.minimumDurationMilliseconds;
+                            s.register({
+                                [xt]: S({
+                                    cache_timestamp: Date.now(),
+                                    enabled: !!o
+                                }, o, {
+                                    networkPayloadCapture: S({
+                                        capturePerformance: i.capturePerformance
+                                    }, o == null ? void 0 : o.networkPayloadCapture),
+                                    canvasRecording: {
+                                        enabled: o == null ? void 0 : o.recordCanvas,
+                                        fps: o == null ? void 0 : o.canvasFps,
+                                        quality: o == null ? void 0 : o.canvasQuality
+                                    },
+                                    sampleRate: c,
+                                    minimumDurationMilliseconds: b(u) ? null : u,
+                                    endpoint: o == null ? void 0 : o.endpoint,
+                                    triggerMatchType: o == null ? void 0 : o.triggerMatchType,
+                                    masking: o == null ? void 0 : o.masking,
+                                    urlTriggers: o == null ? void 0 : o.urlTriggers,
+                                    version: o == null ? void 0 : o.version,
+                                    triggerGroups: o == null ? void 0 : o.triggerGroups
+                                })
+                            })
+                        };
+                    r(), (e = this._persistFlagsOnSessionListener) == null || e.call(this), this._persistFlagsOnSessionListener = (t = this._instance.sessionManager) == null ? void 0 : t.onSessionId(r)
+                }
+            }
+            onRemoteConfig(i) {
+                var e = i.ok ? i.config : void 0;
+                return e && "sessionRecording" in e ? e.sessionRecording === !1 ? (this._persistRemoteConfig(e), void this._discardRecording()) : (this._persistRemoteConfig(e), void this.startIfEnabledOrStop()) : (this._recordingStatus === di && (this._recordingStatus = zi, rt.warn("config refresh failed, recording will not start until page reload")), void this.startIfEnabledOrStop())
+            }
+            log(i, e) {
+                var t;
+                e === void 0 && (e = "log"), (t = this._lazyLoadedSessionRecording) != null && t.log ? this._lazyLoadedSessionRecording.log(i, e) : rt.warn("log called before recorder was ready")
+            }
+            get _scriptName() {
+                var i, e, t = (i = this._instance) == null || (i = i.persistence) == null ? void 0 : i.get_property(xt);
+                return (t == null || (e = t.scriptConfig) == null ? void 0 : e.script) || "lazy-recorder"
+            }
+            _isRemoteConfigFresh() {
+                var i, e = this._instance.get_property(xt);
+                if (!e) return !1;
+                try {
+                    i = typeof e == "object" ? e : JSON.parse(e)
+                } catch (t) {
+                    return rt.warn("persisted remote config for session recording is invalid and will be ignored", t), !1
+                }
+                return !D(i.cache_timestamp) && 36e5 >= Date.now() - i.cache_timestamp
+            }
+            _onScriptLoaded(i) {
+                var e, t, s;
+                if (!this._sessionRecordingDisposed && this._isRecordingEnabled && this._instance.sessionManager) {
+                    if ((e = I.__PosthogExtensions__) == null || !e.initSessionRecording) return rt.warn("Called on script loaded before session recording is available. This can be caused by adblockers."), void this._instance.register_for_session({
+                        [gr]: !0
+                    });
+                    var r;
+                    if (this._lazyLoadedSessionRecording || (this._lazyLoadedSessionRecording = (r = I.__PosthogExtensions__) == null ? void 0 : r.initSessionRecording(this._instance, this._documentWasEverVisible), this._lazyLoadedSessionRecording._forceAllowLocalhostNetworkCapture = this._forceAllowLocalhostNetworkCapture), !this._isRemoteConfigFresh()) return this._recordingStatus === zi || this._recordingStatus === di ? void 0 : (this._recordingStatus = di, rt.info("persisted remote config is stale, requesting fresh config before starting"), void new tl(this._instance).load());
+                    this._recordingStatus = yo, (t = (s = this._lazyLoadedSessionRecording).setDocumentWasEverVisible) == null || t.call(s, this._documentWasEverVisible), this._lazyLoadedSessionRecording.start(i)
+                } else this._recordingStatus = qi
+            }
+            onRRwebEmit(i) {
+                var e;
+                (e = this._lazyLoadedSessionRecording) == null || e.onRRwebEmit == null || e.onRRwebEmit(i)
+            }
+            overrideLinkedFlag() {
+                var i, e;
+                this._lazyLoadedSessionRecording || (e = this._persistence) == null || e.register({
+                    [Bo]: !0
+                }), (i = this._lazyLoadedSessionRecording) == null || i.overrideLinkedFlag()
+            }
+            overrideSampling() {
+                var i, e;
+                this._lazyLoadedSessionRecording || (e = this._persistence) == null || e.register({
+                    [Do]: !0
+                }), (i = this._lazyLoadedSessionRecording) == null || i.overrideSampling()
+            }
+            overrideTrigger(i) {
+                var e, t;
+                this._lazyLoadedSessionRecording || (t = this._persistence) == null || t.register({
+                    [i === "url" ? Ho : No]: !0
+                }), (e = this._lazyLoadedSessionRecording) == null || e.overrideTrigger(i)
+            }
+            get sdkDebugProperties() {
+                var i;
+                return ((i = this._lazyLoadedSessionRecording) == null ? void 0 : i.sdkDebugProperties) || {
+                    $recording_status: this.status
+                }
+            }
+            tryAddCustomEvent(i, e) {
+                var t;
+                return !((t = this._lazyLoadedSessionRecording) == null || !t.tryAddCustomEvent(i, e))
+            }
+        }
+    },
+    sd = {
+        autocapture: class extends Dc {
+            constructor(i) {
+                super(new Bc(i)), this.instance = i
+            }
+        },
+        historyAutocapture: class {
+            constructor(i) {
+                this._instance = i, this._lastLocation = this._getCurrentLocation()
+            }
+            initialize() {
+                this.startIfEnabled()
+            }
+            get isEnabled() {
+                var i = this._getCaptureOptions();
+                return !!(i.path || i.search || this._shouldCaptureHashChanges(i))
+            }
+            startIfEnabled() {
+                this.isEnabled && (C.info("History API monitoring enabled, starting..."), this.monitorHistoryChanges())
+            }
+            startIfEnabledOrStop() {
+                this.stop(), this._lastLocation = this._getCurrentLocation(), this.startIfEnabled()
+            }
+            stop() {
+                this._popstateListener && this._popstateListener(), this._popstateListener = void 0, this._hashchangeListener && this._hashchangeListener(), this._hashchangeListener = void 0, C.info("History API monitoring stopped")
+            }
+            monitorHistoryChanges() {
+                f && f.history && (this._patchHistoryMethod("pushState"), this._patchHistoryMethod("replaceState"), this._setupPopstateListener(), this._shouldCaptureHashChanges() && this._setupHashchangeListener())
+            }
+            _patchHistoryMethod(i) {
+                var e;
+                if (f && ((e = f.history[i]) == null || !e.__posthog_wrapped__)) {
+                    var t = this;
+                    El(f.history, i, s => function(r, n, o) {
+                        s.call(this, r, n, o), t._capturePageview(i)
+                    })
+                }
+            }
+            _getCurrentLocation() {
+                var i = f == null ? void 0 : f.location;
+                if (i != null && i.pathname) return {
+                    pathname: i.pathname,
+                    search: i.search,
+                    hash: i.hash
+                }
+            }
+            _getCaptureOptions() {
+                var i = this._instance.config.capture_pageview;
+                return i === "history_change" ? {
+                    path: !0
+                } : N(i) ? i : {}
+            }
+            _shouldCaptureHashChanges(i) {
+                return i === void 0 && (i = this._getCaptureOptions()), !!i.hash && !this._instance.config.disable_capture_url_hashes
+            }
+            _hasLocationChanged(i) {
+                var e = this._getCaptureOptions(),
+                    t = this._lastLocation;
+                return !(!t || !(e.path && i.pathname !== t.pathname || e.search && i.search !== t.search || this._shouldCaptureHashChanges(e) && i.hash !== t.hash))
+            }
+            _capturePageview(i) {
+                try {
+                    var e = this._getCurrentLocation();
+                    if (!e) return;
+                    this._hasLocationChanged(e) && this._instance.capture(qt, {
+                        navigation_type: i
+                    }), this._lastLocation = e
+                } catch (t) {
+                    C.error("Error capturing " + i + " pageview", t)
+                }
+            }
+            _setupPopstateListener() {
+                if (!this._popstateListener) {
+                    var i = () => {
+                        this._capturePageview("popstate")
+                    };
+                    K(f, "popstate", i), this._popstateListener = () => {
+                        f && f.removeEventListener("popstate", i)
+                    }
+                }
+            }
+            _setupHashchangeListener() {
+                if (!this._hashchangeListener) {
+                    var i = () => {
+                        this._capturePageview("hashchange")
+                    };
+                    K(f, "hashchange", i), this._hashchangeListener = () => {
+                        f && f.removeEventListener("hashchange", i)
+                    }
+                }
+            }
+        },
+        heatmaps: class {
+            get _config() {
+                return this.instance.config
+            }
+            constructor(i) {
+                var e;
+                this._enabledServerSide = !1, this._initialized = !1, this._flushInterval = null, this.instance = i, this._enabledServerSide = !((e = this.instance.persistence) == null || !e.props[ir]), this.rageclicks = new wl(i.config.rageclick)
+            }
+            initialize() {
+                this.startIfEnabled()
+            }
+            get flushIntervalMilliseconds() {
+                var i = 5e3;
+                return N(this._config.capture_heatmaps) && this._config.capture_heatmaps.flush_interval_milliseconds && (i = this._config.capture_heatmaps.flush_interval_milliseconds), i
+            }
+            get isEnabled() {
+                return D(this._config.capture_heatmaps) ? D(this._config.enable_heatmaps) ? this._enabledServerSide : this._config.enable_heatmaps : this._config.capture_heatmaps !== !1
+            }
+            startIfEnabled() {
+                if (this.isEnabled) {
+                    if (this._initialized) return;
+                    zc.info("starting..."), this._setupListeners(), this._onVisibilityChange()
+                } else {
+                    var i;
+                    clearInterval((i = this._flushInterval) !== null && i !== void 0 ? i : void 0), this._removeListeners(), this.getAndClearBuffer()
+                }
+            }
+            onRemoteConfig(i) {
+                if (i.ok) {
+                    var e = i.config;
+                    if ("heatmaps" in e) {
+                        var t = !!e.heatmaps;
+                        this.instance.persistence && this.instance.persistence.register({
+                            [ir]: t
+                        }), this._enabledServerSide = t, this.startIfEnabled()
+                    }
+                }
+            }
+            getAndClearBuffer() {
+                var i = this._buffer;
+                return this._buffer = void 0, i
+            }
+            _onDeadClick(i) {
+                Ys(i.originalEvent) && this._onClick(i.originalEvent, "deadclick")
+            }
+            _onVisibilityChange() {
+                this._flushInterval && clearInterval(this._flushInterval), this._flushInterval = (k == null ? void 0 : k.visibilityState) === "visible" ? setInterval(this._flush.bind(this), this.flushIntervalMilliseconds) : null
+            }
+            _setupListeners() {
+                f && k && (this._flushHandler = this._flush.bind(this), K(f, Zi, this._flushHandler), this._onClickHandler = i => this._onClick(i || (f == null ? void 0 : f.event)), K(k, "click", this._onClickHandler, {
+                    capture: !0
+                }), this._onMouseMoveHandler = i => this._onMouseMove(i || (f == null ? void 0 : f.event)), K(k, "mousemove", this._onMouseMoveHandler, {
+                    capture: !0
+                }), this._deadClicksCapture = new Kn(this.instance, Ku, this._onDeadClick.bind(this)), this._deadClicksCapture.startIfEnabledOrStop(), this._onVisibilityChange_handler = this._onVisibilityChange.bind(this), K(k, Kt, this._onVisibilityChange_handler), this._initialized = !0)
+            }
+            _removeListeners() {
+                var i;
+                f && k && (this._flushHandler && f.removeEventListener(Zi, this._flushHandler), this._onClickHandler && k.removeEventListener("click", this._onClickHandler, {
+                    capture: !0
+                }), this._onMouseMoveHandler && k.removeEventListener("mousemove", this._onMouseMoveHandler, {
+                    capture: !0
+                }), this._onVisibilityChange_handler && k.removeEventListener(Kt, this._onVisibilityChange_handler), clearTimeout(this._mouseMoveTimeout), (i = this._deadClicksCapture) == null || i.stop(), this._initialized = !1)
+            }
+            _getProperties(i, e) {
+                var t = this.instance.scrollManager.scrollY(),
+                    s = this.instance.scrollManager.scrollX(),
+                    r = this.instance.scrollManager.scrollElement(),
+                    n = function(o, a, l) {
+                        for (var c = o; c && mt(c) && !He(c, "body");) {
+                            if (c === l) return !1;
+                            var u = void 0;
+                            try {
+                                var d, h, _;
+                                u = (d = (h = (_ = c.ownerDocument) == null ? void 0 : _.defaultView) !== null && h !== void 0 ? h : f) == null ? void 0 : d.getComputedStyle(c).position
+                            } catch {
+                                return !1
+                            }
+                            if (O(a, u)) return !0;
+                            c = Ba(c)
+                        }
+                        return !1
+                    }(Ar(i), ["fixed", "sticky"], r);
+                return {
+                    x: i.clientX + (n ? 0 : s),
+                    y: i.clientY + (n ? 0 : t),
+                    target_fixed: n,
+                    type: e
+                }
+            }
+            _onClick(i, e) {
+                var t;
+                if (e === void 0 && (e = "click"), !Bn(i.target) && Ys(i)) {
+                    var s = this._getProperties(i, e);
+                    (t = this.rageclicks) != null && t.isRageClick(i.clientX, i.clientY, new Date().getTime()) && Na(Ar(i), this.instance.config.rageclick) && this._capture(S({}, s, {
+                        type: "rageclick"
+                    })), this._capture(s)
+                }
+            }
+            _onMouseMove(i) {
+                !Bn(i.target) && Ys(i) && (clearTimeout(this._mouseMoveTimeout), this._mouseMoveTimeout = setTimeout(() => {
+                    this._capture(this._getProperties(i, "mousemove"))
+                }, 500))
+            }
+            _capture(i) {
+                if (f) {
+                    var e = this._config.disable_capture_url_hashes ? ft(f.location.href) : f.location.href,
+                        t = this._config.custom_personal_data_properties,
+                        s = this._config.mask_personal_data_properties ? [...ei, ...t || []] : [],
+                        r = Pi(e, s, Fi);
+                    this._buffer = this._buffer || {}, this._buffer[r] || (this._buffer[r] = []), this._buffer[r].push(i)
+                }
+            }
+            _flush() {
+                this._buffer && !Be(this._buffer) && this.instance.capture("$$heatmap", {
+                    $heatmap_data: this.getAndClearBuffer()
+                })
+            }
+        },
+        deadClicksAutocapture: Kn,
+        webVitalsAutocapture: class {
+            constructor(i) {
+                var e;
+                this._enabledServerSide = !1, this._initialized = !1, this._buffer = {
+                    navigationKey: void 0,
+                    url: void 0,
+                    metrics: [],
+                    firstMetricTimestamp: void 0
+                }, this._flushToCapture = () => {
+                    clearTimeout(this._delayedFlushTimer), this._delayedFlushTimer = void 0, this._buffer.metrics.length !== 0 && (this._instance.capture("$web_vitals", S({
+                        $current_url: this._buffer.url
+                    }, this._buffer.metrics.reduce((t, s) => S({}, t, {
+                        ["$web_vitals_" + s.name + "_event"]: S({}, s),
+                        ["$web_vitals_" + s.name + "_value"]: s.value
+                    }), {}))), this._buffer = {
+                        navigationKey: void 0,
+                        url: void 0,
+                        metrics: [],
+                        firstMetricTimestamp: void 0
+                    })
+                }, this._addToBuffer = t => {
+                    var s;
+                    if (this._buffer = this._buffer || {
+                            navigationKey: void 0,
+                            url: void 0,
+                            metrics: [],
+                            firstMetricTimestamp: void 0
+                        }, D(t == null ? void 0 : t.name) || D(t == null ? void 0 : t.value)) St.error("Invalid metric received", t);
+                    else {
+                        var r = typeof t.navigationURL == "string" ? t.navigationURL : void 0,
+                            n = this._maskedURL(r);
+                        if (!b(n)) {
+                            var o = de(t.navigationId) || typeof t.navigationId == "string" ? "navigation:" + t.navigationId : "url:" + n;
+                            if (!this._maxAllowedValue || this._maxAllowedValue > t.value) {
+                                this._buffer.navigationKey !== o && (this._flushToCapture(), this._delayedFlushTimer = setTimeout(this._flushToCapture, this.flushToCaptureTimeoutMs)), b(this._buffer.navigationKey) && (this._buffer.navigationKey = o, this._buffer.url = n), this._buffer.firstMetricTimestamp = b(this._buffer.firstMetricTimestamp) ? Date.now() : this._buffer.firstMetricTimestamp;
+                                var a = (s = this._instance.sessionManager) == null ? void 0 : s.checkAndGetSessionAndWindowId(!0),
+                                    l = S({}, t, r ? {
+                                        navigationURL: n
+                                    } : {}, {
+                                        $current_url: n,
+                                        timestamp: Date.now()
+                                    });
+                                if (delete l.entries, N(t.attribution) && this.attributionMetrics.indexOf(t.name) > -1) {
+                                    var c = {};
+                                    for (var u of qc) {
+                                        var d = u === "url" && typeof t.attribution[u] == "string" ? this._maskedURL(t.attribution[u]) : t.attribution[u];
+                                        b(d) || (c[u] = d)
+                                    }
+                                    l.attribution = c
+                                } else delete l.attribution;
+                                b(a) || (l.$session_id = a.sessionId, l.$window_id = a.windowId), this._buffer.metrics.push(l), this._buffer.metrics.length === this.allowedMetrics.length && this._flushToCapture()
+                            } else St.error("Ignoring metric with value >= " + this._maxAllowedValue, t)
+                        }
+                    }
+                }, this._startCapturing = () => {
+                    if (!this._initialized) {
+                        var t, s, r, n, o = !1,
+                            a = I.__PosthogExtensions__,
+                            l = a == null ? void 0 : a.postHogWebVitalsCallbacksByFlavor,
+                            c = (l == null ? void 0 : l[this._callbackFlavor]) || (this._callbackFlavor === "web-vitals" && b(l) ? a == null ? void 0 : a.postHogWebVitalsCallbacks : void 0);
+                        if (!b(c)) {
+                            var u = c.withoutAttribution,
+                                d = this.attributionMetrics;
+                            o = !b(u), t = d.indexOf("LCP") > -1 ? c.onLCP : (u == null ? void 0 : u.onLCP) || c.onLCP, s = d.indexOf("CLS") > -1 ? c.onCLS : (u == null ? void 0 : u.onCLS) || c.onCLS, r = d.indexOf("FCP") > -1 ? c.onFCP : (u == null ? void 0 : u.onFCP) || c.onFCP, n = d.indexOf("INP") > -1 ? c.onINP : (u == null ? void 0 : u.onINP) || c.onINP
+                        }
+                        if (t && s && r && n) {
+                            var h = {
+                                    reportSoftNavs: this.useSoftNavs
+                                },
+                                _ = o && this.attributionMetrics.indexOf("INP") > -1 ? S({}, h, {
+                                    includeProcessedEventEntries: !1
+                                }) : h;
+                            this.allowedMetrics.indexOf("LCP") > -1 && t(this._addToBuffer.bind(this), h), this.allowedMetrics.indexOf("CLS") > -1 && s(this._addToBuffer.bind(this), h), this.allowedMetrics.indexOf("FCP") > -1 && r(this._addToBuffer.bind(this), h), this.allowedMetrics.indexOf("INP") > -1 && n(this._addToBuffer.bind(this), _), this._initialized = !0
+                        } else St.error("web vitals callbacks not loaded - not starting")
+                    }
+                }, this._instance = i, this._enabledServerSide = !((e = this._instance.persistence) == null || !e.props[or]), this.startIfEnabled()
+            }
+            get _perfConfig() {
+                return this._instance.config.capture_performance
+            }
+            get allowedMetrics() {
+                var i, e, t = N(this._perfConfig) ? (i = this._perfConfig) == null ? void 0 : i.web_vitals_allowed_metrics : void 0;
+                return D(t) ? ((e = this._instance.persistence) == null ? void 0 : e.props[lr]) || mo : t
+            }
+            get flushToCaptureTimeoutMs() {
+                return (N(this._perfConfig) ? this._perfConfig.web_vitals_delayed_flush_ms : void 0) || 5e3
+            }
+            get attributionMetrics() {
+                var i = N(this._perfConfig) ? this._perfConfig.web_vitals_attribution : void 0;
+                return Ie(i) ? i ? mo : [] : R(i) ? i : Nc
+            }
+            get useAttribution() {
+                return this.attributionMetrics.length > 0
+            }
+            get useSoftNavs() {
+                var i = N(this._perfConfig) ? this._perfConfig.__preview_web_vitals_soft_navs : void 0;
+                return i != null && i
+            }
+            get _maxAllowedValue() {
+                var i = N(this._perfConfig) && de(this._perfConfig.__web_vitals_max_value) ? this._perfConfig.__web_vitals_max_value : fo;
+                return i > 0 && 6e4 >= i ? fo : i
+            }
+            get isEnabled() {
+                var i = ne == null ? void 0 : ne.protocol;
+                if (i !== "http:" && i !== "https:") return St.info("Web Vitals are disabled on non-http/https protocols"), !1;
+                var e = N(this._perfConfig) ? this._perfConfig.web_vitals : Ie(this._perfConfig) ? this._perfConfig : void 0;
+                return Ie(e) ? e : this._enabledServerSide
+            }
+            startIfEnabled() {
+                this.isEnabled && !this._initialized && (St.info("enabled, starting..."), this._loadScript(this._startCapturing))
+            }
+            onRemoteConfig(i) {
+                if (i.ok) {
+                    var e = i.config;
+                    if ("capturePerformance" in e) {
+                        var t = N(e.capturePerformance) && !!e.capturePerformance.web_vitals,
+                            s = N(e.capturePerformance) ? e.capturePerformance.web_vitals_allowed_metrics : void 0;
+                        this._instance.persistence && (this._instance.persistence.register({
+                            [or]: t
+                        }), this._instance.persistence.register({
+                            [lr]: s
+                        })), this._enabledServerSide = t, this.startIfEnabled()
+                    }
+                }
+            }
+            get _callbackFlavor() {
+                return this.useSoftNavs ? this.useAttribution ? "web-vitals-with-attribution-soft-navs" : "web-vitals-soft-navs" : this.useAttribution ? "web-vitals-with-attribution" : "web-vitals"
+            }
+            _loadScript(i) {
+                var e = I.__PosthogExtensions__,
+                    t = this._callbackFlavor,
+                    s = e == null ? void 0 : e.postHogWebVitalsCallbacksByFlavor;
+                s != null && s[t] || t === "web-vitals" && b(s) && e != null && e.postHogWebVitalsCallbacks ? i() : e == null || e.loadExternalDependency == null || e.loadExternalDependency(this._instance, t, r => {
+                    r ? St.error("failed to load script", r) : i()
+                })
+            }
+            _maskedURL(i) {
+                var e = i || (f == null ? void 0 : f.location.href);
+                if (e) {
+                    var t = this._instance.config.disable_capture_url_hashes ? ft(e) : e,
+                        s = this._instance.config.custom_personal_data_properties,
+                        r = this._instance.config.mask_personal_data_properties ? [...ei, ...s || []] : [];
+                    return Pi(t, r, Fi)
+                }
+                St.error("Could not determine current URL")
+            }
+        }
+    },
+    rd = {
+        exceptionObserver: class {
+            constructor(i) {
+                var e;
+                this._startCapturing = () => {
+                    var t;
+                    if (f && this.isEnabled && (t = I.__PosthogExtensions__) != null && t.errorWrappingFunctions) {
+                        var s = I.__PosthogExtensions__.errorWrappingFunctions.wrapOnError,
+                            r = I.__PosthogExtensions__.errorWrappingFunctions.wrapUnhandledRejection,
+                            n = I.__PosthogExtensions__.errorWrappingFunctions.wrapConsoleError;
+                        try {
+                            !this._unwrapOnError && this._config.capture_unhandled_errors && (this._unwrapOnError = s(this.captureException.bind(this))), !this._unwrapUnhandledRejection && this._config.capture_unhandled_rejections && (this._unwrapUnhandledRejection = r(this.captureException.bind(this))), !this._unwrapConsoleError && this._config.capture_console_errors && (this._unwrapConsoleError = n(this.captureException.bind(this)))
+                        } catch (o) {
+                            ci.error("failed to start", o), this._stopCapturing()
+                        }
+                    }
+                }, this._instance = i, this._remoteEnabled = !((e = this._instance.persistence) == null || !e.props[sr]), this._rateLimiter = new $l(S({}, function(t) {
+                    var s, r, n, o;
+                    return t === void 0 && (t = {}), {
+                        refillRate: (s = (r = t.exceptionRateLimiterRefillRate) !== null && r !== void 0 ? r : t.__exceptionRateLimiterRefillRate) !== null && s !== void 0 ? s : 1,
+                        bucketSize: (n = (o = t.exceptionRateLimiterBucketSize) !== null && o !== void 0 ? o : t.__exceptionRateLimiterBucketSize) !== null && n !== void 0 ? n : 10
+                    }
+                }(this._instance.config.error_tracking), {
+                    refillInterval: 1e4,
+                    _logger: ci
+                })), this._config = this._requiredConfig(), this.startIfEnabledOrStop()
+            }
+            _requiredConfig() {
+                var i = this._instance.config.capture_exceptions,
+                    e = {
+                        capture_unhandled_errors: !1,
+                        capture_unhandled_rejections: !1,
+                        capture_console_errors: !1
+                    };
+                return N(i) ? e = S({}, e, i) : (b(i) ? this._remoteEnabled : i) && (e = S({}, e, {
+                    capture_unhandled_errors: !0,
+                    capture_unhandled_rejections: !0
+                })), e
+            }
+            get isEnabled() {
+                return this._config.capture_console_errors || this._config.capture_unhandled_errors || this._config.capture_unhandled_rejections
+            }
+            startIfEnabledOrStop() {
+                this.isEnabled ? (ci.info("enabled"), this._stopCapturing(), this._loadScript(this._startCapturing)) : this._stopCapturing()
+            }
+            _loadScript(i) {
+                var e, t;
+                (e = I.__PosthogExtensions__) != null && e.errorWrappingFunctions ? i() : (t = I.__PosthogExtensions__) == null || t.loadExternalDependency == null || t.loadExternalDependency(this._instance, "exception-autocapture", s => {
+                    if (s) return ci.error("failed to load script", s);
+                    i()
+                })
+            }
+            _stopCapturing() {
+                var i, e, t;
+                (i = this._unwrapOnError) == null || i.call(this), this._unwrapOnError = void 0, (e = this._unwrapUnhandledRejection) == null || e.call(this), this._unwrapUnhandledRejection = void 0, (t = this._unwrapConsoleError) == null || t.call(this), this._unwrapConsoleError = void 0
+            }
+            onRemoteConfig(i) {
+                if (i.ok) {
+                    var e = i.config;
+                    "autocaptureExceptions" in e && (this._remoteEnabled = !!e.autocaptureExceptions || !1, this._instance.persistence && this._instance.persistence.register({
+                        [sr]: this._remoteEnabled
+                    }), this._config = this._requiredConfig(), this.startIfEnabledOrStop())
+                }
+            }
+            onConfigChange() {
+                this._config = this._requiredConfig()
+            }
+            captureException(i) {
+                try {
+                    var e, t, s, r = (e = i == null || (t = i.$exception_list) == null || (t = t[0]) == null ? void 0 : t.type) !== null && e !== void 0 ? e : "Exception";
+                    if (this._rateLimiter.consumeRateLimit(r)) return void ci.info("Skipping exception capture because of client rate limiting.", {
+                        exception: r
+                    });
+                    (s = this._instance.exceptions) == null || s.sendExceptionEvent(i)
+                } catch {}
+            }
+        },
+        exceptions: class {
+            constructor(i) {
+                var e, t;
+                this._suppressionRules = [], this._errorPropertiesBuilder = new Zl([new ou, new gu, new lu, new au, new _u, new hu, new cu, new pu], function(s) {
+                    for (var r = arguments.length, n = new Array(r > 1 ? r - 1 : 0), o = 1; r > o; o++) n[o - 1] = arguments[o];
+                    return function(a, l) {
+                        l === void 0 && (l = 0);
+                        for (var c = [], u = a.split(`
+`), d = l; u.length > d; d++) {
+                            var h = u[d];
+                            if (1024 >= h.length) {
+                                var _ = kn.test(h) ? h.replace(kn, "$1") : h;
+                                if (!_.match(/\S*Error: /)) {
+                                    for (var p of n) {
+                                        var g = p(_, s);
+                                        if (g) {
+                                            c.push(g);
+                                            break
+                                        }
+                                    }
+                                    if (c.length >= 50) break
+                                }
+                            }
+                        }
+                        return function(m) {
+                            if (!m.length) return [];
+                            var v = Array.from(m);
+                            return v.reverse(), v.slice(0, 50).map(y => {
+                                return S({}, y, {
+                                    filename: y.filename || (w = v, w[w.length - 1] || {}).filename,
+                                    function: y.function || Yt
+                                });
+                                var w
+                            })
+                        }(c)
+                    }
+                }("web:javascript", iu, nu)), this._instance = i, this._suppressionRules = (e = (t = this._instance.persistence) == null ? void 0 : t.get_property(rr)) !== null && e !== void 0 ? e : [], this._exceptionStepsConfig = us(this._getExceptionStepsConfig()), this._exceptionStepsBuffer = new fu(this._exceptionStepsConfig)
+            }
+            onConfigChange() {
+                this._exceptionStepsConfig = us(this._getExceptionStepsConfig()), this._exceptionStepsBuffer.setConfig(this._exceptionStepsConfig)
+            }
+            onRemoteConfig(i) {
+                var e, t, s;
+                if (i.ok) {
+                    var r = i.config;
+                    if ("errorTracking" in r) {
+                        var n = (e = (t = r.errorTracking) == null ? void 0 : t.suppressionRules) !== null && e !== void 0 ? e : [],
+                            o = (s = r.errorTracking) == null ? void 0 : s.captureExtensionExceptions;
+                        this._suppressionRules = n, this._instance.persistence && this._instance.persistence.register({
+                            [rr]: this._suppressionRules,
+                            [nr]: o
+                        })
+                    }
+                }
+            }
+            get _captureExtensionExceptions() {
+                var i, e = !!this._instance.get_property(nr),
+                    t = this._instance.config.error_tracking.captureExtensionExceptions;
+                return (i = t ?? e) !== null && i !== void 0 && i
+            }
+            buildProperties(i, e) {
+                return this._errorPropertiesBuilder.buildFromUnknown(i, {
+                    syntheticException: e == null ? void 0 : e.syntheticException,
+                    mechanism: {
+                        handled: e == null ? void 0 : e.handled
+                    }
+                })
+            }
+            addExceptionStep(i, e) {
+                if (this._exceptionStepsConfig.enabled) try {
+                    if (!q(i) || i.trim().length === 0) return void We.warn("Ignoring exception step because message must be a non-empty string");
+                    var t = function(n) {
+                            if (!n) return {
+                                sanitizedProperties: {},
+                                droppedKeys: []
+                            };
+                            var o = [];
+                            return {
+                                sanitizedProperties: Object.keys(n).reduce((a, l) => vu.has(l) ? (o.push(l), a) : (a[l] = n[l], a), {}),
+                                droppedKeys: o
+                            }
+                        }(this._coerceExceptionStepProperties(e)),
+                        s = t.sanitizedProperties,
+                        r = t.droppedKeys;
+                    r.length > 0 && We.warn("Ignoring reserved exception step fields", {
+                        droppedKeys: r
+                    }), this._exceptionStepsBuffer.add(S({
+                        [as]: i,
+                        [ls]: new Date().toISOString()
+                    }, s))
+                } catch (n) {
+                    We.error("Failed to add exception step. Ignoring breadcrumb.", n)
+                }
+            }
+            sendExceptionEvent(i) {
+                try {
+                    var e = i.$exception_list;
+                    if (this._isExceptionList(e)) {
+                        if (this._matchesSuppressionRule(e)) return this._addDroppedExceptionStep("Exception dropped: matched a suppression rule"), void We.info("Skipping exception capture because a suppression rule matched");
+                        if (!this._captureExtensionExceptions && this._isExtensionException(e)) return this._addDroppedExceptionStep("Exception dropped: thrown by a browser extension"), void We.info("Skipping exception capture because it was thrown by an extension");
+                        if (!this._captureExtensionExceptions && this._isInjectedBrowserScriptException(e)) return this._addDroppedExceptionStep("Exception dropped: thrown by an injected browser script"), void We.info("Skipping exception capture because it was thrown by an injected browser script");
+                        if (!this._instance.config.error_tracking.__capturePostHogExceptions && this._isPostHogException(e)) return this._addDroppedExceptionStep("Exception dropped: thrown by the PostHog SDK"), void We.info("Skipping exception capture because it was thrown by the PostHog SDK")
+                    }
+                    var t = this._exceptionStepsConfig.enabled && D(i.$exception_steps) ? this._addBufferedExceptionSteps(i) : i,
+                        s = typeof(n = globalThis._posthogReleaseId) == "string" && n.length > 0 ? n : void 0;
+                    s && (t.$release_id = s);
+                    try {
+                        var r = this._instance.capture("$exception", t, {
+                            _noTruncate: !0,
+                            _batchKey: "exceptionEvent",
+                            _originatedFromCaptureException: !0
+                        });
+                        return r && this._exceptionStepsBuffer.clear(), r
+                    } catch (o) {
+                        return Io(o) || We.error("Failed to capture exception event. Dropping this exception.", o), void this._exceptionStepsBuffer.clear()
+                    }
+                } catch (o) {
+                    return void(Io(o) || We.error("Failed to process exception event. Ignoring this exception.", o))
+                }
+                var n
+            }
+            _addBufferedExceptionSteps(i) {
+                try {
+                    var e = this._exceptionStepsBuffer.getAttachable();
+                    return e.length === 0 ? i : S({}, i, {
+                        $exception_steps: e
+                    })
+                } catch (t) {
+                    return We.error("Failed to read buffered exception steps. Capturing exception without steps.", t), i
+                }
+            }
+            _addDroppedExceptionStep(i) {
+                this._exceptionStepsConfig.enabled && this._exceptionStepsBuffer.add({
+                    [as]: i,
+                    [ls]: new Date().toISOString()
+                })
+            }
+            _coerceExceptionStepProperties(i) {
+                return N(i) ? S({}, i) : {}
+            }
+            _getExceptionStepsConfig() {
+                var i, e;
+                return (i = (e = this._instance.config.error_tracking) == null ? void 0 : e.exception_steps) !== null && i !== void 0 ? i : {}
+            }
+            _matchesSuppressionRule(i) {
+                if (i.length === 0) return !1;
+                try {
+                    var e = i.reduce((t, s) => {
+                        var r = s.type,
+                            n = s.value;
+                        return q(r) && r.length > 0 && t.$exception_types.push(r), q(n) && n.length > 0 && t.$exception_values.push(n), t
+                    }, {
+                        $exception_types: [],
+                        $exception_values: []
+                    });
+                    return this._suppressionRules.some(t => {
+                        var s = t.values.map(r => {
+                            var n = vl[r.operator],
+                                o = e[r.key];
+                            if (!n || !o) return !1;
+                            var a = R(r.value) ? r.value : [r.value];
+                            return a.length > 0 && n(a, o)
+                        });
+                        return t.type === "OR" ? s.some(Boolean) : s.every(Boolean)
+                    })
+                } catch (t) {
+                    return We.warn("Failed to evaluate suppression rules. Capturing the exception.", t), !1
+                }
+            }
+            _isExtensionException(i) {
+                var e = i.flatMap(s => {
+                        var r, n;
+                        return (r = (n = s.stacktrace) == null ? void 0 : n.frames) !== null && r !== void 0 ? r : []
+                    }),
+                    t = e.filter(s => {
+                        var r = s.filename;
+                        return !!r && Zc.some(n => r.startsWith(n))
+                    });
+                return t.length !== 0 && (!t.every(s => {
+                    var r = s.filename;
+                    return !!r && r.startsWith(jr)
+                }) || i.some(s => {
+                    var r = s.value;
+                    return q(r) && r.includes("isolatedAPI.contexts.topHostname")
+                }) && !e.some(s => {
+                    var r = s.filename;
+                    return s.in_app && !(r != null && r.startsWith(jr))
+                }))
+            }
+            _isInjectedBrowserScriptException(i) {
+                return i.some(e => {
+                    var t = e.value;
+                    return q(t) && Xc.some(s => t.includes(s))
+                })
+            }
+            _isPostHogException(i) {
+                if (i.length > 0) {
+                    var e, t, s, r, n = (e = (t = i[0].stacktrace) == null ? void 0 : t.frames) !== null && e !== void 0 ? e : [],
+                        o = n[n.length - 1];
+                    return (s = o == null || (r = o.filename) == null ? void 0 : r.includes("posthog.com/static")) !== null && s !== void 0 && s
+                }
+                return !1
+            }
+            _isExceptionList(i) {
+                return !D(i) && R(i)
+            }
+        }
+    },
+    nd = S({
+        productTours: class {
+            get _persistence() {
+                return this._instance.persistence
+            }
+            constructor(i) {
+                this._productTourManager = null, this._cachedTours = null, this._instance = i
+            }
+            initialize() {
+                this.loadIfEnabled()
+            }
+            onRemoteConfig(i) {
+                if (i.ok) {
+                    var e = i.config;
+                    if ("productTours" in e) {
+                        var t, s;
+                        if (this._persistence && this._persistence.register({
+                                [Ur]: !!e.productTours
+                            }), !Zs(this._instance)) return !this._productTourManager && D((t = this._persistence) == null ? void 0 : t.props[_i]) || ji.info("product tours disabled; stopping and clearing cached tours"), (s = this._productTourManager) == null || s.stop(), this._productTourManager = null, void this.clearCache();
+                        this.loadIfEnabled()
+                    }
+                }
+            }
+            loadIfEnabled() {
+                !this._productTourManager && Zs(this._instance) && this._loadScript(() => this._startProductTours())
+            }
+            _loadScript(i) {
+                var e, t;
+                (e = I.__PosthogExtensions__) != null && e.generateProductTours ? i() : (t = I.__PosthogExtensions__) == null || t.loadExternalDependency == null || t.loadExternalDependency(this._instance, "product-tours", s => {
+                    s ? ji.error("Could not load product tours script", s) : i()
+                })
+            }
+            _startProductTours() {
+                var i;
+                !this._productTourManager && (i = I.__PosthogExtensions__) != null && i.generateProductTours && (this._productTourManager = I.__PosthogExtensions__.generateProductTours(this._instance, !0))
+            }
+            getProductTours(i, e) {
+                if (e === void 0 && (e = !1), !R(this._cachedTours) || e) {
+                    var t = this._persistence;
+                    if (t) {
+                        var s = t.props[_i];
+                        if (R(s) && !e) return this._cachedTours = s, void i(s, {
+                            isLoaded: !0
+                        })
+                    }
+                    this._instance._send_request({
+                        url: this._instance.requestRouter.endpointFor("api", "/api/product_tours/?token=" + this._instance.config.token),
+                        method: "GET",
+                        timestampMode: "query",
+                        callback: r => {
+                            if (Zs(this._instance)) {
+                                var n = r.statusCode;
+                                if (n !== 200 || !r.json) {
+                                    var o = "Product Tours API could not be loaded, status: " + n;
+                                    return n === 0 ? r.error || ji.warn(o) : ji.error(o), void i([], {
+                                        isLoaded: !1,
+                                        error: o
+                                    })
+                                }
+                                var a = R(r.json.product_tours) ? r.json.product_tours : [];
+                                this._cachedTours = a, t && t.register({
+                                    [_i]: a
+                                }), i(a, {
+                                    isLoaded: !0
+                                })
+                            } else i([], {
+                                isLoaded: !0
+                            })
+                        }
+                    })
+                } else i(this._cachedTours, {
+                    isLoaded: !0
+                })
+            }
+            getActiveProductTours(i) {
+                D(this._productTourManager) ? i([], {
+                    isLoaded: !1,
+                    error: "Product tours not loaded"
+                }) : this._productTourManager.getActiveProductTours(i)
+            }
+            showProductTour(i) {
+                var e;
+                (e = this._productTourManager) == null || e.showTourById(i)
+            }
+            previewTour(i) {
+                this._productTourManager ? this._productTourManager.previewTour(i) : this._loadScript(() => {
+                    var e;
+                    this._startProductTours(), (e = this._productTourManager) == null || e.previewTour(i)
+                })
+            }
+            dismissProductTour() {
+                var i;
+                (i = this._productTourManager) == null || i.dismissTour("user_clicked_skip")
+            }
+            nextStep() {
+                var i;
+                (i = this._productTourManager) == null || i.nextStep()
+            }
+            previousStep() {
+                var i;
+                (i = this._productTourManager) == null || i.previousStep()
+            }
+            clearCache() {
+                var i;
+                this._cachedTours = null, (i = this._persistence) == null || i.unregister(_i)
+            }
+            resetTour(i) {
+                var e;
+                (e = this._productTourManager) == null || e.resetTour(i)
+            }
+            resetAllTours() {
+                var i;
+                (i = this._productTourManager) == null || i.resetAllTours()
+            }
+            cancelPendingTour(i) {
+                var e;
+                (e = this._productTourManager) == null || e.cancelPendingTour(i)
+            }
+        }
+    }, ws),
+    od = {
+        siteApps: class {
+            constructor(i) {
+                this._siteAppElementPatchCount = 0, this._instance = i, this._bufferedInvocations = [], this.apps = {}
+            }
+            get isEnabled() {
+                return !!this._instance.config.opt_in_site_apps
+            }
+            _eventCollector(i, e) {
+                if (e) {
+                    var t = this.globalsForEvent(e);
+                    this._bufferedInvocations.push(t), this._bufferedInvocations.length > 1e3 && (this._bufferedInvocations = this._bufferedInvocations.slice(10))
+                }
+            }
+            get siteAppLoaders() {
+                var i;
+                return (i = I._POSTHOG_REMOTE_CONFIG) == null || (i = i[this._instance.config.token]) == null ? void 0 : i.siteApps
+            }
+            initialize() {
+                if (this.isEnabled) {
+                    var i = this._instance._addCaptureHook(this._eventCollector.bind(this));
+                    this._stopBuffering = () => {
+                        i(), this._bufferedInvocations = [], this._stopBuffering = void 0
+                    }
+                }
+            }
+            globalsForEvent(i) {
+                var e, t, s, r, n, o, a;
+                if (!i) throw new Error("Event payload is required");
+                var l = {},
+                    c = this._instance.get_property("$groups") || [],
+                    u = this._instance.get_property("$stored_group_properties") || {};
+                for (var d of Object.entries(u)) {
+                    var h = d[0];
+                    l[h] = {
+                        id: c[h],
+                        type: h,
+                        properties: d[1]
+                    }
+                }
+                var _ = i.$set_once,
+                    p = i.$set;
+                return {
+                    event: S({}, Mo(i, jc), {
+                        properties: S({}, i.properties, p ? {
+                            $set: S({}, (e = (t = i.properties) == null ? void 0 : t.$set) !== null && e !== void 0 ? e : {}, p)
+                        } : {}, _ ? {
+                            $set_once: S({}, (s = (r = i.properties) == null ? void 0 : r.$set_once) !== null && s !== void 0 ? s : {}, _)
+                        } : {}),
+                        elements_chain: (n = (o = i.properties) == null ? void 0 : o.$elements_chain) !== null && n !== void 0 ? n : "",
+                        distinct_id: (a = i.properties) == null ? void 0 : a.distinct_id
+                    }),
+                    person: {
+                        properties: this._instance.get_property("$stored_person_properties")
+                    },
+                    groups: l
+                }
+            }
+            _prepareElementForSiteApp(i) {
+                var e, t = (e = i.tagName) == null ? void 0 : e.toLowerCase();
+                return t === "style" && this._instance.config.prepare_external_dependency_stylesheet ? this._instance.config.prepare_external_dependency_stylesheet(i) || (Ye.error("prepare_external_dependency_stylesheet returned null"), null) : t === "script" && this._instance.config.prepare_external_dependency_script ? this._instance.config.prepare_external_dependency_script(i) || (Ye.error("prepare_external_dependency_script returned null"), null) : i
+            }
+            _patchSiteAppElementInsertionMethods() {
+                var i, e, t, s, r, n, o, a;
+                if (!this._instance.config.prepare_external_dependency_stylesheet && !this._instance.config.prepare_external_dependency_script) return () => {};
+                var l = k == null ? void 0 : k.defaultView,
+                    c = l == null || (i = l.Node) == null ? void 0 : i.prototype;
+                if (!l || !c) return () => {};
+                if (this._siteAppElementPatchCount++, this._restoreSiteAppElementPatches) return this._releaseSiteAppElementPatches();
+                var u = [],
+                    d = this,
+                    h = new WeakSet,
+                    _ = (m, v, y) => {
+                        if (m != null && m[v]) {
+                            var w = m[v];
+                            m[v] = y(w), u.push(() => {
+                                m[v] = w
+                            })
+                        }
+                    },
+                    p = m => {
+                        if (h.has(m)) return m;
+                        var v = d._prepareElementForSiteApp(m);
+                        return v && h.add(v), v
+                    },
+                    g = m => m.map(v => typeof v == "string" ? v : p(v)).filter(v => !ce(v));
+                return _(c, "appendChild", m => function(v) {
+                    var y = p(v);
+                    return y ? m.call(this, y) : v
+                }), _(c, "insertBefore", m => function(v, y) {
+                    var w = p(v);
+                    return w ? m.call(this, w, y) : v
+                }), _(c, "replaceChild", m => function(v, y) {
+                    var w = p(v);
+                    return w ? m.call(this, w, y) : y
+                }), [(e = l.Element) == null ? void 0 : e.prototype, (t = l.Document) == null ? void 0 : t.prototype, (s = l.DocumentFragment) == null ? void 0 : s.prototype].forEach(m => {
+                    _(m, "append", v => function() {
+                        for (var y = arguments.length, w = new Array(y), E = 0; y > E; E++) w[E] = arguments[E];
+                        return v.apply(this, g(w))
+                    }), _(m, "prepend", v => function() {
+                        for (var y = arguments.length, w = new Array(y), E = 0; y > E; E++) w[E] = arguments[E];
+                        return v.apply(this, g(w))
+                    })
+                }), [(r = l.Element) == null ? void 0 : r.prototype, (n = l.CharacterData) == null ? void 0 : n.prototype, (o = l.DocumentType) == null ? void 0 : o.prototype].forEach(m => {
+                    _(m, "before", v => function() {
+                        for (var y = arguments.length, w = new Array(y), E = 0; y > E; E++) w[E] = arguments[E];
+                        return v.apply(this, g(w))
+                    }), _(m, "after", v => function() {
+                        for (var y = arguments.length, w = new Array(y), E = 0; y > E; E++) w[E] = arguments[E];
+                        return v.apply(this, g(w))
+                    }), _(m, "replaceWith", v => function() {
+                        for (var y = arguments.length, w = new Array(y), E = 0; y > E; E++) w[E] = arguments[E];
+                        var x = g(w);
+                        return w.length && !x.length ? void 0 : v.apply(this, x)
+                    })
+                }), _((a = l.Element) == null ? void 0 : a.prototype, "insertAdjacentElement", m => function(v, y) {
+                    var w = p(y);
+                    return w ? m.call(this, v, w) : null
+                }), this._restoreSiteAppElementPatches = () => {
+                    u.forEach(m => m()), this._restoreSiteAppElementPatches = void 0
+                }, this._releaseSiteAppElementPatches()
+            }
+            _releaseSiteAppElementPatches() {
+                var i = !1;
+                return () => {
+                    var e;
+                    i || (i = !0, this._siteAppElementPatchCount--, this._siteAppElementPatchCount === 0 && ((e = this._restoreSiteAppElementPatches) == null || e.call(this)))
+                }
+            }
+            _runWithPreparedSiteAppElements(i, e) {
+                e === void 0 && (e = !0);
+                var t = this._patchSiteAppElementInsertionMethods();
+                try {
+                    var s = i(t);
+                    return e && t(), s
+                } catch (r) {
+                    throw t(), r
+                }
+            }
+            setupSiteApp(i) {
+                var e = this.apps[i.id],
+                    t = () => {
+                        var o;
+                        !e.errored && this._bufferedInvocations.length && (Ye.info("Processing " + this._bufferedInvocations.length + " events for site app with id " + i.id), this._bufferedInvocations.forEach(a => this._runWithPreparedSiteAppElements(() => e.processEvent == null ? void 0 : e.processEvent(a))), e.processedBuffer = !0), Object.values(this.apps).every(a => a.processedBuffer || a.errored) && ((o = this._stopBuffering) == null || o.call(this))
+                    },
+                    s = !1,
+                    r = o => {
+                        e.errored = !o, e.loaded = !0, Ye.info("Site app with id " + i.id + " " + (o ? "loaded" : "errored")), s && t()
+                    };
+                try {
+                    var n = this._runWithPreparedSiteAppElements(o => i.init({
+                        posthog: this._instance,
+                        callback(a) {
+                            o(), r(a)
+                        }
+                    }), !1).processEvent;
+                    n && (e.processEvent = n), s = !0
+                } catch (o) {
+                    Ye.error(bo + i.id, o), r(!1)
+                }
+                if (s && e.loaded) try {
+                    t()
+                } catch (o) {
+                    Ye.error("Error while processing buffered events PostHog app with config id " + i.id, o), e.errored = !0
+                }
+            }
+            _setupSiteApps() {
+                var i = this.siteAppLoaders || [];
+                for (var e of i) this.apps[e.id] = {
+                    id: e.id,
+                    loaded: !1,
+                    errored: !1,
+                    processedBuffer: !1
+                };
+                for (var t of i) this.setupSiteApp(t)
+            }
+            _onCapturedEvent(i) {
+                var e = this;
+                if (Object.keys(this.apps).length !== 0) {
+                    var t = this.globalsForEvent(i),
+                        s = function(n) {
+                            try {
+                                e._runWithPreparedSiteAppElements(() => n.processEvent == null ? void 0 : n.processEvent(t))
+                            } catch (o) {
+                                Ye.error("Error while processing event " + i.event + " for site app " + n.id, o)
+                            }
+                        };
+                    for (var r of Object.values(this.apps)) s(r)
+                }
+            }
+            onRemoteConfig(i) {
+                var e, t, s, r = this;
+                if ((e = this.siteAppLoaders) != null && e.length) return this.isEnabled ? (this._setupSiteApps(), void this._instance.on("eventCaptured", l => this._onCapturedEvent(l))) : void Ye.error('PostHog site apps are disabled. Enable the "opt_in_site_apps" config to proceed.');
+                if ((t = this._stopBuffering) == null || t.call(this), i.ok) {
+                    var n = i.config;
+                    if ((s = n.siteApps) != null && s.length)
+                        if (this.isEnabled) {
+                            var o = function() {
+                                var l, c = a.id,
+                                    u = a.url;
+                                I["__$$ph_site_app_" + c] = r._instance, (l = I.__PosthogExtensions__) == null || l.loadSiteApp == null || l.loadSiteApp(r._instance, u, d => {
+                                    if (d) return Ye.error(bo + c, d)
+                                })
+                            };
+                            for (var a of n.siteApps) o()
+                        } else Ye.error('PostHog site apps are disabled. Enable the "opt_in_site_apps" config to proceed.')
+                }
+            }
+        }
+    },
+    ad = {
+        tracingHeaders: class {
+            constructor(i) {
+                this._restoreXHRPatch = void 0, this._restoreFetchPatch = void 0, this._hostnamesForPatch = void 0, this._startCapturing = () => {
+                    var e, t, s = this._syncHostnamesForPatch();
+                    s ? (b(this._restoreXHRPatch) && (this._restoreXHRPatch = (e = I.__PosthogExtensions__) == null || (e = e.tracingHeadersPatchFns) == null ? void 0 : e._patchXHR(s, () => this._instance.get_distinct_id(), this._instance.sessionManager)), b(this._restoreFetchPatch) && (this._restoreFetchPatch = (t = I.__PosthogExtensions__) == null || (t = t.tracingHeadersPatchFns) == null ? void 0 : t._patchFetch(s, () => this._instance.get_distinct_id(), this._instance.sessionManager))) : this._stopCapturing()
+                }, this._instance = i
+            }
+            initialize() {
+                this.startIfEnabledOrStop()
+            }
+            _loadScript(i) {
+                var e, t;
+                (e = I.__PosthogExtensions__) != null && e.tracingHeadersPatchFns ? i() : (t = I.__PosthogExtensions__) == null || t.loadExternalDependency == null || t.loadExternalDependency(this._instance, "tracing-headers", s => {
+                    if (s) return Hc.error("failed to load script", s);
+                    i()
+                })
+            }
+            _getConfiguredHostnames() {
+                var i, e;
+                return (i = (e = this._instance.config.tracing_headers) !== null && e !== void 0 ? e : this._instance.config.addTracingHeaders) !== null && i !== void 0 ? i : this._instance.config.__add_tracing_headers
+            }
+            _syncHostnamesForPatch() {
+                var i = this._getConfiguredHostnames();
+                return R(i) ? (R(this._hostnamesForPatch) ? this._hostnamesForPatch.splice(0, this._hostnamesForPatch.length, ...i) : this._hostnamesForPatch = [...i], i.length > 0 ? this._hostnamesForPatch : void 0) : (R(this._hostnamesForPatch) && this._hostnamesForPatch.splice(0), this._hostnamesForPatch = i || void 0, this._hostnamesForPatch)
+            }
+            _stopCapturing() {
+                var i, e;
+                (i = this._restoreXHRPatch) == null || i.call(this), (e = this._restoreFetchPatch) == null || e.call(this), this._restoreXHRPatch = void 0, this._restoreFetchPatch = void 0
+            }
+            startIfEnabledOrStop() {
+                this._syncHostnamesForPatch() ? this._loadScript(this._startCapturing) : this._stopCapturing()
+            }
+        }
+    },
+    ld = S({
+        surveys: class extends Vc {
+            constructor(i) {
+                var e;
+                super(new Jc(i), {
+                    get projectToken() {
+                        return e.config.token
+                    },
+                    kv: new Kc(e = i)
+                }), this._instance = i
+            }
+            _sendSurveysRequest(i, e) {
+                var t = e.query ? Ii(i, e.query) : i;
+                return new Promise(s => {
+                    var r;
+                    this._instance._send_request({
+                        method: e.method,
+                        url: this._instance.requestRouter.endpointFor((r = e.target) !== null && r !== void 0 ? r : "api", t),
+                        data: e.body,
+                        headers: e.headers,
+                        timeout: e.timeoutMs,
+                        fireCallbackOnDrop: !0,
+                        transport: e.transport,
+                        compression: e.compression,
+                        timestampMode: e.sentAt,
+                        callback: s
+                    })
+                })
+            }
+        }
+    }, ws),
+    ud = {
+        toolbar: class {
+            constructor(i) {
+                this.instance = i
+            }
+            _setToolbarState(i) {
+                I.ph_toolbar_state = i
+            }
+            _getToolbarState() {
+                var i;
+                return (i = I.ph_toolbar_state) !== null && i !== void 0 ? i : 0
+            }
+            initialize() {
+                return this.maybeLoadToolbar()
+            }
+            maybeLoadToolbar(i, e, t) {
+                if (i === void 0 && (i = void 0), e === void 0 && (e = void 0), t === void 0 && (t = void 0), Ir(this.instance.config) || !f || !k) return !1;
+                i = i ?? f.location, t = t ?? f.history;
+                try {
+                    if (!e) {
+                        try {
+                            f.localStorage.setItem("test", "test"), f.localStorage.removeItem("test")
+                        } catch {
+                            return !1
+                        }
+                        e = f == null ? void 0 : f.localStorage
+                    }
+                    var s, r = Qc || ps(i.hash, "__posthog") || ps(i.hash, "state"),
+                        n = r ? Mn(() => JSON.parse(atob(decodeURIComponent(r)))) || Mn(() => JSON.parse(decodeURIComponent(r))) : null;
+                    return n && n.action === "ph_authorize" ? ((s = n).source = "url", s && Object.keys(s).length > 0 && (n.desiredHash ? i.hash = n.desiredHash : t ? t.replaceState(t.state, "", i.pathname + i.search) : i.hash = "")) : ((s = JSON.parse(e.getItem(wo) || "{}")).source = "localstorage", delete s.userIntent), !(!s.token || this.instance.config.token !== s.token || (this.loadToolbar(s), 0))
+                } catch {
+                    return !1
+                }
+            }
+            _callLoadToolbar(i) {
+                var e = I.ph_load_toolbar || I.ph_load_editor;
+                !D(e) && Pe(e) ? e(i, this.instance) : Eo.warn("No toolbar load function found")
+            }
+            loadToolbar(i) {
+                var e = !(k == null || !k.getElementById(La));
+                if (!f || e) return !1;
+                var t = this.instance.requestRouter.region === "custom" && this.instance.config.advanced_disable_toolbar_metrics,
+                    s = S({
+                        token: this.instance.config.token
+                    }, i, {
+                        apiURL: this.instance.requestRouter.endpointFor("ui")
+                    }, t ? {
+                        instrument: !1
+                    } : {});
+                if (f.localStorage.setItem(wo, JSON.stringify(S({}, s, {
+                        source: void 0
+                    }))), this._getToolbarState() === 2) this._callLoadToolbar(s);
+                else if (this._getToolbarState() === 0) {
+                    var r;
+                    this._setToolbarState(1), (r = I.__PosthogExtensions__) == null || r.loadExternalDependency == null || r.loadExternalDependency(this.instance, "toolbar", n => {
+                        if (n) return Eo.error("[Toolbar] Failed to load", n), void this._setToolbarState(0);
+                        this._setToolbarState(2), this._callLoadToolbar(s)
+                    }), K(f, "turbolinks:load", () => {
+                        this._setToolbarState(0), this.loadToolbar(s)
+                    })
+                }
+                return !0
+            }
+            _loadEditor(i) {
+                return this.loadToolbar(i)
+            }
+            maybeLoadEditor(i, e, t) {
+                return i === void 0 && (i = void 0), e === void 0 && (e = void 0), t === void 0 && (t = void 0), this.maybeLoadToolbar(i, e, t)
+            }
+        }
+    },
+    cd = S({
+        experiments: xe
+    }, ws),
+    dd = {
+        conversations: class {
+            constructor(i) {
+                this._isConversationsEnabled = void 0, this._conversationsManager = null, this._isInitializing = !1, this._remoteConfig = null, this._loadFailed = !1, this._instance = i
+            }
+            initialize() {
+                this.loadIfEnabled()
+            }
+            onRemoteConfig(i) {
+                if (!this._instance.config.disable_conversations && (this._remoteConfigSuccessful = i.ok, i.ok)) {
+                    var e = i.config.conversations;
+                    D(e) || (Ie(e) ? this._isConversationsEnabled = e : (this._isConversationsEnabled = e.enabled, this._remoteConfig = e), this.loadIfEnabled())
+                }
+            }
+            reset() {
+                var i;
+                (i = this._conversationsManager) == null || i.reset(), this._conversationsManager = null, this._isConversationsEnabled = void 0, this._remoteConfig = null, this._remoteConfigSuccessful = void 0, this._loadFailed = !1
+            }
+            loadIfEnabled() {
+                if (!(this._conversationsManager || this._isInitializing || this._instance.config.disable_conversations || Ir(this._instance.config) || this._instance.config.cookieless_mode && this._instance.consent.isOptedOut())) {
+                    var i = I == null ? void 0 : I.__PosthogExtensions__;
+                    if (i && !b(this._isConversationsEnabled) && this._isConversationsEnabled)
+                        if (this._remoteConfig && this._remoteConfig.token) {
+                            this._isInitializing = !0;
+                            try {
+                                var e = i.initConversations;
+                                if (e) return this._completeInitialization(e), void(this._isInitializing = !1);
+                                var t = i.loadExternalDependency;
+                                if (!t) return void this._handleLoadError(Gr);
+                                t(this._instance, "conversations", s => {
+                                    s || !i.initConversations ? this._handleLoadError("Could not load conversations script", s) : this._completeInitialization(i.initConversations), this._isInitializing = !1
+                                })
+                            } catch (s) {
+                                this._handleLoadError("Error initializing conversations", s), this._isInitializing = !1
+                            }
+                        } else ze.error("Conversations enabled but missing token in remote config.")
+                }
+            }
+            _completeInitialization(i) {
+                if (this._remoteConfig) try {
+                    this._conversationsManager = i(this._remoteConfig, this._instance), this._loadFailed = !1, ze.info("Conversations loaded successfully")
+                } catch (e) {
+                    this._handleLoadError("Error completing conversations initialization", e)
+                } else ze.error("Cannot complete initialization: remote config is null")
+            }
+            _handleLoadError(i, e) {
+                ze.error(i, e), this._conversationsManager = null, this._isInitializing = !1, this._loadFailed = !0
+            }
+            show() {
+                this._conversationsManager ? this._conversationsManager.show() : ze.warn("Conversations not loaded yet.")
+            }
+            hide() {
+                this._conversationsManager && this._conversationsManager.hide()
+            }
+            isAvailable() {
+                return this._isConversationsEnabled === !0 && !ce(this._conversationsManager)
+            }
+            getUnavailableReason() {
+                return this.isAvailable() ? null : this._instance.config.disable_conversations ? "disabled_by_config" : Ir(this._instance.config) ? "disabled_for_toolbar" : this._instance.config.cookieless_mode && this._instance.consent.isOptedOut() ? "consent_opted_out" : this._remoteConfigSuccessful === !1 ? "remote_config_failed" : b(this._isConversationsEnabled) ? this._remoteConfigSuccessful ? "disabled_in_project" : "remote_config_pending" : this._isConversationsEnabled ? D(this._remoteConfig) || !this._remoteConfig.token ? "missing_token" : I != null && I.__PosthogExtensions__ ? this._isInitializing ? "initializing" : this._loadFailed ? "load_failed" : "not_loaded" : "extensions_unavailable" : "disabled_in_project"
+            }
+            isVisible() {
+                var i, e;
+                return (i = (e = this._conversationsManager) == null ? void 0 : e.isVisible()) !== null && i !== void 0 && i
+            }
+            sendMessage(i, e, t) {
+                var s = this;
+                return X(function*() {
+                    return s._conversationsManager ? s._conversationsManager.sendMessage(i, e, t) : (ze.warn(Et), null)
+                })()
+            }
+            getMessages(i, e) {
+                var t = this;
+                return X(function*() {
+                    return t._conversationsManager ? t._conversationsManager.getMessages(i, e) : (ze.warn(Et), null)
+                })()
+            }
+            markAsRead(i) {
+                var e = this;
+                return X(function*() {
+                    return e._conversationsManager ? e._conversationsManager.markAsRead(i) : (ze.warn(Et), null)
+                })()
+            }
+            getTickets(i) {
+                var e = this;
+                return X(function*() {
+                    return e._conversationsManager ? e._conversationsManager.getTickets(i) : (ze.warn(Et), null)
+                })()
+            }
+            requestRestoreLink(i) {
+                var e = this;
+                return X(function*() {
+                    return e._conversationsManager ? e._conversationsManager.requestRestoreLink(i) : (ze.warn(Et), null)
+                })()
+            }
+            restoreFromToken(i) {
+                var e = this;
+                return X(function*() {
+                    return e._conversationsManager ? e._conversationsManager.restoreFromToken(i) : (ze.warn(Et), null)
+                })()
+            }
+            restoreFromUrlToken() {
+                var i = this;
+                return X(function*() {
+                    return i._conversationsManager ? i._conversationsManager.restoreFromUrlToken() : (ze.warn(Et), null)
+                })()
+            }
+            getCurrentTicketId() {
+                var i, e;
+                return (i = (e = this._conversationsManager) == null ? void 0 : e.getCurrentTicketId()) !== null && i !== void 0 ? i : null
+            }
+            getWidgetSessionId() {
+                var i, e;
+                return (i = (e = this._conversationsManager) == null ? void 0 : e.getWidgetSessionId()) !== null && i !== void 0 ? i : null
+            }
+            _onIdentityChanged() {
+                var i;
+                (i = this._conversationsManager) == null || i.setIdentity()
+            }
+            _onIdentityCleared() {
+                var i;
+                (i = this._conversationsManager) == null || i.clearIdentity()
+            }
+        }
+    },
+    hd = {
+        logs: class {
+            constructor(i) {
+                var e, t = this;
+                this.name = "logs", this._isLogsEnabled = !1, this._isLoaded = !1, this._isLoading = !1, this._logger = ae("[logs]"), this._coreLogger = S({}, this._logger, {
+                    error() {
+                        for (var s = arguments.length, r = new Array(s), n = 0; s > n; n++) r[n] = arguments[n];
+                        r.some(Lo) || t._logger.error(...r)
+                    }
+                }), this._queue = [], this._consoleQueue = [], this._consecutiveStatusZeroFailures = 0, this._disposed = !1, this._consoleBuffer = [], this._consoleRecorderUnpatchers = [], this._isRecordingConsole = !1, this._isRecordingConsoleEntry = !1, this._onReconnect = () => {
+                    var s, r;
+                    this._disposed || (this._consecutiveStatusZeroFailures = 0, (s = this._core) == null || s.onReconnect(), (r = this._consoleCore) == null || r.onReconnect())
+                }, this._instance = i, this._instance && (e = this._instance.config.logs) != null && e.captureConsoleLogs && (this._isLogsEnabled = !0), f && K(f, "online", this._onReconnect)
+            }
+            _buildCore(i, e, t, s) {
+                var r, n = Ro((r = this._instance) == null || (r = r.config) == null ? void 0 : r.logs, t);
+                return [new Pu(this._createHost(i, e), n, this._coreLogger, () => this._getSdkContext(), o => o(), void 0, s), n]
+            }
+            _getCore() {
+                var i, e = (i = this._instance) == null || (i = i.config) == null ? void 0 : i.logs;
+                if (!this._core || this._resolvedFrom !== e) {
+                    var t;
+                    (t = this._core) == null || t.reset(), this._resolvedFrom = e;
+                    var s = this._buildCore(() => this._queue, r => {
+                        this._queue = r
+                    });
+                    this._core = s[0], this._resolvedConfig = s[1]
+                }
+                return this._core
+            }
+            _getConsoleCore() {
+                var i, e = (i = this._instance) == null || (i = i.config) == null ? void 0 : i.logs;
+                if (!this._consoleCore || this._consoleResolvedFrom !== e) {
+                    var t;
+                    (t = this._consoleCore) == null || t.reset(), this._consoleResolvedFrom = e;
+                    var s = this._buildCore(() => this._consoleQueue, r => {
+                        this._consoleQueue = r
+                    }, {
+                        serviceNameDefault: "posthog-browser-logs",
+                        consoleCapture: !0
+                    }, Ao);
+                    this._consoleCore = s[0], this._consoleResolvedConfig = s[1]
+                }
+                return this._consoleCore
+            }
+            setup(i) {
+                var e;
+                if (!this._disposed) {
+                    this._client = i, (e = this._instance) != null && (e = e.config) != null && (e = e.logs) != null && e.captureConsoleLogs && (this._isLogsEnabled = !0), (this._isLogsEnabled || this._remoteConfigWillArrive() && this._persistedCaptureHint()) && this._startConsoleRecorder();
+                    var t = !1,
+                        s = i.onRemoteConfig(r => {
+                            var n;
+                            t = r.ok && ((n = r.config.logs) == null ? void 0 : n.captureConsoleLogs) === !0, this.onRemoteConfig(r)
+                        });
+                    this._disposed ? s.dispose() : (this._remoteConfigSubscription = s, t || this.loadIfEnabled())
+                }
+            }
+            dispose() {
+                var i, e, t, s;
+                this._disposed || (this._disposed = !0, this._stopConsoleRecorder(), (i = this._remoteConfigSubscription) == null || i.dispose(), this._remoteConfigSubscription = void 0, this._client = void 0, this._isLoading = !1, f == null || f.removeEventListener("online", this._onReconnect), (e = this._consoleLogsDispose) == null || e.call(this), this._consoleLogsDispose = void 0, (t = this._core) == null || t.reset(), (s = this._consoleCore) == null || s.reset())
+            }
+            onRemoteConfig(i) {
+                var e, t;
+                if (!this._disposed) {
+                    var s = i.ok ? (e = i.config.logs) == null ? void 0 : e.captureConsoleLogs : void 0;
+                    D(s) ? this._stopRecorderStartedByPersistedHint() : ((t = this._instance) == null || (t = t.persistence) == null || t.register({
+                        [ar]: !!s
+                    }), s ? (this._isLogsEnabled = !0, this._isLoaded || this._startConsoleRecorder(), this.loadIfEnabled()) : this._stopRecorderStartedByPersistedHint())
+                }
+            }
+            reset() {
+                var i, e, t, s;
+                this._stopConsoleRecorder(), (i = this._core) == null || i.clearQueue(), this._queue = [], (e = this._core) == null || e.reset(), (t = this._consoleCore) == null || t.clearQueue(), this._consoleQueue = [], (s = this._consoleCore) == null || s.reset(), this._consecutiveStatusZeroFailures = 0
+            }
+            captureLog(i) {
+                this._disposed || this._getCore().captureLog(i)
+            }
+            captureConsoleLog(i) {
+                this._disposed || this._getConsoleCore().captureLog(i)
+            }
+            captureBufferedConsoleLog(i, e, t) {
+                this._disposed || this._getConsoleCore().captureLog(i, {
+                    context: e,
+                    occurredAtMs: t
+                })
+            }
+            _persistedCaptureHint() {
+                var i;
+                return !((i = this._instance) == null || (i = i.persistence) == null || (i = i.props) == null || !i[ar])
+            }
+            _remoteConfigWillArrive() {
+                var i, e;
+                return (i = this._instance) == null || i._shouldDisableFlags == null || !i._shouldDisableFlags() || !((e = I._POSTHOG_REMOTE_CONFIG) == null || (e = e[this._instance.config.token]) == null || !e.config)
+            }
+            _onOptOut() {
+                var i;
+                this._stopConsoleRecorder(), (i = this._consoleCore) == null || i.clearQueue(), this._consoleQueue = []
+            }
+            _stopRecorderStartedByPersistedHint() {
+                this._isLogsEnabled || this._stopConsoleRecorder()
+            }
+            _startConsoleRecorder() {
+                var i, e = this;
+                if (!this._isRecordingConsole && I != null && I.console) {
+                    var t = Ro((i = this._instance) == null || (i = i.config) == null ? void 0 : i.logs).maxBufferSize,
+                        s = function(n) {
+                            var o;
+                            try {
+                                o = (a => {
+                                    for (;
+                                        (l = a) != null && l.__rrweb_original__;) {
+                                        var l;
+                                        a = a.__rrweb_original__
+                                    }
+                                    return a
+                                })(I.console[n])
+                            } catch {
+                                return 0
+                            }
+                            if (!o) return 0;
+                            e._consoleRecorderUnpatchers.push(El(I.console, n, a => {
+                                var l = function() {
+                                    for (var c = arguments.length, u = new Array(c), d = 0; c > d; d++) u[d] = arguments[d];
+                                    try {
+                                        e._recordConsoleEntry(n, u, t)
+                                    } catch {}
+                                    return a.apply(I.console, u)
+                                };
+                                return l.__rrweb_original__ = o, l
+                            }))
+                        };
+                    for (var r of td) s(r);
+                    this._isRecordingConsole = !0, this._consoleRecorderTimeout = setTimeout(() => {
+                        this._stopConsoleRecorder()
+                    }, 3e4)
+                }
+            }
+            _recordConsoleEntry(i, e, t) {
+                var s;
+                if (this._isRecordingConsole && !this._isRecordingConsoleEntry && e.length !== 0)
+                    if ((s = this._instance) != null && s.is_capturing()) {
+                        if (t > this._consoleBuffer.length) {
+                            this._isRecordingConsoleEntry = !0;
+                            try {
+                                this._consoleBuffer.push({
+                                    level: i,
+                                    args: e,
+                                    occurredAtMs: Date.now(),
+                                    context: this._getSdkContext()
+                                })
+                            } finally {
+                                this._isRecordingConsoleEntry = !1
+                            }
+                        }
+                    } else this._stopConsoleRecorder()
+            }
+            _stopConsoleRecorder() {
+                if (this._consoleBuffer = [], this._isRecordingConsole) {
+                    for (var i of (this._isRecordingConsole = !1, this._consoleRecorderTimeout && (clearTimeout(this._consoleRecorderTimeout), this._consoleRecorderTimeout = void 0), this._consoleRecorderUnpatchers)) i();
+                    this._consoleRecorderUnpatchers = []
+                }
+            }
+            _takeConsoleBuffer() {
+                var i = this._consoleBuffer;
+                return this._stopConsoleRecorder(), i
+            }
+            get logger() {
+                return this._capture_logger || (this._capture_logger = {
+                    trace: (i, e) => this.captureLog({
+                        body: i,
+                        level: "trace",
+                        attributes: e
+                    }),
+                    debug: (i, e) => this.captureLog({
+                        body: i,
+                        level: "debug",
+                        attributes: e
+                    }),
+                    info: (i, e) => this.captureLog({
+                        body: i,
+                        level: "info",
+                        attributes: e
+                    }),
+                    warn: (i, e) => this.captureLog({
+                        body: i,
+                        level: "warn",
+                        attributes: e
+                    }),
+                    error: (i, e) => this.captureLog({
+                        body: i,
+                        level: "error",
+                        attributes: e
+                    }),
+                    fatal: (i, e) => this.captureLog({
+                        body: i,
+                        level: "fatal",
+                        attributes: e
+                    })
+                }), this._capture_logger
+            }
+            flushLogs(i) {
+                i ? this._flushViaTransport(i) : (this._core && this._core.flush().catch(e => this._logFlushError(e)), this._consoleCore && this._consoleCore.flush().catch(e => this._logFlushError(e)))
+            }
+            _logFlushError(i) {
+                Lo(i) || this._logger.error("PostHog logs flush failed:", i)
+            }
+            loadIfEnabled() {
+                if (!this._disposed && this._isLogsEnabled && !this._isLoaded && !this._isLoading) {
+                    var i = I == null ? void 0 : I.__PosthogExtensions__;
+                    if (!i) return this._logger.error("PostHog Extensions not found."), void this._stopConsoleRecorder();
+                    var e = i.loadExternalDependency;
+                    if (!e) return this._logger.error(Gr), void this._stopConsoleRecorder();
+                    this._isLoading = !0;
+                    try {
+                        e(this._instance, "logs", t => {
+                            if (this._isLoading = !1, !this._disposed && this._isLogsEnabled) {
+                                var s = i.logs;
+                                if (t || s == null || !s.initializeLogs) this._logger.error("Could not load logs script", t), this._stopConsoleRecorder();
+                                else {
+                                    var r, n, o = this._takeConsoleBuffer();
+                                    this._consoleLogsDispose = s.initializeLogs((r = this._client) !== null && r !== void 0 ? r : this._instance), this._isLoaded = !0, o.length > 0 && (s.replayConsoleBuffer == null || s.replayConsoleBuffer((n = this._client) !== null && n !== void 0 ? n : this._instance, o))
+                                }
+                            }
+                        })
+                    } catch (t) {
+                        throw this._isLoading = !1, t
+                    }
+                }
+            }
+            _createHost(i, e) {
+                var t = this._instance;
+                return {
+                    get isDisabled() {
+                        return !1
+                    },
+                    get optedOut() {
+                        return !t.is_capturing()
+                    },
+                    getPersistedProperty: s => s === Xe.LogsQueue ? i() : void 0,
+                    setPersistedProperty(s, r) {
+                        var n;
+                        s === Xe.LogsQueue && e((n = r) !== null && n !== void 0 ? n : [])
+                    },
+                    _sendLogsBatch: s => this._sendLogsBatch(s),
+                    getLibraryId: () => Y.LIB_NAME,
+                    getLibraryVersion: () => Y.LIB_VERSION
+                }
+            }
+            _sendLogsBatch(i) {
+                return new Promise(e => {
+                    if (Wa(this._consecutiveStatusZeroFailures, 3)) e({
+                        kind: "fatal",
+                        error: er(void 0, "logs endpoint is unreachable, dropping batch")
+                    });
+                    else {
+                        var t = !1,
+                            s = n => {
+                                t || (t = !0, clearTimeout(r), e(n))
+                            },
+                            r = setTimeout(() => {
+                                this._logger.warn("Logs request timed out before receiving a response"), s({
+                                    kind: "retry-later",
+                                    error: er(void 0, "logs request timed out")
+                                })
+                            }, 9e4);
+                        this._instance._send_request({
+                            method: "POST",
+                            url: this._logsUrl(),
+                            data: i,
+                            compression: "best-available",
+                            batchKey: "logs",
+                            fireCallbackOnDrop: !0,
+                            callback: n => {
+                                var o = n.statusCode;
+                                if (this._trackEndpointReachability(o), o >= 200 && 300 > o) s({
+                                    kind: "ok"
+                                });
+                                else if (o === 413) s({
+                                    kind: "too-large"
+                                });
+                                else if (o !== 0 && o !== 408 && o !== 429 && 500 > o) s({
+                                    kind: "fatal",
+                                    error: new Error("logs request failed with status " + o)
+                                });
+                                else {
+                                    var a;
+                                    o === 0 ? (n.error || this._logger.warn("Logs request failed before receiving an HTTP response"), s({
+                                        kind: "retry-later",
+                                        error: er(n.error, "logs request failed before receiving an HTTP response")
+                                    })) : s({
+                                        kind: "retry-later",
+                                        error: (a = n.error) !== null && a !== void 0 ? a : new Error("logs request failed with status " + o)
+                                    })
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+            _trackEndpointReachability(i) {
+                (i !== 0 || this._instance.__loaded) && (this._consecutiveStatusZeroFailures = Ga(i, this._consecutiveStatusZeroFailures, 3, () => this._logger.warn("Log requests are failing before receiving an HTTP response; this can happen due to network issues, CORS, browser blocking, or ad blockers. Stopped sending logs; will try again when connectivity changes.")))
+            }
+            _flushViaTransport(i) {
+                this._queue.length > 0 && this._drainQueueViaTransport(i, this._queue, this._resolvedConfig, Y.LIB_NAME, e => {
+                    this._queue = e
+                }), this._consoleQueue.length > 0 && this._drainQueueViaTransport(i, this._consoleQueue, this._consoleResolvedConfig, Ao, e => {
+                    this._consoleQueue = e
+                })
+            }
+            _drainQueueViaTransport(i, e, t, s, r) {
+                if (e.length !== 0) {
+                    var n = e.map(a => a.record);
+                    r([]);
+                    var o = Fa(n, Pa(t, Y.LIB_NAME, Y.LIB_VERSION), s, Y.LIB_VERSION);
+                    this._instance._send_request({
+                        method: "POST",
+                        url: this._logsUrl(),
+                        data: o,
+                        compression: "best-available",
+                        batchKey: "logs",
+                        transport: i
+                    })
+                }
+            }
+            _logsUrl() {
+                return this._instance.requestRouter.endpointFor("api", "/i/v1/logs") + "?token=" + encodeURIComponent(this._instance.config.token)
+            }
+            _getSdkContext() {
+                var i, e = {};
+                if (e.distinctId = this._instance.get_distinct_id(), this._instance.sessionManager) {
+                    var t = this._instance.sessionManager.checkAndGetSessionAndWindowId(!0),
+                        s = t.windowId,
+                        r = t.sessionStartTimestamp,
+                        n = t.lastActivityTimestamp;
+                    e.sessionId = t.sessionId, e.windowId = s, D(r) || (e.sessionStartTimestamp = r), D(n) || (e.lastActivityTimestamp = n)
+                }
+                if (I != null && (i = I.location) != null && i.href && (e.currentUrl = this._instance.config.disable_capture_url_hashes ? ft(I.location.href) : I.location.href), this._instance.featureFlags) {
+                    var o = this._instance.featureFlags.getFlags();
+                    o && o.length > 0 && (e.activeFeatureFlags = o)
+                }
+                return e
+            }
+        }
+    },
+    _d = {
+        metrics: class {
+            constructor(i) {
+                this._logger = ae("[metrics]"), this._instance = i
+            }
+            initialize() {}
+            _getCore() {
+                var i, e, t = (i = this._instance) == null || (i = i.config) == null ? void 0 : i.metrics;
+                return this._core && this._resolvedFrom === t || ((e = this._core) == null || e.reset(), this._resolvedFrom = t, this._core = new Fu(this._createHost(), function(s) {
+                    var r, n, o, a, l, c = s == null ? void 0 : s.resourceAttributes;
+                    return {
+                        serviceName: (r = c == null ? void 0 : c["service.name"]) !== null && r !== void 0 ? r : s == null ? void 0 : s.serviceName,
+                        serviceVersion: (n = c == null ? void 0 : c["service.version"]) !== null && n !== void 0 ? n : s == null ? void 0 : s.serviceVersion,
+                        environment: (o = c == null ? void 0 : c["deployment.environment"]) !== null && o !== void 0 ? o : s == null ? void 0 : s.environment,
+                        resourceAttributes: c,
+                        beforeSend: s == null ? void 0 : s.beforeSend,
+                        flushIntervalMs: (a = s == null ? void 0 : s.flushIntervalMs) !== null && a !== void 0 ? a : 1e4,
+                        maxSeriesPerFlush: (l = s == null ? void 0 : s.maxSeriesPerFlush) !== null && l !== void 0 ? l : 1e3
+                    }
+                }(t), this._logger)), this._core
+            }
+            count(i, e, t) {
+                e === void 0 && (e = 1), this._getCore().count(i, e, t)
+            }
+            gauge(i, e, t) {
+                this._getCore().gauge(i, e, t)
+            }
+            histogram(i, e, t) {
+                this._getCore().histogram(i, e, t)
+            }
+            flush(i) {
+                if (!this._core) return Promise.resolve();
+                if (i) {
+                    var e = this._core.drainWindow();
+                    return e && this._sendMetricsBatch(e, i), Promise.resolve()
+                }
+                return this._core.flush().catch(t => this._logger.error("PostHog metrics flush failed:", t))
+            }
+            reset() {
+                var i;
+                (i = this._core) == null || i.reset()
+            }
+            _createHost() {
+                var i = this._instance,
+                    e = this;
+                return {
+                    get isDisabled() {
+                        return !1
+                    },
+                    get optedOut() {
+                        return !i.is_capturing()
+                    },
+                    _sendMetricsBatch: t => e._sendMetricsBatch(t),
+                    getLibraryId: () => Y.LIB_NAME,
+                    getLibraryVersion: () => Y.LIB_VERSION
+                }
+            }
+            _sendMetricsBatch(i, e) {
+                return new Promise(t => {
+                    var s = !1,
+                        r = o => {
+                            s || (s = !0, clearTimeout(n), t(o))
+                        },
+                        n = setTimeout(() => r({
+                            kind: "retry-later",
+                            error: new Error("metrics request timed out")
+                        }), 9e4);
+                    this._instance._send_request(S({
+                        method: "POST",
+                        url: this._metricsUrl(),
+                        data: i,
+                        compression: "best-available",
+                        batchKey: "metrics"
+                    }, e && {
+                        transport: e
+                    }, {
+                        fireCallbackOnDrop: !0,
+                        callback(o) {
+                            var a = o.statusCode;
+                            if (a >= 200 && 300 > a) r({
+                                kind: "ok"
+                            });
+                            else if (a === 413) r({
+                                kind: "too-large"
+                            });
+                            else if (a !== 0 && a !== 408 && a !== 429 && 500 > a) r({
+                                kind: "fatal",
+                                error: new Error("metrics request failed with status " + a)
+                            });
+                            else {
+                                var l;
+                                r({
+                                    kind: "retry-later",
+                                    error: (l = o.error) !== null && l !== void 0 ? l : new Error("metrics request failed with status " + a)
+                                })
+                            }
+                        }
+                    }))
+                })
+            }
+            _metricsUrl() {
+                return this._instance.requestRouter.endpointFor("api", "/i/v1/metrics") + "?token=" + encodeURIComponent(this._instance.config.token)
+            }
+        }
+    },
+    pd = S({}, ws, id, sd, rd, nd, od, ld, ad, ud, cd, dd, hd, _d);
+De.__defaultExtensionClasses = S({}, pd);
+var gd = function() {
+    Y.SDK_DIST_CHANNEL = "npm";
+    var i = Si[Dt] = new De;
+    return function() {
+        function e() {
+            e.done || (e.done = !0, Sl = !1, W(Si, function(t) {
+                t._dom_loaded()
+            }))
+        }
+        k != null && k.addEventListener ? k.readyState === "complete" ? e() : K(k, "DOMContentLoaded", e, {
+            capture: !1
+        }) : f && C.error("Browser doesn't support `document.addEventListener` so PostHog couldn't be initialized")
+    }(), i
+}();
+export {
+    $e as Compression, Or as DisplaySurveyType, De as PostHog, rc as ProductTourEventName, Xn as ProductTourEventProperties, ut as SurveyEventName, qs as SurveyEventProperties, oi as SurveyEventType, Ns as SurveyType, gd as
+    default, gd as posthog
+};
