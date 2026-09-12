@@ -36319,6 +36319,10 @@ class AB {
         this.setStatus("Config exported.")
     }
     async importConfigFile(e) {
+        // Write the raw imported section under its real store key, then read it back via
+        // F0.load()/jm.load() (the same sanitizer the app already trusts for localStorage)
+        // instead of calling F0.save()/jm.save() directly on the parsed data — this way a
+        // malformed or hand-edited file gets cleaned up exactly like corrupted localStorage would.
         const input = this.overlay.querySelector("#config-import-input");
         if (!e) return;
         let parsed;
@@ -36338,23 +36342,43 @@ class AB {
             return
         }
         if (!window.confirm("This will replace your current key bindings and camera settings. Continue?")) return;
+        let bindingsApplied = false,
+            cameraApplied = false;
         if (hasBindings) {
-            localStorage.setItem(Zb, JSON.stringify(parsed.bindings));
-            const sanitized = F0.load();
-            F0.save(sanitized);
-            Object.assign(this.bindings, sanitized);
-            this.renderParts();
-            this.syncAxisControls();
-            this.onBindingsChange(this.bindings)
+            let stored = !1;
+            try {
+                localStorage.setItem(Zb, JSON.stringify(parsed.bindings));
+                stored = !0
+            } catch {}
+            if (stored) {
+                const sanitized = F0.load();
+                F0.save(sanitized);
+                Object.assign(this.bindings, sanitized);
+                this.renderParts();
+                this.syncAxisControls();
+                this.onBindingsChange(this.bindings);
+                bindingsApplied = !0
+            }
         }
         if (hasCamera) {
-            localStorage.setItem(tB, JSON.stringify(parsed.camera));
-            const sanitized = jm.load();
-            jm.save(sanitized);
-            Object.assign(this.target, sanitized);
-            this.syncCameraControls()
+            let stored = !1;
+            try {
+                localStorage.setItem(tB, JSON.stringify(parsed.camera));
+                stored = !0
+            } catch {}
+            if (stored) {
+                const sanitized = jm.load();
+                jm.save(sanitized);
+                Object.assign(this.target, sanitized);
+                this.syncCameraControls();
+                cameraApplied = !0
+            }
         }
-        const message = hasBindings && hasCamera ? "Config imported." : hasBindings ? "Key bindings imported (no camera settings found in file)." : "Camera settings imported (no key bindings found in file).";
+        if (!bindingsApplied && !cameraApplied) {
+            this.setStatus("Couldn't save the imported config. Your browser's storage may be full or unavailable.");
+            return
+        }
+        const message = bindingsApplied && cameraApplied ? "Config imported." : bindingsApplied ? `Key bindings imported${hasCamera?" (camera settings couldn't be saved).":" (no camera settings found in file)."}` : `Camera settings imported${hasBindings?" (key bindings couldn't be saved).":" (no key bindings found in file)."}`;
         this.setStatus(message)
     }
 }

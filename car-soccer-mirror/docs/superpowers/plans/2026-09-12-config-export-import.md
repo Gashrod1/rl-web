@@ -12,6 +12,22 @@
 
 ---
 
+## Completion notes (2026-09-12)
+
+All 5 tasks are done and verified (each independently re-verified by a fresh reviewer, not just the implementer's own claim). The feature works as designed: "Export config"/"Import config" in the settings footer, round-trips key bindings + camera settings through a real download/upload, persists across reload, and every error path (invalid JSON, unrecognized file, partial file, cancelled confirmation) behaves correctly.
+
+Three things came up during execution that this plan didn't anticipate:
+
+1. **The mirror was missing more than just the main bundle.** Beyond what Task 1 expected, the local mirror was also missing `game-sw.js`, `assets/ball/{ball.bin,albedo.png,normal.png,material-mask.png}`, `assets/golden-boost/{plume,turbulence,sparks}.png`, `assets/ort-wasm-simd-threaded-CxTQ5xH-.wasm`, and both bot AI models (`assets/bot/{seer,element}/policy.onnx`). All were re-downloaded from the live site the same way the original mirror was built. Without these, the game never got past its loading screen, so none of Tasks 1-5's browser-driven verification would have been possible at all.
+
+2. **The game's boot sequence is gated on a service-worker integrity check that can't be satisfied locally.** `game-sw.js` verifies every asset (via SHA-256 hashes baked into a manifest) against `.pack` archives that aren't part of this mirror — and the main bundle's hash can never match once it's beautified anyway. The `KB(i)` function in `assets/game-CEDHMqQk.js` (~line 38783) was reduced to a documented no-op to bypass this for local testing; its now-orphaned helpers (`JB`, `gd`, `Tm`) were removed. This is a permanent characteristic of this local mirror now, not something to "fix" later — real offline/PWA support was never a goal here.
+
+3. **`beautified/game.beautified.js` is a one-time snapshot, not a maintained mirror.** It was only used to promote `assets/game-CEDHMqQk.js` into an editable state in Task 1. Tasks 2-5 (correctly, per their own file lists) only ever edited `assets/game-CEDHMqQk.js` directly — `beautified/game.beautified.js` has been stale since Task 1 and that's expected, not a bug.
+
+`assets/game-CEDHMqQk.js` is the current, authoritative, working copy of the game.
+
+---
+
 ## Important note on line numbers
 
 All line numbers below refer to `beautified/game.beautified.js` **as it exists right now** (39433 lines) — used here only as a map to locate the exact text. Task 1 makes `assets/game-CEDHMqQk.js` byte-for-byte identical to that file, so immediately after Task 1 the line numbers match in both files too. All edits in Tasks 2-4 are applied to `assets/game-CEDHMqQk.js` (the file `index.html` actually serves).
