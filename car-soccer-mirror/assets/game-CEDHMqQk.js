@@ -39313,7 +39313,7 @@ async function e7() {
         return !0
     };
     const startOnlineMatch = () => {
-        n.configureCars(i === "flat-car" ? "flat" : "default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qeOnline(), onlinePanel.hide()
+        n.configureCars("default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qeOnline(), onlinePanel.hide()
     };
     netMatch = null;
     onlinePanel = new OnlinePanel(Jt, {
@@ -39325,7 +39325,14 @@ async function e7() {
                 onlinePanel.showError(Y === "room_expired" ? "This room expired, create a new one." : "Something went wrong. Please try again.")
             };
             nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
-            nm.onDesync = () => endOnlineMatch("Desync detected. Match stopped.");
+            nm.onDesync = (tick, mine, theirs) => {
+                console.warn("[online] Desync detail:", {
+                    tick,
+                    mine,
+                    theirs,
+                    recentFocusEvents: focusLog.slice(-10)
+                }), endOnlineMatch("Desync detected. Match stopped.")
+            };
             nm.onCreated = Y => onlinePanel.showWaiting(Y);
             nm.onReady = () => startOnlineMatch();
             try {
@@ -39348,7 +39355,14 @@ async function e7() {
                 onlinePanel.showError(tt === "invalid_code" ? "Invalid code." : tt === "room_full" ? "This room is full." : "Something went wrong. Please try again.")
             };
             nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
-            nm.onDesync = () => endOnlineMatch("Desync detected. Match stopped.");
+            nm.onDesync = (tick, mine, theirs) => {
+                console.warn("[online] Desync detail:", {
+                    tick,
+                    mine,
+                    theirs,
+                    recentFocusEvents: focusLog.slice(-10)
+                }), endOnlineMatch("Desync detected. Match stopped.")
+            };
             nm.onReady = () => startOnlineMatch();
             try {
                 await nm.connect()
@@ -39389,8 +39403,14 @@ async function e7() {
     }, !0);
     let At = !1,
         le = null;
+    const focusLog = [];
     for (const Y of ["blur", "focus", "visibilitychange"])(Y === "visibilitychange" ? document : window).addEventListener(Y, () => {
-        se = !1, be(), s.sync()
+        focusLog.push({
+            type: Y,
+            t: Math.round(performance.now()),
+            hidden: document.hidden,
+            hasFocus: document.hasFocus()
+        }), focusLog.length > 20 && focusLog.shift(), se = !1, be(), s.sync()
     });
     const N = new UB(Jt),
         Re = document.createElement("p");
