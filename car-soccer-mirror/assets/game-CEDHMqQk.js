@@ -20,6 +20,7 @@ import {
     S as Jg,
     h as Cl
 } from "./privacy-BBT5bqib.js";
+import { NetMatch, fingerprintState } from "./net-match.js";
 /**
  * @license
  * Copyright 2010-2026 Three.js Authors
@@ -39068,7 +39069,7 @@ async function e7() {
         se = !1,
         ce = !1,
         ue, he, ve, Ce = null,
-        vt;
+        vt, netMatch = null, onlinePanel = null;
     const ut = document.createElement("button");
     ut.type = "button", ut.className = "cursor-hint";
     const ae = () => {
