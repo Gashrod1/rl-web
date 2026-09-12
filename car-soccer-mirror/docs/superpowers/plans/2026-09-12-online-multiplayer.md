@@ -904,6 +904,8 @@ Reload the locally-served game (preview `car-soccer-mirror`, port 5175), wait fo
 
 ### Task 10: End-to-end local test — full match, two browser tabs
 
+**Completion notes:** This test caught a real bug: `tickOnline` (Task 8) only called `netMatch.sendLocalTick(...)` *after* confirming it had already received the opponent's input for the same tick — since both clients run identical logic, neither would ever send first, and the match hung forever waiting for input that was never sent. Fixed by sending unconditionally before checking for the opponent's input (`assets/game-CEDHMqQk.js`, inside `tickOnline`). Separately (not a code bug): the game's own "unfocused/hidden tab" pause logic (`document.hidden`/`document.hasFocus()` checks already in the render loop, there for a good reason — auto-pausing when you alt-tab away) makes it impossible to run two *real-time* rAF-driven tabs at once in a single automated browser pane, since only one tab can hold OS-level focus/visibility at a time. Verified the fix by manually driving the tick loop (bypassing `requestAnimationFrame`) with `document.hidden`/`hasFocus` temporarily stubbed for the test — confirmed 390+ ticks with no desync, matching phase/score on both sides, before reverting all temporary test instrumentation. A real two-*visible*-window test (or two physical machines) remains the more natural way to verify this by eye; the manual-pump method above is a reasonable substitute when only one browser pane can be foregrounded at a time.
+
 **Files:**
 - No file changes in this task (verification only)
 

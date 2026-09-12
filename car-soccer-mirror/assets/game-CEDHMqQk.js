@@ -39298,9 +39298,10 @@ async function e7() {
     const tickOnline = () => {
         if (a.state.paused || a.state.phase === "ended" || u) return !1;
         if (a.state.phase === "playing") {
+            netMatch.sendLocalTick(netMatch.localTick, xe);
             const Y = netMatch.getControlsForTick(netMatch.localTick);
             if (Y === null) return !1;
-            A = Y, netMatch.sendLocalTick(netMatch.localTick, xe), n.setControls(Di, A), n.step(1);
+            A = Y, n.setControls(Di, A), n.step(1);
             const tt = n.state,
                 gn = a.tick({
                     goal: n.pollGoal(),
