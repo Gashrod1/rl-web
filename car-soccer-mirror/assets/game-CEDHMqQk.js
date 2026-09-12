@@ -39165,6 +39165,7 @@ async function e7() {
         ce = !1,
         ue, he, ve, Ce = null,
         vt, netMatch = null, onlinePanel = null;
+    const KICKOFF_VARIANT_INDICES = [0, 2, 3, 5, 7];
     const ut = document.createElement("button");
     ut.type = "button", ut.className = "cursor-hint";
     const ae = () => {
@@ -39380,7 +39381,7 @@ async function e7() {
             await Promise.all([o.load(), I.ensureOpponent()]), !Y.aborted && (n.configureCars(i === "flat-car" ? "flat" : "default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qe(), he.update(a.state))
         },
         onLeave: () => {
-            p(), a.leave(), u = !1, n.configureCars(i === "flat-car" ? "flat" : "default", !1, e), n.setUnlimitedBoost(U.boostOption === "unlimited"), qe(), he.update(a.state)
+            netMatch == null || netMatch.close(), netMatch = null, p(), a.leave(), u = !1, n.configureCars(i === "flat-car" ? "flat" : "default", !1, e), n.setUnlimitedBoost(U.boostOption === "unlimited"), qe(), he.update(a.state)
         }
     }), window.addEventListener("keydown", Y => {
         Y.code !== "KeyM" || Y.repeat || Y.ctrlKey || Y.metaKey || Y.altKey || Xe.isOpen || ue != null && ue.isOpen || ve != null && ve.isOpen || (Y.preventDefault(), Y.stopImmediatePropagation(), X = !0, he.isOpen ? he.hide() : he.show())
@@ -39585,7 +39586,7 @@ async function e7() {
         var ns;
         Ue.frameStart();
         const tt = Math.min((Y - pt) / 1e3, .1);
-        pt = Y, a.state.paused = a.state.mode === "match" && (X || W.size > 0 || document.hidden || !document.hasFocus() || u), a.state.paused || a.state.mode === "match" && a.state.phase === "ended" ? (Je(), s.sync(Y)) : s.update(Y, Je, a.state.mode === "match" ? Ye : void 0), a.state.mode === "freeplay" && n.pollGoal() !== 0 && !U.disableGoalReset && (n.resetKickoff(), _(), s.sync(Y), I.resetBallTrail()), he.update(a.state), Jt.dataset.gameMode !== a.state.mode && (Jt.dataset.gameMode = a.state.mode, P.setMatchActive(a.state.mode === "match")), Ue.mark();
+        pt = Y, a.state.paused = a.state.mode === "match" && (X || W.size > 0 || document.hidden || !document.hasFocus() || u), a.state.paused || a.state.mode === "match" && a.state.phase === "ended" ? (Je(), s.sync(Y)) : s.update(Y, Je, a.state.mode === "match" ? (netMatch ? tickOnline : Ye) : void 0), a.state.mode === "freeplay" && n.pollGoal() !== 0 && !U.disableGoalReset && (n.resetKickoff(), _(), s.sync(Y), I.resetBallTrail()), he.update(a.state), Jt.dataset.gameMode !== a.state.mode && (Jt.dataset.gameMode = a.state.mode, P.setMatchActive(a.state.mode === "match")), Ue.mark();
         const zt = a.state.mode === "freeplay" || !a.state.paused && a.state.phase === "playing",
             gn = ct.CARS + r * An,
             vn = Math.hypot(s.currState[gn + Ee.VEL], s.currState[gn + Ee.VEL + 1], s.currState[gn + Ee.VEL + 2]) > 40,
