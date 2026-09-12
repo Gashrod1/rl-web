@@ -1,0 +1,14 @@
+{
+  "name": "car-soccer-relay",
+  "version": "1.0.0",
+  "description": "Room-code + message relay server for Car Soccer online 1v1 matches. Never runs game physics.",
+  "type": "module",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
