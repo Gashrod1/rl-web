@@ -341,6 +341,8 @@ kill %1 2>/dev/null || true
 
 Note on `onMatched` vs. `onReady`: both players receive `{type:"matched"}` from the server at roughly the same time, but only the **host** can generate the shared seed at that exact moment (it makes it up itself) — the **guest** must wait for the host's seed to actually arrive over the network first. If the game started the match as soon as `onMatched` fired, the guest would try to use `netMatch.prng` before it's ever been set. `onMatched` fires for both roles immediately (informational — e.g. for UI feedback); `onReady` fires only once `prng` is guaranteed to be set (immediately, for the host; after the seed relay arrives, for the guest). The match must only actually start on `onReady`, never on `onMatched`.
 
+Note on `nextKickoffIndex`: Task 1's investigation found that `resetKickoff(e)` does **not** map `e = 0, 1, 2, ...` to sequential distinct arrangements — it hashes `e` into a small fixed set of buckets (5 distinct arrangements were found, reachable via specific indices, not a contiguous range, and some indices collide onto the same arrangement as others). So `nextKickoffIndex` takes an array of **known-good, pre-verified indices** (one per distinct arrangement) and picks one by index into that array — never a raw `seed % count` passed straight to `resetKickoff`, which would under- or over-represent arrangements. The actual array (from Task 1's findings) is supplied in Task 9.
+
 - [ ] **Step 1: Write the module**
 
 ```js
@@ -510,8 +512,8 @@ export class NetMatch {
         this._checkFingerprint(tick);
     }
 
-    nextKickoffIndex(variantCount) {
-        return Math.floor(this.prng() * variantCount);
+    nextKickoffIndex(variantIndices) {
+        return variantIndices[Math.floor(this.prng() * variantIndices.length)];
     }
 }
 ```
@@ -737,7 +739,7 @@ Replace with:
         u = !0, a.state.paused = !0, netMatch = null, onlinePanel.showError(errorText), onlinePanel.show()
     };
     const qeOnline = () => {
-        n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_COUNT)), _(), p();
+        n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_INDICES)), _(), p();
         const Y = n.state,
             tt = ct.CARS + r * An;
         J.update(0, Y[tt + Ee.FLIP_RESET_SERIAL], !1), j.update({
@@ -827,7 +829,7 @@ Replace with:
     he = new bB(Jt, {
 ```
 
-Note: `KICKOFF_VARIANT_COUNT` above is used but not yet declared — Task 9 adds its declaration using the number found in Task 1. This is intentional ordering (Task 8 wires the shape, Task 9 supplies the one constant Task 1 discovered); `node --check` in this task will still pass because `const`/function bodies aren't evaluated until called, only parsed.
+Note: `KICKOFF_VARIANT_INDICES` above is used but not yet declared — Task 9 adds its declaration using the indices found in Task 1. This is intentional ordering (Task 8 wires the shape, Task 9 supplies the one constant Task 1 discovered); `node --check` in this task will still pass because `const`/function bodies aren't evaluated until called, only parsed.
 
 - [ ] **Step 3: Verify syntax**
 
@@ -838,21 +840,23 @@ Expected: no output.
 
 ---
 
-### Task 9: Declare `KICKOFF_VARIANT_COUNT` and hook the render loop
+### Task 9: Declare `KICKOFF_VARIANT_INDICES` and hook the render loop
 
 **Files:**
 - Modify: `assets/game-CEDHMqQk.js`
 
 - [ ] **Step 1: Declare the constant using Task 1's finding**
 
+Task 1 found that `resetKickoff(e)` hashes `e` into 5 distinct arrangements, not a contiguous `0..N-1` range, and empirically verified these 5 specific indices each reliably reach one distinct arrangement: `0` (arrangement A), `2` (B), `3` (C), `5` (D), `7` (E).
+
 Find this exact line (added by Task 6, Step 2):
 ```js
         vt, netMatch = null, onlinePanel = null;
 ```
-Replace it with (substituting the literal integer `N` you recorded in Task 1 — for example, if Task 1 found 4 distinct kickoff arrangements, write `4`):
+Replace it with:
 ```js
         vt, netMatch = null, onlinePanel = null;
-    const KICKOFF_VARIANT_COUNT = /* the integer N found in Task 1 */ N;
+    const KICKOFF_VARIANT_INDICES = [0, 2, 3, 5, 7];
 ```
 
 - [ ] **Step 2: Route the render loop to `tickOnline` when a match is online**
@@ -1146,7 +1150,7 @@ git commit -m "Add VPS deployment instructions for online multiplayer"
 ## Self-review notes
 
 - **Spec coverage**: room create/join/codes (Tasks 3-4, 7-8), shared-seed kickoff sync (Tasks 1, 5, 9), per-tick lockstep + catch-up reuse (Task 8's `tickOnline`, using the existing `Jb` return-false-to-stall behavior — no new buffering code needed), desync fingerprint safety net (Task 5, 11), disconnect handling (Task 5's `onOpponentLeft`, Task 12), "Play Online" UI reusing the existing overlay/panel pattern (Task 7), VPS deployment with Nginx/TLS/systemd (Task 13). Explicitly-out-of-scope items from the design (reconnection, public matchmaking, server-side physics) have no tasks, correctly.
-- **Placeholder scan**: the one spot that looks like a placeholder — `KICKOFF_VARIANT_COUNT = /* the integer N found in Task 1 */ N` in Task 9 — is intentional and explained: Task 1 is a genuine research spike whose concrete output (a specific integer, empirically determined) is a real dependency for Task 9, not a vague "figure this out later." Every other step has complete, concrete code.
+- **Placeholder scan**: Task 9's `KICKOFF_VARIANT_INDICES` originally depended on Task 1's not-yet-run finding; Task 1 has since actually been executed (during implementation) and found 5 distinct arrangements reachable via indices `[0, 2, 3, 5, 7]` — not a plain contiguous range as first assumed. Task 9 and `NetMatch.nextKickoffIndex` (Task 5) were updated to use this exact array rather than a `count`, so there is no remaining placeholder anywhere in the plan.
 - **Type/name consistency checked**: `netMatch`/`onlinePanel` (Task 6) match their use in Tasks 7-9; `NetMatch`/`fingerprintState` imported in Task 6 match the exports written in Task 5; `A`, `xe`, `Di`, `r`, `u`, `qe`/`qeOnline`, `Ye`/`tickOnline`, `n`, `s`, `a` all match their definitions in the existing code (verified against direct reads of the current file, not paraphrased); `NetMatch`'s methods (`connect`, `createRoom`, `joinRoom`, `close`, `getControlsForTick`, `sendLocalTick`, `recordAndSendFingerprint`, `nextKickoffIndex`) are used identically in Task 8 to how they're defined in Task 5.
 - **Correctness bug caught and fixed during this review**: the first draft started the online match as soon as either player received `{type:"matched"}`. That's wrong for the guest — the shared seed is generated by the host *after* the host itself processes `"matched"`, then travels host → server → guest, which is strictly later than the server's own `"matched"` message to the guest. The guest would have called `nextKickoffIndex()` on a `null` PRNG. Fixed by splitting `onMatched` (fires immediately for both, informational only) from a new `onReady` (fires only once the seed is actually known — immediately for the host, on seed arrival for the guest); only `onReady` is wired to actually start the match (Task 8).
 - **Edit-anchor verification**: every `old_string` block used across Tasks 1 and 6-9 was mechanically checked against the actual current `assets/game-CEDHMqQk.js` (not just eyeballed) — all are present verbatim and, where uniqueness matters for a safe exact-match edit, occur exactly once in the file. The one anchor that correctly does *not* yet exist in the current file (`vt, netMatch = null, onlinePanel = null;`, targeted by Task 9) is the text Task 6 introduces — expected, since Task 9 runs after Task 6.
