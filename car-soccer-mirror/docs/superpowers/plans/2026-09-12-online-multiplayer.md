@@ -1006,6 +1006,8 @@ Expected: no output.
 
 ### Task 12: Verify disconnect handling
 
+**Completion notes:** Verified successfully, first try, no code changes needed. Created a room, joined it, then closed the guest tab. Within ~2 seconds the host tab's page text showed exactly "Opponent disconnected." This path doesn't depend on the physics tick loop at all (the WebSocket `close` event fires and updates the DOM synchronously), so it wasn't affected by the render-loop/page-visibility complication noted in Tasks 10-11.
+
 **Files:**
 - No file changes in this task (verification only)
 
