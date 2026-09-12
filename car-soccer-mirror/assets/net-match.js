@@ -130,7 +130,7 @@ export class NetMatch {
         const theirs = this.remoteFingerprints.get(tick);
         if (mine === undefined || theirs === undefined) return;
         if (mine !== theirs) {
-            console.warn(`[NetMatch] Desync at tick ${tick}: mine=${mine} theirs=${theirs}`);
+            console.error(`[NetMatch] Desync at tick ${tick}: mine=${mine} theirs=${theirs}`);
             this.onDesync?.(tick, mine, theirs);
         }
         this.localFingerprints.delete(tick);

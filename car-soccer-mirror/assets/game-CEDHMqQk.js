@@ -39298,8 +39298,9 @@ async function e7() {
     const tickOnline = () => {
         if (a.state.paused || a.state.phase === "ended" || u) return !1;
         if (a.state.phase === "playing") {
-            netMatch.sendLocalTick(netMatch.localTick, xe);
-            const Y = netMatch.getControlsForTick(netMatch.localTick);
+            const nm = netMatch;
+            nm.sendLocalTick(nm.localTick, xe);
+            const Y = nm.getControlsForTick(nm.localTick);
             if (Y === null) return !1;
             A = Y, n.setControls(Di, A), n.step(1);
             const tt = n.state,
@@ -39308,7 +39309,8 @@ async function e7() {
                     ballOnGround: n.ballOnGround,
                     kickoffTouched: Math.abs(tt[ct.BALL]) + Math.abs(tt[ct.BALL + 1]) > 1 || Math.hypot(tt[ct.BALL + 12], tt[ct.BALL + 13]) > 1
                 }) === "kickoff";
-            netMatch.localTick % 60 === 0 && netMatch.recordAndSendFingerprint(netMatch.localTick, fingerprintState(n.state)), netMatch.localTick++, gn && qeOnline()
+            nm.localTick % 60 === 0 && nm.recordAndSendFingerprint(nm.localTick, fingerprintState(n.state));
+            if (netMatch === nm) nm.localTick++, gn && qeOnline()
         } else a.tick() === "kickoff" && qeOnline();
         return !0
     };
@@ -39326,11 +39328,12 @@ async function e7() {
             };
             nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
             nm.onDesync = (tick, mine, theirs) => {
-                console.warn("[online] Desync detail:", {
+                console.error("[online] Desync detail:", {
                     tick,
                     mine,
                     theirs,
-                    recentFocusEvents: focusLog.slice(-10)
+                    recentFocusEvents: focusLog.slice(-10),
+                    recentFrameTimesMs: frameTimeLog.slice(-60)
                 }), endOnlineMatch("Desync detected. Match stopped.")
             };
             nm.onCreated = Y => onlinePanel.showWaiting(Y);
@@ -39356,11 +39359,12 @@ async function e7() {
             };
             nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
             nm.onDesync = (tick, mine, theirs) => {
-                console.warn("[online] Desync detail:", {
+                console.error("[online] Desync detail:", {
                     tick,
                     mine,
                     theirs,
-                    recentFocusEvents: focusLog.slice(-10)
+                    recentFocusEvents: focusLog.slice(-10),
+                    recentFrameTimesMs: frameTimeLog.slice(-60)
                 }), endOnlineMatch("Desync detected. Match stopped.")
             };
             nm.onReady = () => startOnlineMatch();
@@ -39404,6 +39408,7 @@ async function e7() {
     let At = !1,
         le = null;
     const focusLog = [];
+    const frameTimeLog = [];
     for (const Y of ["blur", "focus", "visibilitychange"])(Y === "visibilitychange" ? document : window).addEventListener(Y, () => {
         focusLog.push({
             type: Y,
@@ -39606,6 +39611,7 @@ async function e7() {
     function mi(Y) {
         var ns;
         Ue.frameStart();
+        frameTimeLog.push(Math.round(Y - pt)), frameTimeLog.length > 180 && frameTimeLog.shift();
         const tt = Math.min((Y - pt) / 1e3, .1);
         pt = Y, a.state.paused = a.state.mode === "match" && (X || W.size > 0 || (!netMatch && (document.hidden || !document.hasFocus())) || u), a.state.paused || a.state.mode === "match" && a.state.phase === "ended" ? (Je(), s.sync(Y)) : s.update(Y, Je, a.state.mode === "match" ? (netMatch ? tickOnline : Ye) : void 0), a.state.mode === "freeplay" && n.pollGoal() !== 0 && !U.disableGoalReset && (n.resetKickoff(), _(), s.sync(Y), I.resetBallTrail()), he.update(a.state), Jt.dataset.gameMode !== a.state.mode && (Jt.dataset.gameMode = a.state.mode, P.setMatchActive(a.state.mode === "match")), Ue.mark();
         const zt = a.state.mode === "freeplay" || !a.state.paused && a.state.phase === "playing",
