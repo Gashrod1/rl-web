@@ -672,13 +672,16 @@ class OnlinePanel {
         return this.openState
     }
     show() {
-        this.openState = !0, this.overlay.hidden = !1, this.overlay.setAttribute("aria-hidden", "false"), this.options.onOpenChange(!0)
+        this.openState = !0, this.overlay.hidden = !1, this.overlay.setAttribute("aria-hidden", "false"), this.options.onOpenChange(!0), requestAnimationFrame(() => this.overlay.classList.add("is-open"))
     }
     hide() {
-        this.openState = !1, this.overlay.hidden = !0, this.overlay.setAttribute("aria-hidden", "true"), this.options.onOpenChange(!1)
+        this.openState = !1, this.overlay.classList.remove("is-open"), this.overlay.setAttribute("aria-hidden", "true"), this.options.onOpenChange(!1), window.setTimeout(() => {
+            this.openState || (this.overlay.hidden = !0)
+        }, 180)
     }
 }
 ```
+(Every other panel in this file that shares the `car-overlay` CSS class — e.g. `class yB`, the Garage panel — toggles an `is-open` class via `requestAnimationFrame` on show and removes it on hide, deferring `hidden = true` by 180ms to match the CSS's `.18s` opacity transition. `.car-overlay` starts at `opacity: 0`; without this, the panel would be functionally invisible — present in the DOM and blocking clicks, but never actually rendered visible. This was caught by code review and is reflected in the code above.)
 
 - [ ] **Step 2: Verify syntax**
 

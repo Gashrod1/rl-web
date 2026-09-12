@@ -39082,10 +39082,12 @@ class OnlinePanel {
         return this.openState
     }
     show() {
-        this.openState = !0, this.overlay.hidden = !1, this.overlay.setAttribute("aria-hidden", "false"), this.options.onOpenChange(!0)
+        this.openState = !0, this.overlay.hidden = !1, this.overlay.setAttribute("aria-hidden", "false"), this.options.onOpenChange(!0), requestAnimationFrame(() => this.overlay.classList.add("is-open"))
     }
     hide() {
-        this.openState = !1, this.overlay.hidden = !0, this.overlay.setAttribute("aria-hidden", "true"), this.options.onOpenChange(!1)
+        this.openState = !1, this.overlay.classList.remove("is-open"), this.overlay.setAttribute("aria-hidden", "true"), this.options.onOpenChange(!1), window.setTimeout(() => {
+            this.openState || (this.overlay.hidden = !0)
+        }, 180)
     }
 }
 async function e7() {
