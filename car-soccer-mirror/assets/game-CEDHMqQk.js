@@ -39187,7 +39187,7 @@ async function e7() {
             a.state.paused = a.state.mode === "match" && (!Y || u), B.enabled = Y, T.enabled = Y, P.enabled = Y, be(), s.sync()
         },
         He = (Y, tt) => {
-            tt ? (W.add(Y), Y !== "settings" && Xe.hide(), Y !== "car" && (ue == null || ue.hide()), Y !== "match" && (he == null || he.hide()), Y !== "sponsors" && (ve == null || ve.hide()), Y !== "status" && (Ce == null || Ce.hideDetails(!1))) : (W.delete(Y), ce = !0), ge()
+            tt ? (W.add(Y), Y !== "settings" && Xe.hide(), Y !== "car" && (ue == null || ue.hide()), Y !== "match" && (he == null || he.hide()), Y !== "sponsors" && (ve == null || ve.hide()), Y !== "status" && (Ce == null || Ce.hideDetails(!1)), Y !== "online" && (onlinePanel == null || onlinePanel.hide())) : (W.delete(Y), ce = !0), ge()
         },
         Xe = new AB(Jt, V.settings, U, S, Y => He("settings", Y), Y => {
             n.setUnlimitedBoost(a.state.mode === "freeplay" && Y.boostOption === "unlimited"), I.setCarHitboxesVisible(Y.showCarHitbox)
@@ -39269,6 +39269,98 @@ async function e7() {
             audible: !1
         }), m[0] = Y[tt + Ee.BALL_HIT_SERIAL], m[1] = Y[ct.NUM_CARS] > 1 ? Y[tt + An + Ee.BALL_HIT_SERIAL] : 0, I.resetBallTrail(), n.resetView(), s.sync()
     };
+    const ONLINE_SERVER_URL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/mp";
+    const endOnlineMatch = errorText => {
+        u = !0, a.state.paused = !0, netMatch = null, onlinePanel.showError(errorText), onlinePanel.show()
+    };
+    const qeOnline = () => {
+        n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_INDICES)), _(), p();
+        const Y = n.state,
+            tt = ct.CARS + r * An;
+        J.update(0, Y[tt + Ee.FLIP_RESET_SERIAL], !1), j.update({
+            jumpSerial: Y[tt + Ee.JUMP_SERIAL],
+            dodgeSerial: Y[tt + Ee.DODGE_SERIAL],
+            doubleJumpSerial: Y[tt + Ee.DOUBLE_JUMP_SERIAL],
+            wheelImpactSerial: Y[tt + Ee.WHEEL_IMPACT_SERIAL],
+            wheelImpactSpeed: 0,
+            audible: !1
+        }), g.update({
+            carSerial: Y[tt + Ee.BALL_HIT_SERIAL] + (Y[ct.NUM_CARS] > 1 ? Y[tt + An + Ee.BALL_HIT_SERIAL] : 0),
+            carSpeed: 0,
+            worldSerial: Y[tt + Ee.BALL_WORLD_IMPACT_SERIAL],
+            worldSpeed: 0,
+            worldSurface: 0,
+            worldPan: 0,
+            audible: !1
+        }), m[0] = Y[tt + Ee.BALL_HIT_SERIAL], m[1] = Y[ct.NUM_CARS] > 1 ? Y[tt + An + Ee.BALL_HIT_SERIAL] : 0, I.resetBallTrail(), n.resetView(), s.sync()
+    };
+    const tickOnline = () => {
+        if (a.state.paused || a.state.phase === "ended" || u) return !1;
+        if (a.state.phase === "playing") {
+            const Y = netMatch.getControlsForTick(netMatch.localTick);
+            if (Y === null) return !1;
+            A = Y, netMatch.sendLocalTick(netMatch.localTick, xe), n.setControls(Di, A), n.step(1);
+            const tt = n.state,
+                gn = a.tick({
+                    goal: n.pollGoal(),
+                    ballOnGround: n.ballOnGround,
+                    kickoffTouched: Math.abs(tt[ct.BALL]) + Math.abs(tt[ct.BALL + 1]) > 1 || Math.hypot(tt[ct.BALL + 12], tt[ct.BALL + 13]) > 1
+                }) === "kickoff";
+            netMatch.localTick % 60 === 0 && netMatch.recordAndSendFingerprint(netMatch.localTick, fingerprintState(n.state)), netMatch.localTick++, gn && qeOnline()
+        } else a.tick() === "kickoff" && qeOnline();
+        return !0
+    };
+    const startOnlineMatch = () => {
+        n.configureCars(i === "flat-car" ? "flat" : "default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qeOnline(), onlinePanel.hide()
+    };
+    netMatch = null;
+    onlinePanel = new OnlinePanel(Jt, {
+        onOpenChange: Y => He("online", Y),
+        onCreate: async () => {
+            const nm = new NetMatch(ONLINE_SERVER_URL);
+            netMatch = nm;
+            nm.onError = Y => {
+                onlinePanel.showError(Y === "room_expired" ? "This room expired, create a new one." : "Something went wrong. Please try again.")
+            };
+            nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
+            nm.onDesync = () => endOnlineMatch("Desync detected. Match stopped.");
+            nm.onCreated = Y => onlinePanel.showWaiting(Y);
+            nm.onReady = () => startOnlineMatch();
+            try {
+                await nm.connect()
+            } catch (Y) {
+                onlinePanel.showError(Y instanceof Error ? Y.message : "Couldn't reach the multiplayer server.");
+                netMatch = null;
+                return
+            }
+            nm.createRoom()
+        },
+        onJoin: async Y => {
+            if (!Y) {
+                onlinePanel.showError("Enter a room code.");
+                return
+            }
+            const nm = new NetMatch(ONLINE_SERVER_URL);
+            netMatch = nm;
+            nm.onError = tt => {
+                onlinePanel.showError(tt === "invalid_code" ? "Invalid code." : tt === "room_full" ? "This room is full." : "Something went wrong. Please try again.")
+            };
+            nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
+            nm.onDesync = () => endOnlineMatch("Desync detected. Match stopped.");
+            nm.onReady = () => startOnlineMatch();
+            try {
+                await nm.connect()
+            } catch (tt) {
+                onlinePanel.showError(tt instanceof Error ? tt.message : "Couldn't reach the multiplayer server.");
+                netMatch = null;
+                return
+            }
+            nm.joinRoom(Y)
+        },
+        onCancel: () => {
+            netMatch == null || netMatch.close(), netMatch = null, onlinePanel.setView("menu")
+        }
+    });
     he = new bB(Jt, {
         playerTeam: t.playerTeam,
         botId: o.id,
