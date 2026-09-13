@@ -90,3 +90,51 @@ test("restoring a snapshot rewinds the simulation exactly", async () => {
             `resimulated tick ${240 + i} diverged from the straight-line run`);
     }
 });
+
+test("calibration finds a mutable region and leaves the simulation untouched", async () => {
+    const sim = await loadPhysics();
+    sim.resetKickoff(0);
+    for (let tick = 0; tick < 120; tick++) {
+        sim.setControls(0, scriptedInput(tick));
+        sim.setControls(1, scriptedInput(tick + 500));
+        sim.step(1);
+    }
+    const before = Float32Array.from(sim.state);
+
+    const region = sim.calibrateSnapshotRange();
+
+    assert.ok(region.end > region.start, "region should be non-empty");
+    assert.ok(region.end - region.start < sim.heapBytes / 2,
+        "region should be much smaller than the whole heap");
+    assert.deepEqual(Array.from(sim.state), Array.from(before),
+        "calibration must restore the simulation it perturbed");
+});
+
+test("region snapshots rewind as well as full-heap ones", async () => {
+    const sim = await loadPhysics();
+    sim.resetKickoff(0);
+    sim.calibrateSnapshotRange();
+    for (let tick = 0; tick < 240; tick++) {
+        sim.setControls(0, scriptedInput(tick));
+        sim.setControls(1, scriptedInput(tick + 500));
+        sim.step(1);
+    }
+
+    const region = sim.saveRegion();
+    const replay = [];
+    for (let tick = 240; tick < 300; tick++) {
+        sim.setControls(0, scriptedInput(tick));
+        sim.setControls(1, scriptedInput(tick + 500));
+        sim.step(1);
+        replay.push(Float32Array.from(sim.state));
+    }
+
+    sim.loadRegion(region);
+    for (let tick = 240; tick < 300; tick++) {
+        sim.setControls(0, scriptedInput(tick));
+        sim.setControls(1, scriptedInput(tick + 500));
+        sim.step(1);
+        assert.deepEqual(Array.from(sim.state), Array.from(replay[tick - 240]),
+            `region-restored resimulation diverged at tick ${tick}`);
+    }
+});
