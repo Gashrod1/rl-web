@@ -20592,7 +20592,10 @@ class Jb {
                 this.lastTicks = 0;
                 for (let a = 0; a < s; a++) {
                     if (this.prevState.set(this.currState), !n()) {
-                        this.accumulator = 0;
+                        // Put back the time for the ticks we could not run, so game time
+                        // keeps pace with real time once the stall clears. Capped, so a
+                        // long stall does not queue a burst of catch-up ticks.
+                        this.accumulator = Math.min(this.accumulator + (s - a) * ba, gc * ba);
                         break
                     }
                     this.currState.set(this.sim.state), this.lastTicks++
