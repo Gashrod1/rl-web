@@ -1,3 +1,5 @@
+import { quantiseControls, encodePacket, decodePacket } from "./input-codec.js";
+
 function mulberry32(seed) {
     let t = seed >>> 0;
     return function () {
@@ -14,11 +16,16 @@ const NEUTRAL_CONTROLS = Object.freeze({
 });
 
 const TICK_MS = 1000 / 120;
+// Rollback applies the local input on the tick it is sampled, so it needs no input
+// delay at all. These constants remain only for the lockstep fallback path.
 const DEFAULT_INPUT_DELAY = 24;
 const MIN_INPUT_DELAY = 8;
 const MAX_INPUT_DELAY = 40;
 // Headroom above the measured round trip, so ordinary jitter doesn't stall the lockstep.
 const INPUT_DELAY_MARGIN = 6;
+// How many past inputs ride along in each packet. A dropped packet is covered by the
+// next one, so a loss costs nothing instead of stalling the simulation.
+const INPUT_REDUNDANCY = 4;
 const PING_COUNT = 4;
 const PING_INTERVAL_MS = 60;
 // World units. The two clients simulate mirrored worlds, so only rotation-invariant
@@ -42,6 +49,7 @@ export class NetMatch {
         this.driftEvents = 0;
         this.remoteInputs = new Map();
         this.localInputs = new Map();
+        this.recentLocal = [];
         this.pingSamples = [];
         this.localDrift = new Map();
         this.remoteDrift = new Map();
@@ -51,11 +59,13 @@ export class NetMatch {
         this.onError = null;
         this.onOpponentLeft = null;
         this.onDrift = null;
+        this.onRemoteInput = null;
     }
 
     connect() {
         return new Promise((resolve, reject) => {
             this.ws = new WebSocket(this.url);
+            this.ws.binaryType = "arraybuffer";
             this.ws.addEventListener("open", () => resolve(), { once: true });
             this.ws.addEventListener("error", () => reject(new Error("Couldn't reach the multiplayer server.")), { once: true });
             this.ws.addEventListener("message", event => this._handleMessage(event));
@@ -79,6 +89,12 @@ export class NetMatch {
     }
 
     _handleMessage(event) {
+        if (event.data instanceof ArrayBuffer) {
+            const { newestTick, inputs } = decodePacket(event.data);
+            const oldestTick = newestTick - inputs.length + 1;
+            inputs.forEach((controls, i) => this.onRemoteInput?.(oldestTick + i, controls));
+            return;
+        }
         let message;
         try {
             message = JSON.parse(event.data);
@@ -195,6 +211,19 @@ export class NetMatch {
         };
         this.localInputs.set(target, snapshot);
         this._sendRelay({ kind: "input", tick: target, controls: snapshot });
+    }
+
+    // Sends the input for `tick` plus the previous INPUT_REDUNDANCY-1 inputs, and
+    // returns the quantised controls. The caller must feed the simulation that return
+    // value, not the raw input: both sides have to step on identical numbers.
+    sendRollbackInput(tick, controls) {
+        const snapshot = quantiseControls(controls);
+        this.recentLocal.push(snapshot);
+        if (this.recentLocal.length > INPUT_REDUNDANCY) this.recentLocal.shift();
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(encodePacket(tick, this.recentLocal));
+        }
+        return snapshot;
     }
 
     getControlsForTick(tick) {
