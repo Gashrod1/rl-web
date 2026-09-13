@@ -27,6 +27,14 @@ The headline surprise is how cheap `step()` is: **0.0071 ms**. Resimulating the 
 prediction window costs 0.11 ms — less than a single full-heap snapshot. That inverts the
 expected cost balance and changes the snapshot strategy (see below).
 
+> **Correction, measured later against the assembled engine.** The figures in this table come
+> from tight loops repeating one operation on a cache-hot buffer, and they are optimistic by
+> roughly 3-5x compared with the same operations interleaved in a real tick. Measured inside
+> `RollbackSession`: `saveRegion` 0.33 ms (not 0.107), `loadRegion` 0.43 ms, `step` 0.054 ms
+> (not 0.0071). The **verdict is unchanged** — realistic play costs 0.20 ms/tick, 2.4% of budget
+> — but the per-operation numbers above should not be quoted. See
+> [the rollback verification report](2026-09-13-rollback-verification.md) for honest figures.
+
 ## The mutable page set is stable
 
 The risk flagged in the spec was that a page-level dirty scan might miss a rarely-touched page,

@@ -22,6 +22,7 @@ export class RollbackSession {
         this._remote = new Map();   // tick -> real opponent controls, from the network
         this._used = new Map();     // tick -> opponent controls we actually simulated
         this._snapshots = [];       // { tick, state }, oldest first
+        this._pool = [];            // spare state buffers, reused instead of reallocated
         this._rollbacks = 0;
         this._stalls = 0;
         this._resimulated = 0;
@@ -68,14 +69,27 @@ export class RollbackSession {
         return best;
     }
 
+    _keep() {
+        return Math.ceil(this.maxPrediction / this.snapshotInterval) + 2;
+    }
+
+    // Snapshot buffers are megabyte-scale, so they are pooled rather than reallocated.
+    // Without this, a rollback discards its later snapshots and the next few saves
+    // each allocate a fresh buffer -- which, at one rollback per tick, costs far more
+    // in garbage collection than the memory copy itself.
     _takeSnapshot() {
         if (this.currentTick % this.snapshotInterval !== 0) return;
-        const keep = Math.ceil(this.maxPrediction / this.snapshotInterval) + 2;
-        const recycled = this._snapshots.length >= keep ? this._snapshots.shift() : null;
+        let recycled = null;
+        if (this._snapshots.length >= this._keep()) recycled = this._snapshots.shift().state;
+        else if (this._pool.length > 0) recycled = this._pool.pop();
         this._snapshots.push({
             tick: this.currentTick,
-            state: this._saveState(recycled ? recycled.state : null)
+            state: this._saveState(recycled)
         });
+    }
+
+    _release(state) {
+        if (this._pool.length < this._keep() + 2) this._pool.push(state);
     }
 
     // Apply everything newly known about the opponent, rewinding if we guessed wrong.
@@ -101,7 +115,16 @@ export class RollbackSession {
         this._loadState(snapshot.state);
         const target = this.currentTick;
         this.currentTick = snapshot.tick;
-        this._snapshots = this._snapshots.filter(e => e.tick <= snapshot.tick);
+        // Hand the discarded buffers back to the pool instead of dropping them.
+        // `snapshot` itself goes back too: the first resimulated tick lands on the
+        // same tick number and immediately re-takes it, and the heap has just been
+        // restored from that buffer, so rewriting it produces identical bytes.
+        const kept = [];
+        for (const entry of this._snapshots) {
+            if (entry.tick < snapshot.tick) kept.push(entry);
+            else this._release(entry.state);
+        }
+        this._snapshots = kept;
         while (this.currentTick < target) {
             this._simulateOne(this._local.get(this.currentTick) ?? NEUTRAL);
             this._resimulated++;
