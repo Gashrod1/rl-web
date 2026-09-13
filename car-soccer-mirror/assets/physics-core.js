@@ -4981,6 +4981,17 @@ class Wb {
     step(e) {
         this.module._physics_step(e)
     }
+    get heapBytes() {
+        return this.module.HEAPU8.length
+    }
+    saveState(into = null) {
+        const e = this.module.HEAPU8;
+        if (into && into.length === e.length) return into.set(e), into;
+        return e.slice()
+    }
+    loadState(e) {
+        this.module.HEAPU8.set(e), this.stateView = null, this.controlsView = null, this.viewView = null
+    }
     resetKickoff(e = -1) {
         this.module._physics_resetKickoff(e)
     }
