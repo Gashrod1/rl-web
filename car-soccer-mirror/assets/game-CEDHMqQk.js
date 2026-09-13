@@ -34315,6 +34315,7 @@ async function e7() {
         (gn <= 5 || gn % 20 === 0) && console.warn(`[online] Simulation drift #${gn} at tick ${Y} (worst ${Math.round(tt)} units)`, {
             deltas: zt.map(vn => Math.round(vn * 100) / 100),
             stalls: netMatch == null ? null : netMatch.stalls,
+            rollback: rollbackSession == null ? null : rollbackSession.stats(),
             recentFocusEvents: focusLog.slice(-10),
             recentFrameTimesMs: frameTimeLog.slice(-60)
         })
@@ -34411,7 +34412,8 @@ async function e7() {
         console.log("[online] Match starting", {
             role: netMatch.role,
             rttMs: netMatch.rttMs === null ? null : Math.round(netMatch.rttMs),
-            inputDelayTicks: netMatch.inputDelay
+            inputDelayTicks: netMatch.inputDelay,
+            netcode: NETCODE_MODE
         });
         n.configureCars("default", !0), netMatch.role === "host" ? setLocalCar(zb, 1) : setLocalCar(Di, 0), n.setUnlimitedBoost(!1), u = !1;
         rollbackSession = null, lastDriftTick = -1, lastPresentedTick = -1, lastPresentedPhase = null, pendingDrift.clear();
