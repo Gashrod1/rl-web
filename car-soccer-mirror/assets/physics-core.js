@@ -4929,7 +4929,8 @@ class Wb {
         v(this, "stateLen", 0);
         v(this, "stateView", null);
         v(this, "controlsView", null);
-        v(this, "viewView", null)
+        v(this, "viewView", null);
+        v(this, "snapshotRange", null)
     }
     get state() {
         const e = this.module.HEAPF32.buffer;
@@ -4991,6 +4992,60 @@ class Wb {
     }
     loadState(e) {
         this.module.HEAPU8.set(e), this.stateView = null, this.controlsView = null, this.viewView = null
+    }
+    // Only a small part of the heap changes once the arena is built -- the rest is
+    // static data and the frozen collision BVH. Finding that part at runtime turns a
+    // 16 MB copy into a ~2 MB one. The page numbers are a property of this build, so
+    // they are measured rather than assumed.
+    calibrateSnapshotRange({
+        steps: e = 400,
+        marginPages: t = 8
+    } = {}) {
+        const n = 65536,
+            r = this.saveState(),
+            s = {
+                throttle: 1,
+                steer: .5,
+                pitch: -.5,
+                yaw: .25,
+                roll: -.25,
+                jump: !0,
+                boost: !0,
+                handbrake: !1
+            };
+        for (let m = 0; m < e; m++) this.setControls(0, s), this.setControls(1, s), m % 97 === 0 && this.resetKickoff(m % 8 | 0), this.step(1), this.pollGoal();
+        const a = this.module.HEAPU8,
+            o = a.length / n;
+        let l = -1,
+            A = -1;
+        for (let m = 0; m < o; m++) {
+            const w = m * n,
+                x = w + n;
+            for (let O = w; O < x; O++)
+                if (a[O] !== r[O]) {
+                    l < 0 && (l = m), A = m;
+                    break
+                }
+        }
+        if (this.loadState(r), l < 0) throw new Error("Snapshot calibration found no mutable memory");
+        const c = Math.max(0, l - t),
+            h = Math.min(o, A + 1 + t);
+        return this.snapshotRange = {
+            start: c * n,
+            end: h * n
+        }, this.snapshotRange
+    }
+    saveRegion(e = null) {
+        if (!this.snapshotRange) throw new Error("calibrateSnapshotRange() must run first");
+        const {
+            start: t,
+            end: n
+        } = this.snapshotRange, r = this.module.HEAPU8.subarray(t, n);
+        return e && e.length === r.length ? (e.set(r), e) : r.slice()
+    }
+    loadRegion(e) {
+        if (!this.snapshotRange) throw new Error("calibrateSnapshotRange() must run first");
+        this.module.HEAPU8.set(e, this.snapshotRange.start), this.stateView = null, this.controlsView = null, this.viewView = null
     }
     resetKickoff(e = -1) {
         this.module._physics_resetKickoff(e)

@@ -36,7 +36,20 @@ wss.on("connection", ws => {
     ws.roomCode = null;
     ws.role = null;
 
-    ws.on("message", data => {
+    ws.on("message", (data, isBinary) => {
+        // In-match input packets are binary and opaque: forward them verbatim rather
+        // than paying JSON.parse on every frame at 120 Hz from both clients.
+        if (isBinary) {
+            const room = rooms.get(ws.roomCode);
+            if (!room || !room.guest) return;
+            const other = ws.role === "host" ? room.guest : room.host;
+            if (other && other.readyState === other.OPEN) {
+                if (RELAY_DELAY_MS > 0) setTimeout(() => other.send(data, { binary: true }), RELAY_DELAY_MS);
+                else other.send(data, { binary: true });
+            }
+            return;
+        }
+
         let message;
         try {
             message = JSON.parse(data.toString());
