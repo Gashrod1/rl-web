@@ -8,17 +8,24 @@ function mulberry32(seed) {
     };
 }
 
-export function fingerprintState(state) {
-    let h1 = 0x811c9dc5, h2 = 0x811c9dc5;
-    const view = new DataView(state.buffer, state.byteOffset, state.byteLength);
-    for (let i = 0; i + 8 <= state.byteLength; i += 8) {
-        const lo = view.getUint32(i, true);
-        const hi = view.getUint32(i + 4, true);
-        h1 = Math.imul(h1 ^ lo, 16777619) >>> 0;
-        h2 = Math.imul(h2 ^ hi, 16777619) >>> 0;
-    }
-    return h1.toString(16).padStart(8, "0") + h2.toString(16).padStart(8, "0");
-}
+const NEUTRAL_CONTROLS = Object.freeze({
+    throttle: 0, steer: 0, pitch: 0, yaw: 0, roll: 0,
+    jump: false, boost: false, handbrake: false
+});
+
+const TICK_MS = 1000 / 120;
+const DEFAULT_INPUT_DELAY = 24;
+const MIN_INPUT_DELAY = 8;
+const MAX_INPUT_DELAY = 40;
+// Headroom above the measured round trip, so ordinary jitter doesn't stall the lockstep.
+const INPUT_DELAY_MARGIN = 6;
+const PING_COUNT = 4;
+const PING_INTERVAL_MS = 60;
+// World units. The two clients simulate mirrored worlds, so only rotation-invariant
+// scalars are comparable; anything past this means the simulations really drifted apart.
+const DRIFT_TOLERANCE = 5;
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export class NetMatch {
     constructor(url) {
@@ -29,15 +36,21 @@ export class NetMatch {
         this.remoteCar = null;
         this.prng = null;
         this.localTick = 0;
+        this.inputDelay = DEFAULT_INPUT_DELAY;
+        this.rttMs = null;
+        this.stalls = 0;
+        this.driftEvents = 0;
         this.remoteInputs = new Map();
-        this.localFingerprints = new Map();
-        this.remoteFingerprints = new Map();
+        this.localInputs = new Map();
+        this.pingSamples = [];
+        this.localDrift = new Map();
+        this.remoteDrift = new Map();
         this.onCreated = null;
         this.onMatched = null;
         this.onReady = null;
         this.onError = null;
         this.onOpponentLeft = null;
-        this.onDesync = null;
+        this.onDrift = null;
     }
 
     connect() {
@@ -82,12 +95,7 @@ export class NetMatch {
             this.localCar = this.role === "host" ? 0 : 1;
             this.remoteCar = this.role === "host" ? 1 : 0;
             this.onMatched?.(this.role);
-            if (this.role === "host") {
-                const seed = (Math.random() * 4294967296) >>> 0;
-                this.prng = mulberry32(seed);
-                this._sendRelay({ kind: "seed", value: seed });
-                this.onReady?.();
-            }
+            if (this.role === "host") this._runHostHandshake();
             return;
         }
         if (message.type === "error") {
@@ -104,9 +112,39 @@ export class NetMatch {
         }
     }
 
+    // The host measures the peer-to-peer round trip, then picks an input delay both
+    // clients use. Without it each tick would cost a full network trip (see qeOnline).
+    async _runHostHandshake() {
+        for (let i = 0; i < PING_COUNT; i++) {
+            if (this.role !== "host") return;
+            this._sendRelay({ kind: "ping", t: performance.now() });
+            await sleep(PING_INTERVAL_MS);
+        }
+        await sleep(PING_INTERVAL_MS * 2);
+        if (this.role !== "host") return;
+        this.rttMs = this.pingSamples.length ? Math.min(...this.pingSamples) : null;
+        this.inputDelay = this.rttMs === null
+            ? DEFAULT_INPUT_DELAY
+            : Math.min(MAX_INPUT_DELAY, Math.max(MIN_INPUT_DELAY, Math.ceil(this.rttMs / TICK_MS) + INPUT_DELAY_MARGIN));
+        const seed = (Math.random() * 4294967296) >>> 0;
+        this.prng = mulberry32(seed);
+        this._sendRelay({ kind: "seed", value: seed, inputDelay: this.inputDelay, rttMs: this.rttMs });
+        this.onReady?.();
+    }
+
     _handleRelay(payload) {
+        if (payload.kind === "ping") {
+            this._sendRelay({ kind: "pong", t: payload.t });
+            return;
+        }
+        if (payload.kind === "pong") {
+            this.pingSamples.push(performance.now() - payload.t);
+            return;
+        }
         if (payload.kind === "seed") {
             this.prng = mulberry32(payload.value >>> 0);
+            this.inputDelay = payload.inputDelay ?? DEFAULT_INPUT_DELAY;
+            this.rttMs = payload.rttMs ?? null;
             this.onReady?.();
             return;
         }
@@ -114,57 +152,73 @@ export class NetMatch {
             this.remoteInputs.set(payload.tick, payload.controls);
             return;
         }
-        if (payload.kind === "fingerprint") {
-            this.remoteFingerprints.set(payload.tick, payload.hash);
-            this._checkFingerprint(payload.tick);
+        if (payload.kind === "drift") {
+            this.remoteDrift.set(payload.tick, payload.values);
+            this._checkDrift(payload.tick);
             return;
         }
     }
 
     _sendRelay(payload) {
+        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
         this.ws.send(JSON.stringify({ type: "relay", payload }));
     }
 
-    _checkFingerprint(tick) {
-        const mine = this.localFingerprints.get(tick);
-        const theirs = this.remoteFingerprints.get(tick);
+    _checkDrift(tick) {
+        const mine = this.localDrift.get(tick);
+        const theirs = this.remoteDrift.get(tick);
         if (mine === undefined || theirs === undefined) return;
-        if (mine !== theirs) {
-            console.error(`[NetMatch] Desync at tick ${tick}: mine=${mine} theirs=${theirs}`);
-            this.onDesync?.(tick, mine, theirs);
+        this.localDrift.delete(tick);
+        this.remoteDrift.delete(tick);
+        const deltas = mine.map((value, i) => Math.abs(value - theirs[i]));
+        const worst = Math.max(...deltas);
+        if (worst > DRIFT_TOLERANCE) {
+            this.driftEvents++;
+            this.onDrift?.(tick, worst, deltas);
         }
-        this.localFingerprints.delete(tick);
-        this.remoteFingerprints.delete(tick);
     }
 
+    // Sampled once per tick and applied `inputDelay` ticks later on both clients, so
+    // each side always simulates a tick with the exact controls the other one used.
     sendLocalTick(tick, controls) {
-        this._sendRelay({
-            kind: "input",
-            tick,
-            controls: {
-                throttle: controls.throttle,
-                steer: controls.steer,
-                pitch: controls.pitch,
-                yaw: controls.yaw,
-                roll: controls.roll,
-                jump: controls.jump,
-                boost: controls.boost,
-                handbrake: controls.handbrake
-            }
-        });
+        const target = tick + this.inputDelay;
+        if (this.localInputs.has(target)) return;
+        const snapshot = {
+            throttle: controls.throttle,
+            steer: controls.steer,
+            pitch: controls.pitch,
+            yaw: controls.yaw,
+            roll: controls.roll,
+            jump: controls.jump,
+            boost: controls.boost,
+            handbrake: controls.handbrake
+        };
+        this.localInputs.set(target, snapshot);
+        this._sendRelay({ kind: "input", tick: target, controls: snapshot });
     }
 
     getControlsForTick(tick) {
+        if (tick < this.inputDelay) return NEUTRAL_CONTROLS;
         const controls = this.remoteInputs.get(tick);
-        if (controls === undefined) return null;
+        if (controls === undefined) {
+            this.stalls++;
+            return null;
+        }
         this.remoteInputs.delete(tick);
         return controls;
     }
 
-    recordAndSendFingerprint(tick, hash) {
-        this.localFingerprints.set(tick, hash);
-        this._sendRelay({ kind: "fingerprint", tick, hash });
-        this._checkFingerprint(tick);
+    getLocalControlsForTick(tick) {
+        if (tick < this.inputDelay) return NEUTRAL_CONTROLS;
+        const controls = this.localInputs.get(tick);
+        this.localInputs.delete(tick);
+        return controls ?? NEUTRAL_CONTROLS;
+    }
+
+    recordAndSendDrift(tick, values) {
+        this.localDrift.set(tick, values);
+        this._sendRelay({ kind: "drift", tick, values });
+        this._checkDrift(tick);
     }
 
     nextKickoffIndex(variantIndices) {

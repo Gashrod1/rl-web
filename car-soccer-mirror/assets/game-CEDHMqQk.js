@@ -20,7 +20,7 @@ import {
     S as Jg,
     h as Cl
 } from "./privacy-BBT5bqib.js";
-import { NetMatch, fingerprintState } from "./net-match.js";
+import { NetMatch } from "./net-match.js";
 /**
  * @license
  * Copyright 2010-2026 Three.js Authors
@@ -39103,6 +39103,10 @@ async function e7() {
         n = new Wb;
     await n.init();
     const r = n.addCar(e, i === "flat-car" ? "flat" : "default");
+    // Online matches put the guest behind car slot 1 so both clients simulate the very
+    // same world; everywhere else the local player is always car slot 0.
+    let myCar = r,
+        foeCar = Di;
     n.resetKickoff();
     const s = new Jb(n),
         a = new PB,
@@ -39272,12 +39276,21 @@ async function e7() {
     };
     const ONLINE_SERVER_URL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/mp";
     const endOnlineMatch = errorText => {
-        u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, onlinePanel.showError(errorText), onlinePanel.show()
+        u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, setLocalCar(r, t.playerTeam), onlinePanel.showError(errorText), onlinePanel.show()
+    };
+    const onlineDriftReport = (Y, tt, zt) => {
+        const gn = netMatch == null ? 0 : netMatch.driftEvents;
+        (gn <= 5 || gn % 20 === 0) && console.warn(`[online] Simulation drift #${gn} at tick ${Y} (worst ${Math.round(tt)} units)`, {
+            deltas: zt.map(vn => Math.round(vn * 100) / 100),
+            stalls: netMatch == null ? null : netMatch.stalls,
+            recentFocusEvents: focusLog.slice(-10),
+            recentFrameTimesMs: frameTimeLog.slice(-60)
+        })
     };
     const qeOnline = () => {
         n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_INDICES)), _(), p();
         const Y = n.state,
-            tt = ct.CARS + r * An;
+            tt = ct.CARS + myCar * An;
         J.update(0, Y[tt + Ee.FLIP_RESET_SERIAL], !1), j.update({
             jumpSerial: Y[tt + Ee.JUMP_SERIAL],
             dodgeSerial: Y[tt + Ee.DODGE_SERIAL],
@@ -39295,27 +39308,45 @@ async function e7() {
             audible: !1
         }), m[0] = Y[tt + Ee.BALL_HIT_SERIAL], m[1] = Y[ct.NUM_CARS] > 1 ? Y[tt + An + Ee.BALL_HIT_SERIAL] : 0, I.resetBallTrail(), n.resetView(), s.sync()
     };
+    const onlineDriftValues = () => {
+        const Y = n.state,
+            tt = ct.BALL,
+            zt = vn => {
+                const kn = ct.CARS + vn * An;
+                return [Y[kn], Y[kn + 1], Y[kn + 2], Math.hypot(Y[kn + Ee.VEL], Y[kn + Ee.VEL + 1], Y[kn + Ee.VEL + 2])]
+            };
+        return [Y[tt], Y[tt + 1], Y[tt + 2], Math.hypot(Y[tt + 12], Y[tt + 13], Y[tt + 14]), ...zt(zb), ...zt(Di)]
+    };
     const tickOnline = () => {
         if (a.state.paused || a.state.phase === "ended" || u) return !1;
+        const nm = netMatch;
+        nm.sendLocalTick(nm.localTick, liveInput);
+        const Y = nm.getControlsForTick(nm.localTick);
+        if (Y === null) return !1;
+        let tt;
         if (a.state.phase === "playing") {
-            const nm = netMatch;
-            nm.sendLocalTick(nm.localTick, xe);
-            const Y = nm.getControlsForTick(nm.localTick);
-            if (Y === null) return !1;
-            A = Y, n.setControls(Di, A), n.step(1);
-            const tt = n.state,
-                gn = a.tick({
-                    goal: n.pollGoal(),
-                    ballOnGround: n.ballOnGround,
-                    kickoffTouched: Math.abs(tt[ct.BALL]) + Math.abs(tt[ct.BALL + 1]) > 1 || Math.hypot(tt[ct.BALL + 12], tt[ct.BALL + 13]) > 1
-                }) === "kickoff";
-            nm.localTick % 60 === 0 && nm.recordAndSendFingerprint(nm.localTick, fingerprintState(n.state));
-            if (netMatch === nm) nm.localTick++, gn && qeOnline()
-        } else a.tick() === "kickoff" && qeOnline();
+            A = Y, xe = nm.getLocalControlsForTick(nm.localTick), n.setControls(myCar, xe), n.setControls(foeCar, A), n.step(1);
+            const zt = n.state;
+            tt = a.tick({
+                goal: n.pollGoal(),
+                ballOnGround: n.ballOnGround,
+                kickoffTouched: Math.abs(zt[ct.BALL]) + Math.abs(zt[ct.BALL + 1]) > 1 || Math.hypot(zt[ct.BALL + 12], zt[ct.BALL + 13]) > 1
+            }) === "kickoff";
+            nm.localTick % 60 === 0 && nm.recordAndSendDrift(nm.localTick, onlineDriftValues())
+        } else tt = a.tick() === "kickoff";
+        if (netMatch === nm) nm.localTick++, tt && qeOnline();
         return !0
     };
+    // configureCars("default", true) always puts car 0 on team 1 and car 1 on team 0.
+    const setLocalCar = (Y, tt) => {
+        myCar = Y, foeCar = Y === zb ? Di : zb, I.cars[myCar].add(J.root), he.options.playerTeam = tt
+    };
     const startOnlineMatch = () => {
-        n.configureCars("default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qeOnline(), onlinePanel.hide()
+        console.log("[online] Match starting", {
+            role: netMatch.role,
+            rttMs: netMatch.rttMs === null ? null : Math.round(netMatch.rttMs),
+            inputDelayTicks: netMatch.inputDelay
+        }), n.configureCars("default", !0), netMatch.role === "host" ? setLocalCar(zb, 1) : setLocalCar(Di, 0), n.setUnlimitedBoost(!1), u = !1, a.start(), qeOnline(), onlinePanel.hide()
     };
     netMatch = null;
     onlinePanel = new OnlinePanel(Jt, {
@@ -39327,15 +39358,7 @@ async function e7() {
                 onlinePanel.showError(Y === "room_expired" ? "This room expired, create a new one." : "Something went wrong. Please try again.")
             };
             nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
-            nm.onDesync = (tick, mine, theirs) => {
-                console.error("[online] Desync detail:", {
-                    tick,
-                    mine,
-                    theirs,
-                    recentFocusEvents: focusLog.slice(-10),
-                    recentFrameTimesMs: frameTimeLog.slice(-60)
-                }), endOnlineMatch("Desync detected. Match stopped.")
-            };
+            nm.onDrift = onlineDriftReport;
             nm.onCreated = Y => onlinePanel.showWaiting(Y);
             nm.onReady = () => startOnlineMatch();
             try {
@@ -39358,15 +39381,7 @@ async function e7() {
                 onlinePanel.showError(tt === "invalid_code" ? "Invalid code." : tt === "room_full" ? "This room is full." : "Something went wrong. Please try again.")
             };
             nm.onOpponentLeft = () => endOnlineMatch("Opponent disconnected.");
-            nm.onDesync = (tick, mine, theirs) => {
-                console.error("[online] Desync detail:", {
-                    tick,
-                    mine,
-                    theirs,
-                    recentFocusEvents: focusLog.slice(-10),
-                    recentFrameTimesMs: frameTimeLog.slice(-60)
-                }), endOnlineMatch("Desync detected. Match stopped.")
-            };
+            nm.onDrift = onlineDriftReport;
             nm.onReady = () => startOnlineMatch();
             try {
                 await nm.connect()
@@ -39400,7 +39415,7 @@ async function e7() {
             await Promise.all([o.load(), I.ensureOpponent()]), !Y.aborted && (n.configureCars(i === "flat-car" ? "flat" : "default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qe(), he.update(a.state))
         },
         onLeave: () => {
-            netMatch == null || netMatch.close(), netMatch = null, p(), a.leave(), u = !1, n.configureCars(i === "flat-car" ? "flat" : "default", !1, e), n.setUnlimitedBoost(U.boostOption === "unlimited"), qe(), he.update(a.state)
+            netMatch == null || netMatch.close(), netMatch = null, setLocalCar(r, t.playerTeam), p(), a.leave(), u = !1, n.configureCars(i === "flat-car" ? "flat" : "default", !1, e), n.setUnlimitedBoost(U.boostOption === "unlimited"), qe(), he.update(a.state)
         }
     }), window.addEventListener("keydown", Y => {
         Y.code !== "KeyM" || Y.repeat || Y.ctrlKey || Y.metaKey || Y.altKey || Xe.isOpen || ue != null && ue.isOpen || ve != null && ve.isOpen || (Y.preventDefault(), Y.stopImmediatePropagation(), X = !0, he.isOpen ? he.hide() : he.show())
@@ -39522,7 +39537,8 @@ async function e7() {
     });
     let pt = performance.now(),
         q = 0,
-        xe = B.read();
+        xe = B.read(),
+        liveInput = xe;
     const de = new F,
         ke = new F,
         Le = new F,
@@ -39551,7 +39567,7 @@ async function e7() {
                 Kn = T.active() ? "gamepad" : P.active() ? "touch" : "keyboard",
                 Tn = Kn === "gamepad" ? vn : Kn === "touch" ? kn : Vt,
                 Nn = !document.hidden && document.hasFocus();
-            $e.lookX = Nn ? Ot.clamp(B.cameraLook.x + (ce ? 0 : T.cameraLook.x), -1, 1) : 0, $e.lookY = Nn ? Ot.clamp(B.cameraLook.y + (ce ? 0 : T.cameraLook.y), -1, 1) : 0, q = Tn.throttle, xe = Tn, n.setControls(r, Tn)
+            $e.lookX = Nn ? Ot.clamp(B.cameraLook.x + (ce ? 0 : T.cameraLook.x), -1, 1) : 0, $e.lookY = Nn ? Ot.clamp(B.cameraLook.y + (ce ? 0 : T.cameraLook.y), -1, 1) : 0, q = Tn.throttle, xe = Tn, liveInput = Tn, n.setControls(myCar, Tn)
         },
         Bt = n.getPads(),
         kt = () => {
@@ -39615,11 +39631,11 @@ async function e7() {
         const tt = Math.min((Y - pt) / 1e3, .1);
         pt = Y, a.state.paused = a.state.mode === "match" && (X || W.size > 0 || (!netMatch && (document.hidden || !document.hasFocus())) || u), a.state.paused || a.state.mode === "match" && a.state.phase === "ended" ? (Je(), s.sync(Y)) : s.update(Y, Je, a.state.mode === "match" ? (netMatch ? tickOnline : Ye) : void 0), a.state.mode === "freeplay" && n.pollGoal() !== 0 && !U.disableGoalReset && (n.resetKickoff(), _(), s.sync(Y), I.resetBallTrail()), he.update(a.state), Jt.dataset.gameMode !== a.state.mode && (Jt.dataset.gameMode = a.state.mode, P.setMatchActive(a.state.mode === "match")), Ue.mark();
         const zt = a.state.mode === "freeplay" || !a.state.paused && a.state.phase === "playing",
-            gn = ct.CARS + r * An,
+            gn = ct.CARS + myCar * An,
             vn = Math.hypot(s.currState[gn + Ee.VEL], s.currState[gn + Ee.VEL + 1], s.currState[gn + Ee.VEL + 2]) > 40,
             kn = Math.abs(xe.throttle) > .1 || Math.abs(xe.steer) > .1 || Math.abs(xe.pitch) > .1 || Math.abs(xe.yaw) > .1 || Math.abs(xe.roll) > .1 || xe.jump || xe.boost || xe.handbrake;
-        pe.tick(tt, B.enabled && zt && W.size === 0 && !document.hidden && document.hasFocus(), kn, vn), I.update(s.prevState, s.currState, s.alpha, tt, q, xe, A, zt);
-        const Vt = ct.CARS + r * An;
+        pe.tick(tt, B.enabled && zt && W.size === 0 && !document.hidden && document.hasFocus(), kn, vn), I.update(s.prevState, s.currState, s.alpha, tt, myCar === zb ? q : A.throttle, myCar === zb ? xe : A, myCar === zb ? A : xe, zt);
+        const Vt = ct.CARS + myCar * An;
         J.update(tt, s.currState[Vt + Ee.FLIP_RESET_SERIAL], s.currState[Vt + Ee.DEMOED] !== 1), j.update({
             jumpSerial: s.currState[Vt + Ee.JUMP_SERIAL],
             dodgeSerial: s.currState[Vt + Ee.DODGE_SERIAL],
@@ -39642,12 +39658,12 @@ async function e7() {
             worldPan: lr,
             audible: !0
         }), m[0] = Kn, m[1] = Tn, Ue.mark();
-        const k = ct.CARS + r * An,
+        const k = ct.CARS + myCar * An,
             Ht = s.currState;
-        $e.onGround = Ht[k + Ee.ON_GROUND] === 1, $e.supersonic = Ht[k + Ee.SUPERSONIC] === 1, de.set(Ht[k + Ee.GROUND_NORMAL], Ht[k + Ee.GROUND_NORMAL + 2], Ht[k + Ee.GROUND_NORMAL + 1]), ke.set(Ht[k + Ee.VEL], Ht[k + Ee.VEL + 2], Ht[k + Ee.VEL + 1]), V.update(I.cars[r], I.ball, tt, $e), Ue.mark(), I.updateBallLocatorArrow(V.ballCam, r), Re.hidden === V.ballCam && (Re.hidden = !V.ballCam), U1(V.camera);
+        $e.onGround = Ht[k + Ee.ON_GROUND] === 1, $e.supersonic = Ht[k + Ee.SUPERSONIC] === 1, de.set(Ht[k + Ee.GROUND_NORMAL], Ht[k + Ee.GROUND_NORMAL + 2], Ht[k + Ee.GROUND_NORMAL + 1]), ke.set(Ht[k + Ee.VEL], Ht[k + Ee.VEL + 2], Ht[k + Ee.VEL + 1]), V.update(I.cars[myCar], I.ball, tt, $e), Ue.mark(), I.updateBallLocatorArrow(V.ballCam, myCar), Re.hidden === V.ballCam && (Re.hidden = !V.ballCam), U1(V.camera);
         for (let R = 0; R < b.length; R++) {
             const z = ct.CARS + R * An,
-                ee = R === r ? xe : A,
+                ee = R === myCar ? xe : A,
                 Z = R < Ht[ct.NUM_CARS],
                 Q = Ht[z + Ee.VEL] * Ht[z + Ee.FWD] + Ht[z + Ee.VEL + 1] * Ht[z + Ee.FWD + 1] + Ht[z + Ee.VEL + 2] * Ht[z + Ee.FWD + 2];
             b[R].update({
@@ -39663,10 +39679,10 @@ async function e7() {
             }, tt)
         }
         I.prepareBallSpeedTrail(V.camera);
-        const xn = ct.CARS + r * An,
+        const xn = ct.CARS + myCar * An,
             Qi = s.currState[xn + Ee.SUPERSONIC] === 1 && s.currState[xn + Ee.DEMOED] !== 1;
         ke.set(s.currState[xn + Ee.VEL], s.currState[xn + Ee.VEL + 2], s.currState[xn + Ee.VEL + 1]), w.update(tt, Qi && B.enabled && zt, ke, V.camera), y.update(Qi, T.active(), B.enabled && zt);
-        const es = ct.CARS + r * An;
+        const es = ct.CARS + myCar * An;
         N.update(s.currState[es + Ee.BOOST], s.currState[es + Ee.IS_BOOSTING] === 1, a.state.mode === "freeplay" && U.boostOption === "unlimited"), Ue.mark();
         const ts = I.boostBloomActive || J.bloomActive;
         if (ts) {

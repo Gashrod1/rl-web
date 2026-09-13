@@ -1194,6 +1194,47 @@ Two changes:
 
 **Still open:** the root cause of the original same-car desync report. This update makes the next occurrence's console output impossible to miss and adds real frame-timing data to correlate against — still pending a real recurrence to analyze.
 
+## Fourth post-deployment round: the two real bugs behind every symptom so far
+
+A third real cross-machine test finally produced a precise report: "when the match starts the physics runs very, very slowly, everything is in slow motion, and after about a second I get desync detected". Investigating that (rather than the desync message, which turned out to be a red herring) found the two actual bugs — neither of which any earlier test could have caught, because both are invisible at ~0 ms latency and in the mirrored-world setup.
+
+### Bug A — zero input delay made the simulation run at one tick per network trip
+
+`tickOnline` sent its input for tick N and then required the opponent's input *for that same tick N* before stepping. But the opponent only sends its tick-N input when it itself reaches tick N. So each tick costs one one-way trip: with t_A(n+1) ≥ t_B(n) + L and t_B(n+1) ≥ t_A(n) + L, each client advances at most one tick per latency L instead of 120/s. At 30 ms one-way that is ~33 ticks/s — the game runs at roughly a third of real speed, exactly the reported "slow motion". `Jb.update` also zeroes its accumulator whenever the tick function returns false, so the banked time is dropped and the match never catches back up; it just runs permanently slow.
+
+The design doc called for "a small fixed number of ticks (~4-6)" of input delay for precisely this reason. Task 8's implementation never added it, and every test until now ran over localhost, where L ≈ 0.2 ms makes the bug invisible.
+
+Fixed by implementing the delay the design asked for: an input sampled at tick N is applied at tick N + `inputDelay` on **both** clients (each client delays its own input by the same amount, so the two simulations still apply identical controls on identical ticks). `NetMatch` now buffers the local inputs, and each tick is sampled exactly once — an important detail, since the old code re-sent tick N's input on every stalled frame and could send a *different* value than the one it eventually applied itself. The delay is negotiated at match start: the host pings the guest through the relay four times, takes the minimum round trip, and sets `inputDelay = clamp(ceil(rtt / 8.33) + 6, 8, 40)`, sending it alongside the seed. `localTick` now also advances during the 3-second kickoff countdown so the input pipeline is primed before anyone can move — otherwise the first `inputDelay` ticks of play would be dead.
+
+### Bug B — the "desync" was structurally guaranteed, because the two clients ran mirrored worlds
+
+Both clients call `configureCars("default", true)`, which always creates car slot 0 on team 1 (the local player) and car slot 1 on team 0 (the opponent). Identical code on both machines means each player is car 0 / team 1 *in their own world* — so the two simulations are 180°-rotated mirror images of each other with the car slots swapped. That is coherent to play (car controls are body-relative, so a rotated world behaves identically), which is why it survived single-player design, but `fingerprintState` hashed the raw state bytes: the two fingerprints could never match. The first comparison at tick 60 (0.5 s simulated, ~1.5 s real at the slowed-down rate) therefore always killed the match. Confirmed empirically: at the same tick, client A's car 0 sat at (-256, +2375) while client B's car 1 — the same physical car — sat at (+256, -2364).
+
+Worse, the mirror is not exactly symmetric. Measured with two instances driving identical input streams, the two worlds diverged by ~12 units after 20 s of wall contact, and by 246 → 341 → 502 units over three consecutive checks once a kickoff duel was involved. So the mirrored design could not have produced a shared match even with the fingerprint check removed.
+
+Fixed by removing the mirror: in an online match the guest now plays car slot 1 (team 0) and the host car slot 0 (team 1), so both clients simulate literally the same world. `myCar`/`foeCar` replace the hardcoded `r`/`Di` in the camera, HUD, boost meter, audio, per-car effect and renderer-argument paths (`ScenePresenter.update` maps its two control arguments to car 0 and car 1 positionally, so those are swapped for the guest too), the flip-reset indicator is re-parented to the local car, and the HUD's `playerTeam` follows. Solo and bot play are untouched: `myCar === r === 0` outside online matches, restored on match end and on Leave.
+
+A side effect worth knowing: the guest is now genuinely on the other team, so the two players finally see the same scoreboard, with the guest as blue and the host as orange.
+
+### What replaced the desync abort
+
+Per the user's request the match no longer stops on divergence. The fingerprint is gone; `NetMatch` now exchanges a small set of physical values every 60 ticks (ball position + speed, both cars' positions + speeds) and compares them with a 5-unit tolerance, reporting over-tolerance divergence to `console.warn` (rate-limited: first five, then every twentieth) with the tick, per-value deltas, stall count, recent focus events and recent frame times. It never interrupts play.
+
+Note the safety net can only ever *report*: `physics_getStatePtr` exposes a buffer the engine **overwrites on every step**, verified by writing a ball position into it and watching the next step discard it. There is no state setter, so authoritative state sync, rollback/replay and snapshot correction are all impossible without touching the engine — deterministic lockstep is the only architecture this build supports, and keeping both clients on an identical world is what makes it correct.
+
+### Verification
+
+Tested with two full game instances in two same-origin iframes on one page (so both run real, concurrent event loops) against the local relay started with `RELAY_DELAY_MS=25`, giving a realistic ~60 ms round trip. The relay gained that dev-only env var; it is off by default and does nothing in production.
+
+- Handshake: RTT measured at 61.5 ms, both clients agreed on `inputDelay = 14`.
+- Speed: **121-122 ticks/s on both clients** (target 120), with 1-3 stalls per ~5000 ticks. Before the fix the same setup would have run at ~33.
+- Input integrity: instrumented both simulations to record the controls actually written to each car every tick — **310 ticks compared, zero mismatches**, proving the lockstep layer feeds both worlds identical input.
+- Determinism after unmirroring: **drift events 0** across a 4785-tick (~40 s) run including steering, jumps, boost, wall contact and ball touches; ball and both car positions identical to two decimals on both clients (e.g. car 0 at `[-1584.47, -5102.97, 426.95]` on both).
+- Goal → kickoff cycle: forced both clients into the goal phase on the same tick; both ran `qeOnline`, drew the same kickoff variant from the shared PRNG, and stayed at drift 0.
+- No regression in solo play: bot match starts, the player's car responds, and the bot drives its own car (-3840 → -1245); pause-on-unfocus still applies to solo but not to online.
+
+**Not verified:** anything visual. The browser pane was hidden for this session, which freezes `requestAnimationFrame`, so both instances had to be driven by pumping frames manually and no rendering could be observed. The guest-side camera/HUD/team-colour changes were checked by reading state (`myCar`, `foeCar`, HUD `playerTeam`), not by looking at the screen. A player who picked the flat car in the Garage also still gets car colours that don't match the online team assignment, since the car visuals are created at boot from the local cosmetic preference — cosmetic only, pre-existing.
+
 ## Final whole-feature review (after all 13 tasks)
 
 A holistic review across the finished feature (not re-litigating individual tasks) found one real issue, now fixed: **`endOnlineMatch` never closed the WebSocket** before nulling `netMatch` — both the opponent-disconnect and desync-detected paths leaked an open socket to the relay server on every match end that went through them (`onCancel`/`onLeave` already did this correctly; `endOnlineMatch` was the one path that didn't). Fixed to match the existing `netMatch == null || netMatch.close(), netMatch = null` idiom already used elsewhere.

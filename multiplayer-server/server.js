@@ -2,6 +2,9 @@ import { WebSocketServer } from "ws";
 import { randomInt } from "crypto";
 
 const PORT = Number(process.env.PORT) || 8080;
+// Local testing only: adds a one-way delay to relayed messages so a machine running
+// both clients still behaves like two machines on a real connection.
+const RELAY_DELAY_MS = Number(process.env.RELAY_DELAY_MS) || 0;
 const ROOM_CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0/O, 1/I
 const ROOM_CODE_LENGTH = 6;
 const ROOM_EXPIRY_MS = 5 * 60 * 1000;
@@ -83,7 +86,8 @@ wss.on("connection", ws => {
             const room = rooms.get(ws.roomCode);
             if (!room || !room.guest) return;
             const other = ws.role === "host" ? room.guest : room.host;
-            send(other, { type: "relay", payload: message.payload });
+            if (RELAY_DELAY_MS > 0) setTimeout(() => send(other, { type: "relay", payload: message.payload }), RELAY_DELAY_MS);
+            else send(other, { type: "relay", payload: message.payload });
             return;
         }
     });
