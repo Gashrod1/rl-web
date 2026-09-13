@@ -15,7 +15,7 @@ async function $b(i = {}) {
     if (r) {
         const {
             createRequire: f
-        } = await B0(() => import("./__vite-browser-external-BIHI7g3E.js"), []);
+        } = await import("node:module");
         var s = f(import.meta.url)
     }
     var a = "./this.program",
@@ -4917,6 +4917,9 @@ const ct = {
         BALL_WORLD_SURFACE: 50
     },
     Vb = 3;
+const fetchCollisionAsset = async name =>
+    (await fetch(`/assets/arena/collision/${name}`)).arrayBuffer();
+
 class Wb {
     constructor() {
         v(this, "module");
@@ -4932,10 +4935,10 @@ class Wb {
         const e = this.module.HEAPF32.buffer;
         return (!this.stateView || this.stateView.buffer !== e) && (this.stateView = new Float32Array(e, this.statePtr, this.stateLen)), this.stateView
     }
-    async init() {
+    async init(loadAsset = fetchCollisionAsset) {
         this.module = await $b();
-        const e = await (await fetch("/assets/arena/collision/manifest.json")).json(),
-            t = await Promise.all(e.map(async l => new Uint8Array(await (await fetch(`/assets/arena/collision/${l}`)).arrayBuffer()))),
+        const e = JSON.parse(new TextDecoder().decode(await loadAsset("manifest.json"))),
+            t = await Promise.all(e.map(async l => new Uint8Array(await loadAsset(l)))),
             n = t.reduce((l, A) => l + A.length, 0),
             r = this.module._malloc(n),
             s = this.module._malloc(t.length * 4);
