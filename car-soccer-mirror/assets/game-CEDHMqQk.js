@@ -21,6 +21,7 @@ import {
     h as Cl
 } from "./privacy-BBT5bqib.js";
 import { NetMatch } from "./net-match.js";
+import { RollbackSession } from "./rollback.js";
 /**
  * @license
  * Copyright 2010-2026 Three.js Authors
@@ -34295,8 +34296,14 @@ async function e7() {
     // ?relay=ws://localhost:8080 points at a local relay server, so online play can be
     // tested against local changes instead of whatever is deployed. Absent, behaves as before.
     const ONLINE_SERVER_URL = new URLSearchParams(location.search).get("relay") || (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/mp";
+    // The delay-based lockstep path stays available: if rollback misbehaves in a real
+    // match, ?netcode=lockstep switches back without a rebuild or a redeploy.
+    const NETCODE_MODE = new URLSearchParams(location.search).get("netcode") === "lockstep" ? "lockstep" : "rollback";
+    let rollbackSession = null,
+        lastDriftTick = -1,
+        pendingDrift = new Map();
     const endOnlineMatch = errorText => {
-        u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, setLocalCar(r, t.playerTeam), onlinePanel.showError(errorText), onlinePanel.show()
+        u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, rollbackSession = null, pendingDrift.clear(), setLocalCar(r, t.playerTeam), onlinePanel.showError(errorText), onlinePanel.show()
     };
     const onlineDriftReport = (Y, tt, zt) => {
         const gn = netMatch == null ? 0 : netMatch.driftEvents;
@@ -34357,6 +34364,25 @@ async function e7() {
         if (netMatch === nm) nm.localTick++, tt && qeOnline();
         return !0
     };
+    const tickOnlineRollback = () => {
+        if (a.state.paused || a.state.phase === "ended" || u) return !1;
+        const nm = netMatch,
+            rs = rollbackSession,
+            tick = rs.currentTick;
+        // Quantise once, here: the value sent to the opponent and the value fed to the
+        // local simulation must be the same, or the two worlds diverge slowly.
+        const quantised = nm.sendRollbackInput(tick, liveInput);
+        if (!rs.advance(quantised)) return !1;
+        if (netMatch !== nm) return !1;
+        xe = quantised, A = rs.remoteControlsAt(tick) ?? A;
+        // Drift is compared on confirmed ticks only: predicted state legitimately
+        // differs between the two clients and would report a desync every time.
+        for (const [Y, tt] of pendingDrift) {
+            if (Y > rs.confirmedTick) continue;
+            pendingDrift.delete(Y), Y > lastDriftTick && (lastDriftTick = Y, nm.recordAndSendDrift(Y, tt))
+        }
+        return !0
+    };
     // configureCars("default", true) always puts car 0 on team 1 and car 1 on team 0.
     const setLocalCar = (Y, tt) => {
         myCar = Y, foeCar = Y === zb ? Di : zb, I.cars[myCar].add(J.root), he.options.playerTeam = tt
@@ -34366,7 +34392,45 @@ async function e7() {
             role: netMatch.role,
             rttMs: netMatch.rttMs === null ? null : Math.round(netMatch.rttMs),
             inputDelayTicks: netMatch.inputDelay
-        }), n.configureCars("default", !0), netMatch.role === "host" ? setLocalCar(zb, 1) : setLocalCar(Di, 0), n.setUnlimitedBoost(!1), u = !1, a.start(), qeOnline(), onlinePanel.hide()
+        });
+        n.configureCars("default", !0), netMatch.role === "host" ? setLocalCar(zb, 1) : setLocalCar(Di, 0), n.setUnlimitedBoost(!1), u = !1;
+        rollbackSession = null, lastDriftTick = -1, pendingDrift.clear();
+        if (NETCODE_MODE === "rollback") {
+            const nm = netMatch;
+            n.calibrateSnapshotRange();
+            rollbackSession = new RollbackSession({
+                // The heap and the match state are saved and restored together. Keeping
+                // them in separate rings would let them drift apart after a rollback,
+                // showing up as a score that disagrees with the simulation.
+                saveState: into => ({
+                    heap: n.saveRegion(into ? into.heap : null),
+                    match: a.snapshot()
+                }),
+                loadState: state => {
+                    n.loadRegion(state.heap), a.restore(state.match)
+                },
+                stepOne: (local, remote) => {
+                    const tick = rollbackSession.currentTick;
+                    n.setControls(myCar, local), n.setControls(foeCar, remote), n.step(1);
+                    const st = n.state;
+                    a.tick({
+                        goal: n.pollGoal(),
+                        ballOnGround: n.ballOnGround,
+                        kickoffTouched: Math.abs(st[ct.BALL]) + Math.abs(st[ct.BALL + 1]) > 1 || Math.hypot(st[ct.BALL + 12], st[ct.BALL + 13]) > 1
+                    });
+                    // Fingerprint inside the step, so a resimulation overwrites it with the
+                    // corrected value. Sampling it from tickOnlineRollback would fingerprint
+                    // the *current* tick while labelling it with the *confirmed* one.
+                    if (tick % 60 === 0) pendingDrift.set(tick, onlineDriftValues())
+                },
+                maxPrediction: 16,
+                snapshotInterval: 4
+            });
+            nm.onRemoteInput = (tick, controls) => {
+                if (netMatch === nm && rollbackSession) rollbackSession.receiveRemoteInput(tick, controls)
+            }
+        }
+        a.start(), qeOnline(), onlinePanel.hide()
     };
     netMatch = null;
     onlinePanel = new OnlinePanel(Jt, {
@@ -34435,7 +34499,7 @@ async function e7() {
             await Promise.all([o.load(), I.ensureOpponent()]), !Y.aborted && (n.configureCars(i === "flat-car" ? "flat" : "default", !0), n.setUnlimitedBoost(!1), u = !1, a.start(), qe(), he.update(a.state))
         },
         onLeave: () => {
-            netMatch == null || netMatch.close(), netMatch = null, setLocalCar(r, t.playerTeam), p(), a.leave(), u = !1, n.configureCars(i === "flat-car" ? "flat" : "default", !1, e), n.setUnlimitedBoost(U.boostOption === "unlimited"), qe(), he.update(a.state)
+            netMatch == null || netMatch.close(), netMatch = null, rollbackSession = null, pendingDrift.clear(), setLocalCar(r, t.playerTeam), p(), a.leave(), u = !1, n.configureCars(i === "flat-car" ? "flat" : "default", !1, e), n.setUnlimitedBoost(U.boostOption === "unlimited"), qe(), he.update(a.state)
         }
     }), window.addEventListener("keydown", Y => {
         Y.code !== "KeyM" || Y.repeat || Y.ctrlKey || Y.metaKey || Y.altKey || Xe.isOpen || ue != null && ue.isOpen || ve != null && ve.isOpen || (Y.preventDefault(), Y.stopImmediatePropagation(), X = !0, he.isOpen ? he.hide() : he.show())
@@ -34649,7 +34713,7 @@ async function e7() {
         Ue.frameStart();
         frameTimeLog.push(Math.round(Y - pt)), frameTimeLog.length > 180 && frameTimeLog.shift();
         const tt = Math.min((Y - pt) / 1e3, .1);
-        pt = Y, a.state.paused = a.state.mode === "match" && (X || W.size > 0 || (!netMatch && (document.hidden || !document.hasFocus())) || u), a.state.paused || a.state.mode === "match" && a.state.phase === "ended" ? (Je(), s.sync(Y)) : s.update(Y, Je, a.state.mode === "match" ? (netMatch ? tickOnline : Ye) : void 0), a.state.mode === "freeplay" && n.pollGoal() !== 0 && !U.disableGoalReset && (n.resetKickoff(), _(), s.sync(Y), I.resetBallTrail()), he.update(a.state), Jt.dataset.gameMode !== a.state.mode && (Jt.dataset.gameMode = a.state.mode, P.setMatchActive(a.state.mode === "match")), Ue.mark();
+        pt = Y, a.state.paused = a.state.mode === "match" && (X || W.size > 0 || (!netMatch && (document.hidden || !document.hasFocus())) || u), a.state.paused || a.state.mode === "match" && a.state.phase === "ended" ? (Je(), s.sync(Y)) : s.update(Y, Je, a.state.mode === "match" ? (netMatch ? (rollbackSession ? tickOnlineRollback : tickOnline) : Ye) : void 0), a.state.mode === "freeplay" && n.pollGoal() !== 0 && !U.disableGoalReset && (n.resetKickoff(), _(), s.sync(Y), I.resetBallTrail()), he.update(a.state), Jt.dataset.gameMode !== a.state.mode && (Jt.dataset.gameMode = a.state.mode, P.setMatchActive(a.state.mode === "match")), Ue.mark();
         const zt = a.state.mode === "freeplay" || !a.state.paused && a.state.phase === "playing",
             gn = ct.CARS + myCar * An,
             vn = Math.hypot(s.currState[gn + Ee.VEL], s.currState[gn + Ee.VEL + 1], s.currState[gn + Ee.VEL + 2]) > 40,
