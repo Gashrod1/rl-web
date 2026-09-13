@@ -32895,6 +32895,26 @@ class PB {
     leave() {
         this.state.mode = "freeplay", this.state.phase = "playing", this.state.paused = !1
     }
+    // Score, phase and clock are simulation state: a goal scored on a predicted tick
+    // has to un-score if the prediction turns out wrong.
+    snapshot() {
+        return {
+            state: {
+                ...this.state
+            },
+            remaining: this.remaining,
+            overtimeTicks: this.overtimeTicks,
+            phaseTicks: this.phaseTicks,
+            clockStarted: this.clockStarted
+        }
+    }
+    restore(e) {
+        // Object.assign, not replacement: the HUD holds a reference to this.state and
+        // would otherwise keep rendering a detached copy.
+        Object.assign(this.state, e.state), this.remaining = e.remaining,
+            this.overtimeTicks = e.overtimeTicks, this.phaseTicks = e.phaseTicks,
+            this.clockStarted = e.clockStarted
+    }
     tick({
         goal: e = 0,
         ballOnGround: t = !1,
