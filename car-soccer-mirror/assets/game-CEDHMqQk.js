@@ -34301,6 +34301,8 @@ async function e7() {
     const NETCODE_MODE = new URLSearchParams(location.search).get("netcode") === "lockstep" ? "lockstep" : "rollback";
     let rollbackSession = null,
         lastDriftTick = -1,
+        lastPresentedTick = -1,
+        lastPresentedPhase = null,
         pendingDrift = new Map();
     const endOnlineMatch = errorText => {
         u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, rollbackSession = null, pendingDrift.clear(), setLocalCar(r, t.playerTeam), onlinePanel.showError(errorText), onlinePanel.show()
@@ -34314,8 +34316,8 @@ async function e7() {
             recentFrameTimesMs: frameTimeLog.slice(-60)
         })
     };
-    const qeOnline = () => {
-        n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_INDICES)), _(), p();
+    const qeOnlinePresentation = () => {
+        _(), p();
         const Y = n.state,
             tt = ct.CARS + myCar * An;
         J.update(0, Y[tt + Ee.FLIP_RESET_SERIAL], !1), j.update({
@@ -34334,6 +34336,14 @@ async function e7() {
             worldPan: 0,
             audible: !1
         }), m[0] = Y[tt + Ee.BALL_HIT_SERIAL], m[1] = Y[ct.NUM_CARS] > 1 ? Y[tt + An + Ee.BALL_HIT_SERIAL] : 0, I.resetBallTrail(), n.resetView(), s.sync()
+    };
+    // Called from inside the rollback step, so it replays identically on a rewind.
+    const qeOnlineSimulation = () => {
+        n.resetKickoff(netMatch.nextKickoffIndex(KICKOFF_VARIANT_INDICES))
+    };
+    // The lockstep path runs both halves back to back, exactly as before.
+    const qeOnline = () => {
+        qeOnlineSimulation(), qeOnlinePresentation()
     };
     const onlineDriftValues = () => {
         const Y = n.state,
@@ -34375,6 +34385,13 @@ async function e7() {
         if (!rs.advance(quantised)) return !1;
         if (netMatch !== nm) return !1;
         xe = quantised, A = rs.remoteControlsAt(tick) ?? A;
+        // Sounds, ball-trail and camera resets fire on confirmation only. Firing them
+        // on a predicted tick would replay them on every rewind.
+        if (rs.confirmedTick > lastPresentedTick) {
+            lastPresentedTick = rs.confirmedTick;
+            a.state.phase === "kickoff" && lastPresentedPhase !== "kickoff" && qeOnlinePresentation(),
+                lastPresentedPhase = a.state.phase
+        }
         // Drift is compared on confirmed ticks only: predicted state legitimately
         // differs between the two clients and would report a desync every time.
         for (const [Y, tt] of pendingDrift) {
@@ -34394,7 +34411,7 @@ async function e7() {
             inputDelayTicks: netMatch.inputDelay
         });
         n.configureCars("default", !0), netMatch.role === "host" ? setLocalCar(zb, 1) : setLocalCar(Di, 0), n.setUnlimitedBoost(!1), u = !1;
-        rollbackSession = null, lastDriftTick = -1, pendingDrift.clear();
+        rollbackSession = null, lastDriftTick = -1, lastPresentedTick = -1, lastPresentedPhase = null, pendingDrift.clear();
         if (NETCODE_MODE === "rollback") {
             const nm = netMatch;
             n.calibrateSnapshotRange();
@@ -34413,11 +34430,11 @@ async function e7() {
                     const tick = rollbackSession.currentTick;
                     n.setControls(myCar, local), n.setControls(foeCar, remote), n.step(1);
                     const st = n.state;
-                    a.tick({
-                        goal: n.pollGoal(),
-                        ballOnGround: n.ballOnGround,
-                        kickoffTouched: Math.abs(st[ct.BALL]) + Math.abs(st[ct.BALL + 1]) > 1 || Math.hypot(st[ct.BALL + 12], st[ct.BALL + 13]) > 1
-                    });
+                    if (a.tick({
+                            goal: n.pollGoal(),
+                            ballOnGround: n.ballOnGround,
+                            kickoffTouched: Math.abs(st[ct.BALL]) + Math.abs(st[ct.BALL + 1]) > 1 || Math.hypot(st[ct.BALL + 12], st[ct.BALL + 13]) > 1
+                        }) === "kickoff") qeOnlineSimulation();
                     // Fingerprint inside the step, so a resimulation overwrites it with the
                     // corrected value. Sampling it from tickOnlineRollback would fingerprint
                     // the *current* tick while labelling it with the *confirmed* one.
