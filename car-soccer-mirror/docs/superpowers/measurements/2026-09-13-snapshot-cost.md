@@ -87,4 +87,28 @@ The physics extraction (Stage 0) was verified not to change behaviour:
   dropped ticks or stalls, and the car responds to input. The only console errors are a 404 on
   `/api/sponsors` (pre-existing — this mirror has no backend) and a `Node.contains` TypeError
   caused by the synthetic keyboard event used for the test, not by the game.
-- Online 1v1: see the separate verification note appended below.
+### Online 1v1 verification
+
+Tested locally rather than against the VPS, since the deployed instance runs the pre-extraction
+build and would prove nothing about this change. The client gained a `?relay=<url>` query
+parameter so it can be pointed at a local relay server; absent the parameter it behaves exactly
+as before.
+
+Setup: `node multiplayer-server/server.js` on port 8080, two browser tabs on
+`http://localhost:5175/?relay=ws://localhost:8080`, one creating a room and the other joining
+with the code.
+
+Result:
+
+```
+tab 1: [online] Match starting {role: host,  rttMs: 1, inputDelayTicks: 8}
+tab 2: [online] Match starting {role: guest, rttMs: 1, inputDelayTicks: 8}
+```
+
+Both cars driven simultaneously for roughly 20 seconds (~2400 ticks, so ~40 drift comparisons at
+one per 60 ticks). **No `[online] Simulation drift` warning in either tab**, and the simulation
+held 120/120 Hz throughout. Two independently instantiated WASM modules stayed in lockstep, which
+is the property the extraction could plausibly have broken.
+
+Incidentally: on localhost the RTT is 1 ms, so `inputDelay` lands on `MIN_INPUT_DELAY = 8` —
+the floor, 67 ms. Even a zero-latency connection cannot currently go below that.

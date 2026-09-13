@@ -34272,7 +34272,9 @@ async function e7() {
             audible: !1
         }), m[0] = Y[tt + Ee.BALL_HIT_SERIAL], m[1] = Y[ct.NUM_CARS] > 1 ? Y[tt + An + Ee.BALL_HIT_SERIAL] : 0, I.resetBallTrail(), n.resetView(), s.sync()
     };
-    const ONLINE_SERVER_URL = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/mp";
+    // ?relay=ws://localhost:8080 points at a local relay server, so online play can be
+    // tested against local changes instead of whatever is deployed. Absent, behaves as before.
+    const ONLINE_SERVER_URL = new URLSearchParams(location.search).get("relay") || (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/mp";
     const endOnlineMatch = errorText => {
         u = !0, a.state.paused = !0, netMatch == null || netMatch.close(), netMatch = null, setLocalCar(r, t.playerTeam), onlinePanel.showError(errorText), onlinePanel.show()
     };
